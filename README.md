@@ -2,7 +2,8 @@
 
 Ristral bude jednoduchý informační systém dopravního podniku. Hlavním cílem je, aby systém splňoval požadavky pro 
 zajištění plynulého chodu dopravní společnosti (databáze zastávek, linek, vozidel, řidičů; plánování jízd a přidělování
-řidičům; statistiky provozu a možné optimalizace).
+řidičům; statistiky provozu a možné optimalizace). Ristral bude přístupný jako webová aplikace jednotlivcům stejně jako
+organizacím a to i pro komerční použití. 
 
 ## Použité technologie 
 
