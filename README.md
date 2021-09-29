@@ -8,5 +8,6 @@ zajištění plynulého chodu dopravní společnosti (databáze zastávek, linek
 
 Ristral je psaný v **Javě**. Bude využívat frameworky **[Spring Boot](https://spring.io/projects/spring-boot)**
 a **[Vaadin](https://vaadin.com/)** pro rychlý vývoj webových aplikací. Ristral bude
-**PWA**. Aplikace bude připojená k zatím nespecifikované relační databázi a bude používat techniku **objektově relační
-mapování**.
+**PWA**. Aplikace bude připojená k zatím nespecifikované relační databázi a bude používat **objektově relační mapování**
+pomocí **[Java Persistence API](https://cs.wikipedia.org/wiki/Java_Persistence_API)** a jeho implementace
+**[Hibernate](https://cs.wikipedia.org/wiki/Hibernate)**.
