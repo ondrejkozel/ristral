@@ -12,3 +12,8 @@ a **[Vaadin](https://vaadin.com/)** pro rychlý vývoj webových aplikací. Rist
 k relační databázi a bude používat **objektově relační mapování** pomocí
 **[Java Persistence API](https://cs.wikipedia.org/wiki/Java_Persistence_API)** a jeho implementace
 **[Hibernate](https://cs.wikipedia.org/wiki/Hibernate)**.
+
+## Aktuální fáze vývoje
+
+Poslední přidané funkcionality můžete sledovat ve větvi **[dev](https://github.com/ondrejkozel/ristral/tree/dev)**.
+Stav práce na projektu můžete sledovat na [nástěnce](https://github.com/ondrejkozel/ristral/projects/1).
