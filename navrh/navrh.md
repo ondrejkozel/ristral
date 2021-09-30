@@ -66,17 +66,17 @@ detailnější informace. **Pozn.:** u administrátora organizace a jeho potomk�
 #### Alternativní tok
 1. Pokud uživatel rozklikne objekt, systém zobrazí podrobnější informace.
 
-### UC 4 Prohlížet vlastní proběhlé jízdy
+### UC 4 Prohlížet vlastní uskutečněné jízdy
 
 #### Krátký popis
-Uživatel si může zobrazit přehled vlastních podrobných jízd. Součástí přehledu by měl být seznam proběhlých jízd
+Uživatel si může zobrazit přehled vlastních uskutečněných jízd. Součástí přehledu by měl být seznam proběhlých jízd
 a souhrn krátkých informací a statistik o posledních proběhlých jízdách.
 
 #### Podmínky pro spuštění
-* Uživatel je přihlášený
+* Uživatel je přihlášený.
 
 #### Základní tok
-1. Systém načte proběhlé jízdy z databáze.
+1. Systém načte uskutečněné jízdy z databáze.
 2. Systém vypočítá statistiky posledních jízd.
 3. Systém zobrazí statistiky a informace o posledních jízdách a seznam proběhlých jízd.
 
@@ -100,3 +100,89 @@ kontaktovat administrátora/superadministrátora organizace.
 
 #### Podmínky pro dokončení
 * Zpráva byla úspěšně odeslána na email adresovaného (super)administrátora.
+
+### UC 6 Jet jízdu
+
+#### Krátký popis
+Umožní uživateli (řidič) uskutečnit a podporovat ho při **naplánované** jízdě v terénu (uskutečněná jízda je ta, kterou
+již uživatel (řidič) podle itineráře v naplánovaném čase odjel).
+
+#### Podmínky pro spuštění
+* Uživatel je přihlášený.
+* Uživatelovo zařízení má přesně nastavený čas.
+* **Pokud je offline**: naplánovaná jízda je uložena na uživatelově zařízení.
+
+#### Základní tok
+1. Systém podle času vybere jízdu, kterou má řidič v plánu uskutečnit.
+2. Řidič zahájí jízdu.
+3. Řidič postupně obslouží všechny zastávky, systém ho informuje o čase k dosažení příští zastávky a dalších skutečnostech.
+4. Řidič dojede na konečnou zastávku a tím ukončí jízdu. Jízda je označena jako uskutečněná.
+5. Systém uloží jízdu do vzdálené databáze.
+
+#### Alternativní tok 1
+1. Pokud je řidičovo zařízení offline, zůstane uskutečněná jízda uložena pouze na jeho zařízení. 
+2. Až bude řidičovo zařízení online, systém uloží jízdu do vzdálené databáze.
+
+#### Alternativní tok 2
+1. Pokud je to vůlí řidiče a jsou dostupné dostatečně přesné polohovací služby, systém zobrazuje i mapu s aktuální polohou, případně polohou zastávek.
+
+#### Podmínky pro dokončení
+* Naplánovaná jízda je ve vzdálené databázi úspěšně přepsaná uskutečněnou jízdou.
+
+### UC 7 Plánovat jízdy
+
+#### Krátký popis
+Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat plánované jízdy. V případě účtu organizace spravuje plánované
+jízdy řadovému uživateli (super)administrátor.
+
+#### Podmínky pro spuštění – zobrazení, vytvoření, upravení i odstranění
+* Je přihlášený administrátor organizace nebo jeho potomek.
+
+***
+
+#### Základní tok – zobrazení
+1. Systém načte všchny plánované jízdy z databáze.
+2. Systém zobrazí plánované jízdy.
+
+#### Alternativní tok – zobrazení
+1. Pokud uživatel rozklikne plánovanou jízdu, systém zobrazí podrobnější informace.
+
+***
+
+#### Základní tok – vytvoření
+1. Systém zobrazí formůlář pro vytvoření plánování jízdy.
+2. Uživatel zadá hodnoty.
+3. Systém zvaliduje data zadaná uživatelem.
+4. Data jsou uložena do vzdálené databáze.
+
+#### Alternativní tok – vytvoření
+1. Pokud hodnoty zadané uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 2. bodem základního toku.
+
+***
+
+#### Základní tok – upravení
+1. Uživatel vybere naplánovanou jízdu k úpravě.
+2. Systém zobrazí formulář pro úpravu plánované jízdy.
+3. Uživatel upraví hodnoty.
+4. System zvaliduje data upravená uživatelem.
+5. Data jsou uložena do vzdálené databáze.
+
+#### Alternativní tok – upravení
+1. Pokud hodnoty upravené uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 3. bodem základního toku.
+
+***
+
+#### Základní tok – odstranění
+1. Uživatel vybere naplánovanou jízdu ke smazání.
+2. Systém se ujistí, jestli uživatel opravdu chce odstranit naplánovanou jízdu.
+3. Naplánovaná jízda je smazána z databáze.
+
+#### Alternativní tok – odstranění
+1. Pokud si uživatel rozmyslí odstranění naplánované jízdy v 2. bodě základního toku, 3. bod základního toku se nevykoná. 
+
+***
+
+#### Podmínky pro dokončení – vytvoření, upravení a odstranění
+* Všechny změny jsou úspěšně uložené.
