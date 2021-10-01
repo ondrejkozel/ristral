@@ -9,7 +9,7 @@
 
 ## Use case specifikace
 
-### UC 1 Registrovat se
+### Registrovat se
 
 #### Krátký popis
 Use case umožní uživateli se registrovat do systému.
@@ -32,7 +32,26 @@ Use case umožní uživateli se registrovat do systému.
 #### Podmínky pro dokončení
 * Nový uživatel je úspěšně uložen v databázi.
 
-### UC 2 Poslat zpětnou vazbu
+### Obnovit heslo
+
+#### Krátký popis
+Umožní nepřihlášenému uživateli obnovit heslo, pokud ho zapomene.
+
+#### Podmínky pro spuštění
+* Uživatel není přihlášený.
+
+#### Základní tok
+1. Uživatel zadá do formuláře emailovou adresu a vyplní recaptcha.
+2. Systém zvaliduje zadané údaje.
+3. Na emailovou adresu zašle systém odkaz na obnovení hesla.
+
+#### Alternativní tok
+1. Pokud zadané údaje nejsou validní, tok se spouší znovu od bodu 1 základního toku.
+
+#### Podmínky pro dokončení
+* Email se podařilo odeslat na adresu uživatele.
+
+### Poslat zpětnou vazbu
 
 #### Krátký popis
 Uživatel má pomocí tohoto UC možnost kontaktovat vývojáře jednoduchým formulářem.
@@ -48,12 +67,12 @@ Uživatel má pomocí tohoto UC možnost kontaktovat vývojáře jednoduchým fo
 #### Podmínky pro dokončení
 * E-mailová zpráva vývojáři byla úspěšně odeslána.
 
-### UC 3 Prohlížet zastávky, linky a vozidla
+### Prohlížet zastávky, linky a vozidla
 
 #### Krátký popis
 Use case umožní uživateli zobrazit si přehlednou tabulku zastávek, linek a vozidel a po rozkliknutí objektu zobrazí
 detailnější informace. **Pozn.:** u administrátora organizace a jeho potomků je tento UC přepsán případem užití
-*[UC 8 Spravovat zastávky, linky, vozidla a typy vozidel](#uc-8-spravovat-zastávky-linky-vozidla-a-typy-vozidel)*.
+*[Spravovat zastávky, linky, vozidla a typy vozidel](#spravovat-zastávky-linky-vozidla-a-typy-vozidel)*.
 
 #### Podmínky pro spuštění
 * Databáze není prázdná.
@@ -66,7 +85,7 @@ detailnější informace. **Pozn.:** u administrátora organizace a jeho potomk�
 #### Alternativní tok
 1. Pokud uživatel rozklikne objekt, systém zobrazí podrobnější informace.
 
-### UC 4 Prohlížet vlastní uskutečněné jízdy
+### Prohlížet vlastní uskutečněné jízdy
 
 #### Krátký popis
 Uživatel si může zobrazit přehled vlastních uskutečněných jízd. Součástí přehledu by měl být seznam proběhlých jízd
@@ -83,7 +102,7 @@ a souhrn krátkých informací a statistik o posledních proběhlých jízdách.
 #### Alternativní tok
 1. Pokud uživatel neuskutečnil ani jednu jízdu, systém ho na to upozorní a statistiky ani seznam nezobrazuje.
 
-### UC 5 Kontaktovat administrátora
+### Kontaktovat administrátora
 
 #### Krátký popis
 Uživateli řadového účtu organizace a jeho potomkům mimo uživatele osobního účtu umožňuje pomocí jednoduchého formuláře
@@ -101,7 +120,7 @@ kontaktovat administrátora/superadministrátora organizace.
 #### Podmínky pro dokončení
 * Zpráva byla úspěšně odeslána na email adresovaného (super)administrátora.
 
-### UC 6 Jet jízdu
+### Jet jízdu
 
 #### Krátký popis
 Umožní uživateli (řidič) uskutečnit a podporovat ho při **naplánované** jízdě v terénu (uskutečněná jízda je ta, kterou
@@ -131,7 +150,7 @@ již uživatel (řidič) podle itineráře v naplánovaném čase odjel).
 #### Podmínky pro dokončení
 * Naplánovaná jízda je ve vzdálené databázi úspěšně přepsaná uskutečněnou jízdou.
 
-### UC 7 Plánovat jízdy
+### Plánovat jízdy
 
 #### Krátký popis
 Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat plánované jízdy. V případě účtu organizace spravuje plánované
@@ -189,7 +208,7 @@ jízdy řadovému uživateli (super)administrátor.
 #### Podmínky pro dokončení – vytvoření, upravení a odstranění
 * Všechny změny jsou úspěšně uložené.
 
-### UC 8 Spravovat zastávky, linky, vozidla a typy vozidel
+### Spravovat zastávky, linky, vozidla a typy vozidel
 
 #### Krátký popis
 Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat zastávky, linky vozidla a typy vozidel (dále objekty).
@@ -246,7 +265,7 @@ Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat zastávky, link
 #### Podmínky pro dokončení – vytvoření, upravení a odstranění
 * Všechny změny jsou úspěšně uložené.
 
-### UC 9 Sledovat aktivitu podřízených účtů
+### Sledovat aktivitu podřízených účtů
 
 #### Krátký popis
 Umožní (super)administrátorským účtům sledovat aktivitu účtů podřízených.
@@ -258,7 +277,7 @@ Umožní (super)administrátorským účtům sledovat aktivitu účtů podříze
 1. Systém načte aktivitu podřízených účtů z databáze.
 2. Systém zobrazí aktivitu podřízených účtů v tabulce.
 
-### UC 10 Spravovat osobní informace
+### Spravovat osobní informace
 
 #### Krátký popis
 Uživateli je umožněno spravovat svoje osobní údaje jako jméno, email, heslo,...
@@ -278,3 +297,123 @@ Uživateli je umožněno spravovat svoje osobní údaje jako jméno, email, hesl
 
 #### Podmínky pro dokončení
 * Změny byly úspěšně uloženy v databázi.
+
+### Smazat účet
+
+#### Krátký popis
+Umožňuje oprávněným uživatelům nenávratně zavřít svůj účet.
+
+#### Podmínky pro spuštění
+* Je přihlášený uživatel osobního účtu nebo superadministrátor organizace.
+
+#### Základní tok
+1. Systém se ujistí, jestli uživatel opravdu chce smazat svůj účet.
+2. Pokud ano, jsou smazána všechna data uživatele.
+
+#### Alternativní tok
+1. Pokud je uživatelem jediný superadministrátor v organizaci, smažou se všechna data a uživatelé organizace.
+
+#### Podmínky pro dokončení
+* Všechna související data byla odstraněna z databáze.
+
+### Spravovat informace o organizaci
+
+#### Krátký popis
+Use case umožňuje superadministrátorovi organizace upravovat informace o společnosti.
+
+#### Podmínky pro spuštění
+* Je přihlášený superadministrátor organizace.
+
+#### Základní tok
+1. Systém zobrazí formulář pro úpravu informací o organizaci.
+2. Uživatel upraví hodnoty.
+3. Systém zvaliduje hodnoty zadané uživatelem.
+4. Data se uloží do vzdálené databáze.
+
+#### Alternativní tok
+1. Pokud hodnoty upravené uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 2. bodem základního toku.
+
+#### Podmínky pro dokončení
+* Změny byly úspěšně uloženy v databázi.
+
+### Spravovat podřízené účty
+
+#### Krátký popis
+Umožňuje superadministrátorovi zobrazit, vytvořit, upravit, odstranit a změnit oprávnění podřízeného účtu.
+
+#### Podmínky pro spuštění – zobrazení, vytvoření, upravení, odstranění i změna oprávnění
+* Je přihlášený superadministrátor organizace.
+
+***
+
+#### Základní tok – zobrazení
+1. Systém načte podřízené účty z databáze.
+2. Systém zobrazí podřízené účty v tabulce.
+
+#### Alternativní tok – zobrazení
+1. Pokud uživatel rozklikne podřízené účty, systém zobrazí podrobnější informace.
+
+***
+
+#### Základní tok – vytvoření
+1. Systém zobrazí formůlář pro vytvoření podřízeného účtu.
+2. Uživatel zadá hodnoty.
+3. Systém zvaliduje data zadaná uživatelem.
+4. Podřízený účet je uložen do vzdálené databáze.
+
+#### Alternativní tok – vytvoření
+1. Pokud hodnoty zadané uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 2. bodem základního toku.
+
+***
+
+#### Základní tok – upravení
+1. Uživatel vybere podřízený účet k úpravě.
+2. Systém zobrazí formulář pro úpravu podřízeného účtu.
+3. Uživatel upraví hodnoty.
+4. System zvaliduje data upravená uživatelem.
+5. Data jsou uložena do vzdálené databáze.
+
+#### Alternativní tok – upravení
+1. Pokud hodnoty upravené uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 3. bodem základního toku.
+
+***
+
+#### Základní tok – odstranění
+1. Uživatel vybere podřízený účet ke smazání.
+2. Systém se ujistí, jestli uživatel opravdu chce podřízený účet odstranit.
+3. Podřízený účet je smazán z databáze.
+
+#### Alternativní tok – odstranění
+1. Pokud si uživatel rozmyslí odstranění podřízeného účtu v 2. bodě základního toku, 3. bod základního toku se nevykoná.
+
+***
+
+#### Základní tok – změna oprávnění
+1. Uživatel vybere podřízený účet, kterému chce změnit oprávnění a vybere oprávnění.
+2. Systém účtu změní oprávnění a změnu zapíše do databáze.
+
+#### Alternativní tok – změna oprávnění
+1. Pokud je uživatel jediný superadministrátor a chce si odstranit superadministrátorské oprávnění, systém změnu zamítne.
+
+***
+
+#### Podmínky pro dokončení – vytvoření, upravení, odstranění a změna oprávnění
+* Všechny změny jsou úspěšně uložené ve vzdálené databázi.
+
+### Smazat účet organizace
+
+#### Krátký popis
+Umožňuje superadministrátorovi smazat celou organizaci.
+
+#### Podmínky pro spuštění
+* Je přihlášený superadministrátor organizace.
+
+#### Základní tok
+1. Systém se ujistí, jestli superadministrátor opravdu chce smazat organizaci.
+2. Pokud ano, jsou smazána všechna data organizace.
+
+#### Podmínky pro dokončení
+* Všechna související data byla odstraněna z databáze.
