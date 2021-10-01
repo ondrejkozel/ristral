@@ -110,7 +110,9 @@ již uživatel (řidič) podle itineráře v naplánovaném čase odjel).
 #### Podmínky pro spuštění
 * Uživatel je přihlášený.
 * Uživatelovo zařízení má přesně nastavený čas.
-* **Pokud je offline**: naplánovaná jízda je uložena na uživatelově zařízení.
+* **Pokud je offline**: 
+  * Naplánovaná jízda je uložena na uživatelově zařízení.
+  * Systém má práva k zapisování a čtení dat na uživatelovo zařízení.
 
 #### Základní tok
 1. Systém podle času vybere jízdu, kterou má řidič v plánu uskutečnit.
@@ -141,7 +143,7 @@ jízdy řadovému uživateli (super)administrátor.
 ***
 
 #### Základní tok – zobrazení
-1. Systém načte všchny plánované jízdy z databáze.
+1. Systém načte plánované jízdy z databáze.
 2. Systém zobrazí plánované jízdy.
 
 #### Alternativní tok – zobrazení
@@ -186,3 +188,93 @@ jízdy řadovému uživateli (super)administrátor.
 
 #### Podmínky pro dokončení – vytvoření, upravení a odstranění
 * Všechny změny jsou úspěšně uložené.
+
+### UC 8 Spravovat zastávky, linky, vozidla a typy vozidel
+
+#### Krátký popis
+Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat zastávky, linky vozidla a typy vozidel (dále objekty).
+
+#### Podmínky pro spuštění – zobrazení, vytvoření, upravení i odstranění
+* Je přihlášený administrátor organizace nebo jeho potomek.
+
+***
+
+#### Základní tok – zobrazení
+1. Systém načte objekty z databáze.
+2. Systém zobrazí objekty v tabulce.
+
+#### Alternativní tok – zobrazení
+1. Pokud uživatel rozklikne objekt, systém zobrazí podrobnější informace.
+
+***
+
+#### Základní tok – vytvoření
+1. Systém zobrazí formůlář pro vytvoření objektu.
+2. Uživatel zadá hodnoty.
+3. Systém zvaliduje data zadaná uživatelem.
+4. Data jsou uložena do vzdálené databáze.
+
+#### Alternativní tok – vytvoření
+1. Pokud hodnoty zadané uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 2. bodem základního toku.
+
+***
+
+#### Základní tok – upravení
+1. Uživatel vybere objekt k úpravě.
+2. Systém zobrazí formulář pro úpravu objektu.
+3. Uživatel upraví hodnoty.
+4. System zvaliduje data upravená uživatelem.
+5. Data jsou uložena do vzdálené databáze.
+
+#### Alternativní tok – upravení
+1. Pokud hodnoty upravené uživatelem nejsou validní, systém uživatele upozorní a nedovolí uložení.
+2. Tok pokračuje 3. bodem základního toku.
+
+***
+
+#### Základní tok – odstranění
+1. Uživatel vybere objekt ke smazání.
+2. Systém se ujistí, jestli uživatel opravdu chce objekt odstranit.
+3. Objekt je smazán z databáze.
+
+#### Alternativní tok – odstranění
+1. Pokud si uživatel rozmyslí odstranění objektu v 2. bodě základního toku, 3. bod základního toku se nevykoná.
+
+***
+
+#### Podmínky pro dokončení – vytvoření, upravení a odstranění
+* Všechny změny jsou úspěšně uložené.
+
+### UC 9 Sledovat aktivitu podřízených účtů
+
+#### Krátký popis
+Umožní (super)administrátorským účtům sledovat aktivitu účtů podřízených.
+
+#### Podmínky pro spuštění
+* Je přihlášený uživatel řadového účtu organizace nebo jeho potomek vyjma uživatele osobního účtu.
+
+#### Základní tok
+1. Systém načte aktivitu podřízených účtů z databáze.
+2. Systém zobrazí aktivitu podřízených účtů v tabulce.
+
+### UC 10 Spravovat osobní informace
+
+#### Krátký popis
+Uživateli je umožněno spravovat svoje osobní údaje jako jméno, email, heslo,...
+
+#### Podmínky pro spuštění
+* Je přihlášený uživatel osobního účtu nebo superadministrátor organizace.
+
+#### Základní tok
+1. Systém načte údaje z databáze.
+2. Systém pomocí formuláře umožní uživateli měnit osobní údaje.
+3. Osobní údaje jsou zvalidovány.
+4. Osobní údaje jsou uloženy do databáze.
+
+#### Alternativní tok
+1. Pokud údaje zadané uživatelem nejsou validní, systém ho na to upozorní.
+2. Tok pokračuje druhým bodem základního toku.
+
+#### Podmínky pro dokončení
+* Změny byly úspěšně uloženy v databázi.
