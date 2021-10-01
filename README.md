@@ -3,7 +3,7 @@
 Ristral bude jednoduchý informační systém dopravního podniku. Hlavním cílem je, aby systém splňoval požadavky pro 
 zajištění plynulého chodu dopravní společnosti (databáze zastávek, linek, vozidel, řidičů; plánování jízd a přidělování
 řidičům; statistiky provozu a možné optimalizace). Ristral bude přístupný jako webová aplikace jednotlivcům stejně jako
-organizacím a to i pro komerční použití. **Návrh systému** naleznete na [této stránce](https://github.com/ondrejkozel/ristral/blob/navrh/navrh/navrh.md#návrh-systému).
+organizacím a to i pro komerční použití. **Návrh systému** naleznete na [této stránce](https://github.com/ondrejkozel/ristral/blob/dev/navrh/navrh.md).
 
 ## Použité technologie 
 
