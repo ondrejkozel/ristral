@@ -208,7 +208,7 @@ jízdy řadovému uživateli (super)administrátor.
 #### Podmínky pro dokončení – vytvoření, upravení a odstranění
 * Všechny změny jsou úspěšně uložené.
 
-### Spravovat zastávky, linky, vozidla a typy vozidel
+### Spravovat zastávky, režimy obsluhy zastávek, linky, vozidla a typy vozidel
 
 #### Krátký popis
 Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat zastávky, linky vozidla a typy vozidel (dále objekty).
@@ -402,6 +402,28 @@ Umožňuje superadministrátorovi zobrazit, vytvořit, upravit, odstranit a změ
 
 #### Podmínky pro dokončení – vytvoření, upravení, odstranění a změna oprávnění
 * Všechny změny jsou úspěšně uložené ve vzdálené databázi.
+
+### Poslat zprávu podřízeným účtům
+
+#### Krátký popis
+Umožní superadministrátorovi organizace posílat zprávy podřízeným účtům, které se pak zobrazí na domovské stránce všech
+účtů dané organizace.
+
+#### Podmínky pro spuštění
+* Je přihlášený superadministrátor organizace.
+
+#### Základní tok
+1. Systém uživateli zobrazí formulář.
+2. Uživatel vyplní formulář.
+3. Systém zvaliduje formulář.
+4. Zpráva je odeslána.
+
+#### Alternativná tok
+1. Pokud formulář v 3. bodě zakládního toku není validní, systém na to uživatele upozorní.
+2. Tok pokračuje 2. bodem základního toku.
+
+#### Podmínky pro dokončení
+* Zpráva je úspěšně uložena v databázi.
 
 ### Smazat účet organizace
 
