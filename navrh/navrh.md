@@ -72,7 +72,7 @@ Uživatel má pomocí tohoto UC možnost kontaktovat vývojáře jednoduchým fo
 #### Krátký popis
 Use case umožní uživateli zobrazit si přehlednou tabulku zastávek, linek a vozidel a po rozkliknutí objektu zobrazí
 detailnější informace. **Pozn.:** u administrátora organizace a jeho potomků je tento UC přepsán případem užití
-*[Spravovat zastávky, linky, vozidla a typy vozidel](#spravovat-zastávky-linky-vozidla-a-typy-vozidel)*.
+*[Spravovat zastávky, režimy obsluhy zastávek, linky, vozidla a typy vozidel](#spravovat-zastávky-režimy-obsluhy-zastávek-linky-vozidla-a-typy-vozidel)*.
 
 #### Podmínky pro spuštění
 * Databáze není prázdná.
