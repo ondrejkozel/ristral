@@ -2,6 +2,7 @@
 
 * [Use case diagram](#Use-case-diagram)
 * [Use case specifikace](#Use-case-specifikace)
+* [Class diagram](#Class-diagram)
 
 ## Use case diagram
 
@@ -439,3 +440,9 @@ Umožňuje superadministrátorovi smazat celou organizaci.
 
 #### Podmínky pro dokončení
 * Všechna související data byla odstraněna z databáze.
+
+## Class diagram
+
+Zjednodušený diagram tříd.
+
+<div align="center"><img src="https://github.com/ondrejkozel/ristral/blob/navrh/navrh/ristral-class-diagram.png?raw=true" alt="Class diagram"/></div>
