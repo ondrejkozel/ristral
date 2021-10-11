@@ -2,6 +2,7 @@
 
 * [Use case diagram](#Use-case-diagram)
 * [Use case specifikace](#Use-case-specifikace)
+* [Class diagram](#Class-diagram)
 
 ## Use case diagram
 
@@ -72,7 +73,7 @@ Uživatel má pomocí tohoto UC možnost kontaktovat vývojáře jednoduchým fo
 #### Krátký popis
 Use case umožní uživateli zobrazit si přehlednou tabulku zastávek, linek a vozidel a po rozkliknutí objektu zobrazí
 detailnější informace. **Pozn.:** u administrátora organizace a jeho potomků je tento UC přepsán případem užití
-*[Spravovat zastávky, linky, vozidla a typy vozidel](#spravovat-zastávky-linky-vozidla-a-typy-vozidel)*.
+*[Spravovat zastávky, režimy obsluhy zastávek, linky, vozidla a typy vozidel](#spravovat-zastávky-režimy-obsluhy-zastávek-linky-vozidla-a-typy-vozidel)*.
 
 #### Podmínky pro spuštění
 * Databáze není prázdná.
@@ -208,7 +209,7 @@ jízdy řadovému uživateli (super)administrátor.
 #### Podmínky pro dokončení – vytvoření, upravení a odstranění
 * Všechny změny jsou úspěšně uložené.
 
-### Spravovat zastávky, linky, vozidla a typy vozidel
+### Spravovat zastávky, režimy obsluhy zastávek, linky, vozidla a typy vozidel
 
 #### Krátký popis
 Umožňuje uživateli prohlížet, vytvářet, upravovat a mazat zastávky, linky vozidla a typy vozidel (dále objekty).
@@ -403,6 +404,28 @@ Umožňuje superadministrátorovi zobrazit, vytvořit, upravit, odstranit a změ
 #### Podmínky pro dokončení – vytvoření, upravení, odstranění a změna oprávnění
 * Všechny změny jsou úspěšně uložené ve vzdálené databázi.
 
+### Poslat zprávu podřízeným účtům
+
+#### Krátký popis
+Umožní superadministrátorovi organizace posílat zprávy podřízeným účtům, které se pak zobrazí na domovské stránce všech
+účtů dané organizace.
+
+#### Podmínky pro spuštění
+* Je přihlášený superadministrátor organizace.
+
+#### Základní tok
+1. Systém uživateli zobrazí formulář.
+2. Uživatel vyplní formulář.
+3. Systém zvaliduje formulář.
+4. Zpráva je odeslána.
+
+#### Alternativná tok
+1. Pokud formulář v 3. bodě zakládního toku není validní, systém na to uživatele upozorní.
+2. Tok pokračuje 2. bodem základního toku.
+
+#### Podmínky pro dokončení
+* Zpráva je úspěšně uložena v databázi.
+
 ### Smazat účet organizace
 
 #### Krátký popis
@@ -417,3 +440,9 @@ Umožňuje superadministrátorovi smazat celou organizaci.
 
 #### Podmínky pro dokončení
 * Všechna související data byla odstraněna z databáze.
+
+## Class diagram
+
+Zjednodušený diagram tříd.
+
+<div align="center"><img src="https://github.com/ondrejkozel/ristral/blob/dev/navrh/ristral-class-diagram.png?raw=true" alt="Class diagram"/></div>
