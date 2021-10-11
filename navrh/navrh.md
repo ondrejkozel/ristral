@@ -445,4 +445,4 @@ Umožňuje superadministrátorovi smazat celou organizaci.
 
 Zjednodušený diagram tříd.
 
-<div align="center"><img src="https://github.com/ondrejkozel/ristral/blob/navrh/navrh/ristral-class-diagram.png?raw=true" alt="Class diagram"/></div>
+<div align="center"><img src="https://github.com/ondrejkozel/ristral/blob/dev/navrh/ristral-class-diagram.png?raw=true" alt="Class diagram"/></div>
