@@ -4,14 +4,14 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("UZIVATEL_ORG")
-public class UzivatelOrg extends Uzivatel {
+@DiscriminatorValue("SUPERADMIN_ORG")
+public class SuperadminOrg extends OsobniUzivatel {
 
-    public UzivatelOrg() {
+    public SuperadminOrg() {
         super();
     }
 
-    public UzivatelOrg(String jmeno, String email, String heslo) {
+    public SuperadminOrg(String jmeno, String email, String heslo) {
         super(jmeno, email, heslo);
     }
 
