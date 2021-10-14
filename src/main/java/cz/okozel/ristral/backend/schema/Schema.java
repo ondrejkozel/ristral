@@ -2,6 +2,7 @@ package cz.okozel.ristral.backend.schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -12,6 +13,7 @@ public class Schema {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
+    @NotNull
     private TypSchematu typSchematu;
 
     @Size(min = 1, max = 100)
