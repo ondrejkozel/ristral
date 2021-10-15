@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.okozel.ristral.backend.aktivity.Aktivita;
 import cz.okozel.ristral.backend.schema.Schema;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 /**
  * Třída reprezentující jakéhokoliv registrovaného uživatele.
@@ -51,6 +53,9 @@ public abstract class Uzivatel {
     @NotNull
     private Schema schema;
 
+    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL)
+    private Set<Aktivita> aktivity;
+
     /**
      * Vytvoří novou instanci čistého uživatele.
      */
@@ -92,5 +97,9 @@ public abstract class Uzivatel {
 
     public TypUzivatele getTyp() {
         return TypUzivatele.getTypUzivatele(this.getClass());
+    }
+
+    public Set<Aktivita> getAktivity() {
+        return aktivity;
     }
 }
