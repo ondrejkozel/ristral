@@ -28,7 +28,7 @@ public abstract class Uzivatel {
     /**
      * jméno uživatele
      */
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @NotBlank
     private String jmeno;
 

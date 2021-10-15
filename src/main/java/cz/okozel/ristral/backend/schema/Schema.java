@@ -20,7 +20,7 @@ public class Schema {
     @Enumerated(EnumType.STRING)
     private TypSchematu typSchematu;
 
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @NotNull
     private String nazev;
 
