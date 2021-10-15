@@ -21,7 +21,7 @@ public class Schema {
     private TypSchematu typSchematu;
 
     @Size(min = 1, max = 100)
-    @NotBlank
+    @NotNull
     private String nazev;
 
     @OneToMany(mappedBy = "schema", cascade = CascadeType.ALL)
