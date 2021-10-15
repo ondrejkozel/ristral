@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.okozel.ristral.backend.schema.Schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -45,6 +46,11 @@ public abstract class Uzivatel {
     @JsonIgnore
     private String heslo;
 
+    @ManyToOne()
+    @JoinColumn()
+    @NotNull
+    private Schema schema;
+
     /**
      * Vytvoří novou instanci čistého uživatele.
      */
@@ -55,11 +61,13 @@ public abstract class Uzivatel {
      * @param jmeno křestní a příjmení
      * @param email emailová adresa
      * @param heslo zahashované heslo
+     * @param schema schéma, ve kterém se má nový uživatel nacházet
      */
-    public Uzivatel(String jmeno, String email, String heslo) {
+    public Uzivatel(String jmeno, String email, String heslo, Schema schema) {
         this.jmeno = jmeno;
         this.email = email;
         this.heslo = heslo;
+        this.schema = schema;
     }
 
     public Long getId() {

@@ -1,9 +1,12 @@
 package cz.okozel.ristral.backend.schema;
 
+import cz.okozel.ristral.backend.uzivatele.Uzivatel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Table(name = "schemata")
@@ -19,6 +22,9 @@ public class Schema {
     @Size(min = 1, max = 100)
     @NotBlank
     private String nazev;
+
+    @OneToMany(mappedBy = "schema", cascade = CascadeType.ALL)
+    private Set<Uzivatel> uzivatele;
 
     public Schema() {
     }

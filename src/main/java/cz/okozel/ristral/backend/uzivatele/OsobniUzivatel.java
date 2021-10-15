@@ -1,5 +1,7 @@
 package cz.okozel.ristral.backend.uzivatele;
 
+import cz.okozel.ristral.backend.schema.Schema;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -11,8 +13,8 @@ public class OsobniUzivatel extends AdminOrg {
         super();
     }
 
-    public OsobniUzivatel(String jmeno, String email, String heslo) {
-        super(jmeno, email, heslo);
+    public OsobniUzivatel(String jmeno, String email, String heslo, Schema schema) {
+        super(jmeno, email, heslo, schema);
     }
 
 }
