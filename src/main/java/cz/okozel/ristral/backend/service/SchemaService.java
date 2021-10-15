@@ -27,10 +27,4 @@ public class SchemaService {
         schemaRepository.save(schema);
     }
 
-    @PostConstruct
-    public void populateTestData() {
-        if (schemaRepository.count() == 0) {
-            schemaRepository.saveAll(Arrays.asList(new Schema(TypSchematu.OSOBNI, "Osobní účet"), new Schema(TypSchematu.ORGANIZACE, "dopravní podnik")));
-        }
-    }
 }
