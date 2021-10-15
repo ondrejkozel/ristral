@@ -17,6 +17,7 @@ public class Schema {
     private Long Id;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private TypSchematu typSchematu;
 
     @Size(min = 1, max = 100)
