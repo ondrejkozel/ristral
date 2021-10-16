@@ -5,6 +5,8 @@ import cz.okozel.ristral.backend.uzivatele.Uzivatel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +25,7 @@ public class Schema {
     @NotNull
     private String nazev;
 
-    @OneToMany(mappedBy = "schema", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "schema", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Uzivatel> uzivatele;
 
     public Schema() {
@@ -32,6 +34,7 @@ public class Schema {
     public Schema(TypSchematu typSchematu, String nazev) {
         this.typSchematu = typSchematu;
         this.nazev = nazev;
+        this.uzivatele = new HashSet<>();
     }
 
     public Long getId() {
@@ -48,5 +51,14 @@ public class Schema {
 
     public void setNazev(String nazev) {
         this.nazev = nazev;
+    }
+
+    public Set<Uzivatel> getUzivatele() {
+        return Collections.unmodifiableSet(uzivatele);
+    }
+
+    @Override
+    public String toString() {
+        return nazev;
     }
 }

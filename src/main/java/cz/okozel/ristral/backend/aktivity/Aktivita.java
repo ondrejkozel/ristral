@@ -74,4 +74,9 @@ public class Aktivita {
     public Uzivatel getAkter() {
         return akter;
     }
+
+    @Override
+    public String toString() {
+        return titulek;
+    }
 }

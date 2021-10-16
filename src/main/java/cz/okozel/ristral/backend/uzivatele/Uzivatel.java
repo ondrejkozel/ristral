@@ -9,7 +9,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Třída reprezentující jakéhokoliv registrovaného uživatele.
@@ -53,8 +55,8 @@ public abstract class Uzivatel {
     @NotNull
     private Schema schema;
 
-    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL)
-    private Set<Aktivita> aktivity;
+    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Aktivita> aktivity;
 
     /**
      * Vytvoří novou instanci čistého uživatele.
@@ -73,6 +75,7 @@ public abstract class Uzivatel {
         this.email = email;
         this.heslo = heslo;
         this.schema = schema;
+        this.aktivity = new ArrayList<>();
     }
 
     public Long getId() {
@@ -99,7 +102,16 @@ public abstract class Uzivatel {
         return TypUzivatele.getTypUzivatele(this.getClass());
     }
 
-    public Set<Aktivita> getAktivity() {
-        return aktivity;
+    public Schema getSchema() {
+        return schema;
+    }
+
+    public List<Aktivita> getAktivity() {
+        return Collections.unmodifiableList(aktivity);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s – %s (schema %s)", getTyp(), jmeno, email, schema);
     }
 }
