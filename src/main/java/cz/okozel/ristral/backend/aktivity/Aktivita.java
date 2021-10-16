@@ -36,7 +36,8 @@ public class Aktivita {
     @NotNull
     private LocalDateTime casUskutecneni;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn
     @NotNull
     private Uzivatel akter;
 

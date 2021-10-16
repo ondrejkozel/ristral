@@ -48,8 +48,8 @@ public abstract class Uzivatel {
     @JsonIgnore
     private String heslo;
 
-    @ManyToOne()
-    @JoinColumn()
+    @ManyToOne
+    @JoinColumn
     @NotNull
     private Schema schema;
 
