@@ -1,5 +1,6 @@
 package cz.okozel.ristral.backend.schema;
 
+import cz.okozel.ristral.backend.AbstractEntity;
 import cz.okozel.ristral.backend.uzivatele.Uzivatel;
 
 import javax.persistence.*;
@@ -11,11 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "schemata")
-public class Schema {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+public class Schema extends AbstractEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -35,10 +32,6 @@ public class Schema {
         this.typSchematu = typSchematu;
         this.nazev = nazev;
         this.uzivatele = new HashSet<>();
-    }
-
-    public Long getId() {
-        return Id;
     }
 
     public TypSchematu getTypSchematu() {

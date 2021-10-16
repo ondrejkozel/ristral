@@ -1,5 +1,6 @@
 package cz.okozel.ristral.backend.aktivity;
 
+import cz.okozel.ristral.backend.AbstractEntity;
 import cz.okozel.ristral.backend.uzivatele.Uzivatel;
 
 import javax.persistence.*;
@@ -13,14 +14,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "aktivity")
-public class Aktivita {
-
-    /**
-     * identifikátor aktivity
-     */
-    @Id
-    @GeneratedValue()
-    private Long id;
+public class Aktivita extends AbstractEntity {
 
     @Enumerated(value = EnumType.STRING)
     private TypAktivity typ;
@@ -49,10 +43,6 @@ public class Aktivita {
         this.popis = popis;
         this.casUskutecneni = casUskutecneni;
         this.akter = akter;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public TypAktivity getTyp() {

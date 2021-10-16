@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.okozel.ristral.backend.AbstractEntity;
 import cz.okozel.ristral.backend.aktivity.Aktivita;
 import cz.okozel.ristral.backend.schema.Schema;
 
@@ -20,14 +21,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel {
-
-    /**
-     * identifikátor uživatele
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public abstract class Uzivatel extends AbstractEntity {
 
     /**
      * jméno uživatele
@@ -76,10 +70,6 @@ public abstract class Uzivatel {
         this.heslo = heslo;
         this.schema = schema;
         this.aktivity = new ArrayList<>();
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getJmeno() {
