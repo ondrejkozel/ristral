@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.aktivity;
 
-import cz.okozel.ristral.backend.AbstractEntity;
+import cz.okozel.ristral.backend.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.schema.Schema;
 import cz.okozel.ristral.backend.uzivatele.Uzivatel;
 
 import javax.persistence.*;
@@ -14,9 +15,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "aktivity")
-public class Aktivita extends AbstractEntity {
+public class Aktivita extends AbstractSchemaEntity {
 
     @Enumerated(value = EnumType.STRING)
+    @NotNull
     private TypAktivity typ;
 
     @Size(max = 35)
@@ -37,7 +39,17 @@ public class Aktivita extends AbstractEntity {
 
     public Aktivita() {}
 
+    public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter, Schema schema) {
+        super(schema);
+        this.typ = typ;
+        this.titulek = titulek;
+        this.popis = popis;
+        this.casUskutecneni = casUskutecneni;
+        this.akter = akter;
+    }
+
     public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter) {
+        super(akter == null ? null : akter.getSchema());
         this.typ = typ;
         this.titulek = titulek;
         this.popis = popis;

@@ -1,7 +1,7 @@
 package cz.okozel.ristral.backend.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.okozel.ristral.backend.AbstractEntity;
+import cz.okozel.ristral.backend.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.aktivity.Aktivita;
 import cz.okozel.ristral.backend.schema.Schema;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel extends AbstractEntity {
+public abstract class Uzivatel extends AbstractSchemaEntity {
 
     /**
      * jméno uživatele
@@ -44,11 +44,6 @@ public abstract class Uzivatel extends AbstractEntity {
     @JsonIgnore
     private String heslo;
 
-    @ManyToOne
-    @JoinColumn
-    @NotNull
-    private Schema schema;
-
     @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Aktivita> aktivity;
 
@@ -65,10 +60,10 @@ public abstract class Uzivatel extends AbstractEntity {
      * @param schema schéma, ve kterém se má nový uživatel nacházet
      */
     public Uzivatel(String jmeno, String email, String heslo, Schema schema) {
+        super(schema);
         this.jmeno = jmeno;
         this.email = email;
         this.heslo = heslo;
-        this.schema = schema;
         this.aktivity = new ArrayList<>();
     }
 
@@ -92,16 +87,12 @@ public abstract class Uzivatel extends AbstractEntity {
         return TypUzivatele.getTypUzivatele(this.getClass());
     }
 
-    public Schema getSchema() {
-        return schema;
-    }
-
     public List<Aktivita> getAktivity() {
         return Collections.unmodifiableList(aktivity);
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s – %s (schema %s)", getTyp(), jmeno, email, schema);
+        return String.format("%s %s – %s (schema %s)", getTyp(), jmeno, email, getSchema());
     }
 }
