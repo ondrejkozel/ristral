@@ -1,17 +1,23 @@
 package cz.okozel.ristral.backend.service;
 
+import cz.okozel.ristral.backend.AbstractEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public abstract class GenerickaService<T, R extends JpaRepository<T, Long>> {
+public abstract class GenerickaService<T extends AbstractEntity, R extends JpaRepository<T, Long>> {
     private final R hlavniRepositar;
 
     public GenerickaService(R hlavniRepositar) {
         this.hlavniRepositar = hlavniRepositar;
     }
 
-    public List<T> getAll() {
+    public Optional<T> find(long id) {
+        return hlavniRepositar.findById(id);
+    }
+
+    public List<T> findAll() {
         return hlavniRepositar.findAll();
     }
 

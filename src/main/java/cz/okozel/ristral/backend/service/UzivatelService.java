@@ -42,8 +42,8 @@ public class UzivatelService extends GenerickaService<Uzivatel, UzivatelReposito
         }
         if (aktivitaRepository.count() == 0) {
             aktivitaRepository.saveAll(List.of(
-                    new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), getAll().get(0)),
-                    new Aktivita(TypAktivity.JINE, "Odeslání zprávy", "Byla odeslána zpráva administrátorovi.", LocalDateTime.now(), getAll().get(0))
+                    new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), findAll().get(0)),
+                    new Aktivita(TypAktivity.JINE, "Odeslání zprávy", "Byla odeslána zpráva administrátorovi.", LocalDateTime.now(), findAll().get(0))
             ));
         }
     }
