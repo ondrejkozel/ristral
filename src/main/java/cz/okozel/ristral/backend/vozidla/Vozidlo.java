@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.vozidla;
 
-import cz.okozel.ristral.backend.AbstractEntity;
+import cz.okozel.ristral.backend.entity.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

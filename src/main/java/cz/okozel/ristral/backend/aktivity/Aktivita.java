@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.aktivity;
 
-import cz.okozel.ristral.backend.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.schema.Schema;
 import cz.okozel.ristral.backend.uzivatele.Uzivatel;
 

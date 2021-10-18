@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.repository.generic;
 
-import cz.okozel.ristral.backend.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.schema.Schema;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;

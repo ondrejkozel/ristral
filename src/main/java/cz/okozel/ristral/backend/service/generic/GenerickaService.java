@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.service.generic;
 
-import cz.okozel.ristral.backend.AbstractEntity;
+import cz.okozel.ristral.backend.entity.AbstractEntity;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;
 
 import java.util.List;

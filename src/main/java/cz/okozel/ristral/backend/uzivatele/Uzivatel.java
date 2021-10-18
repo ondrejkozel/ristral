@@ -2,7 +2,7 @@ package cz.okozel.ristral.backend.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.okozel.ristral.backend.aktivity.Aktivita;
-import cz.okozel.ristral.backend.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.schema.Schema;
 
 import javax.persistence.*;

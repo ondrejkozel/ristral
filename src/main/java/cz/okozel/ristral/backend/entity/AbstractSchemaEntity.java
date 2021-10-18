@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend;
+package cz.okozel.ristral.backend.entity;
 
 import cz.okozel.ristral.backend.schema.Schema;
 
