@@ -7,6 +7,7 @@ import cz.okozel.ristral.backend.repository.SchemaRepository;
 import cz.okozel.ristral.backend.repository.UzivatelRepository;
 import cz.okozel.ristral.backend.schema.Schema;
 import cz.okozel.ristral.backend.schema.TypSchematu;
+import cz.okozel.ristral.backend.service.generic.GenerickaSchemaService;
 import cz.okozel.ristral.backend.uzivatele.*;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class UzivatelService extends GenerickaService<Uzivatel, UzivatelRepository> {
+public class UzivatelService extends GenerickaSchemaService<Uzivatel, UzivatelRepository> {
     private SchemaRepository schemaRepository;
     private AktivitaRepository aktivitaRepository;
 

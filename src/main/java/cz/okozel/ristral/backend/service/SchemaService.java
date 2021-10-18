@@ -2,6 +2,7 @@ package cz.okozel.ristral.backend.service;
 
 import cz.okozel.ristral.backend.repository.SchemaRepository;
 import cz.okozel.ristral.backend.schema.Schema;
+import cz.okozel.ristral.backend.service.generic.GenerickaService;
 import org.springframework.stereotype.Service;
 
 @Service
