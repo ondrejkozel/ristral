@@ -27,7 +27,7 @@ public class Vozidlo extends AbstractSchemaEntity {
      * maximální počet pasažérů
      */
     @Size(min = 1)
-    private Integer kapacita;
+    private Integer obsaditelnost;
 
     @ManyToOne()
     @JoinColumn()
@@ -36,11 +36,11 @@ public class Vozidlo extends AbstractSchemaEntity {
 
     public Vozidlo() {}
 
-    public Vozidlo(String nazev, String popis, Integer kapacita, TypVozidla typ, Schema schema) {
+    public Vozidlo(String nazev, String popis, Integer obsaditelnost, TypVozidla typ, Schema schema) {
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
-        this.kapacita = kapacita;
+        this.obsaditelnost = obsaditelnost;
         this.typ = typ;
     }
 
@@ -52,8 +52,8 @@ public class Vozidlo extends AbstractSchemaEntity {
         return popis;
     }
 
-    public Integer getKapacita() {
-        return kapacita;
+    public Integer getObsaditelnost() {
+        return obsaditelnost;
     }
 
     public TypVozidla getTyp() {
