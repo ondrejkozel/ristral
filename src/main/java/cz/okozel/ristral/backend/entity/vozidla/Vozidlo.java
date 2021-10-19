@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.vozidla;
+package cz.okozel.ristral.backend.entity.vozidla;
 
 import cz.okozel.ristral.backend.entity.AbstractEntity;
 

@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.aktivity;
+package cz.okozel.ristral.backend.entity.aktivity;
 
 public enum TypAktivity {
     VYTVORENI,

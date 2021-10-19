@@ -1,14 +1,14 @@
 package cz.okozel.ristral.backend.service;
 
-import cz.okozel.ristral.backend.aktivity.Aktivita;
-import cz.okozel.ristral.backend.aktivity.TypAktivity;
+import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
+import cz.okozel.ristral.backend.entity.aktivity.TypAktivity;
 import cz.okozel.ristral.backend.repository.AktivitaRepository;
 import cz.okozel.ristral.backend.repository.SchemaRepository;
 import cz.okozel.ristral.backend.repository.UzivatelRepository;
-import cz.okozel.ristral.backend.schema.Schema;
-import cz.okozel.ristral.backend.schema.TypSchematu;
+import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.schema.TypSchematu;
 import cz.okozel.ristral.backend.service.generic.GenerickaSchemaService;
-import cz.okozel.ristral.backend.uzivatele.*;
+import cz.okozel.ristral.backend.entity.uzivatele.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

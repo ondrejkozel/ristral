@@ -1,9 +1,9 @@
-package cz.okozel.ristral.backend.uzivatele;
+package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.okozel.ristral.backend.aktivity.Aktivita;
+import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.schema.Schema;
+import cz.okozel.ristral.backend.entity.schema.Schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

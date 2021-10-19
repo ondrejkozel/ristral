@@ -1,6 +1,6 @@
-package cz.okozel.ristral.backend.uzivatele;
+package cz.okozel.ristral.backend.entity.uzivatele;
 
-import cz.okozel.ristral.backend.schema.Schema;
+import cz.okozel.ristral.backend.entity.schema.Schema;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

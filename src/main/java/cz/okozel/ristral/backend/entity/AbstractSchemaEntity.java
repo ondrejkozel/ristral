@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.entity;
 
-import cz.okozel.ristral.backend.schema.Schema;
+import cz.okozel.ristral.backend.entity.schema.Schema;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

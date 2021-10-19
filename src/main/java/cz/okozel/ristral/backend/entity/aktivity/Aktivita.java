@@ -1,8 +1,8 @@
-package cz.okozel.ristral.backend.aktivity;
+package cz.okozel.ristral.backend.entity.aktivity;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.schema.Schema;
-import cz.okozel.ristral.backend.uzivatele.Uzivatel;
+import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.uzivatele;
+package cz.okozel.ristral.backend.entity.uzivatele;
 
 public enum TypUzivatele {
     UZIVATEL_ORG("uživatel organizace", UzivatelOrg.class),
