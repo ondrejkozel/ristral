@@ -2,13 +2,16 @@ package cz.okozel.ristral.backend.service;
 
 import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.aktivity.TypAktivity;
-import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
-import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
-import cz.okozel.ristral.backend.repository.*;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.schema.TypSchematu;
-import cz.okozel.ristral.backend.service.generic.GenerickaSchemaService;
 import cz.okozel.ristral.backend.entity.uzivatele.*;
+import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
+import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
+import cz.okozel.ristral.backend.repository.AktivitaRepository;
+import cz.okozel.ristral.backend.repository.SchemaRepository;
+import cz.okozel.ristral.backend.repository.UzivatelRepository;
+import cz.okozel.ristral.backend.repository.VozidloRepository;
+import cz.okozel.ristral.backend.service.generic.GenerickaSchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +28,6 @@ public class UzivatelService extends GenerickaSchemaService<Uzivatel, UzivatelRe
     private AktivitaRepository aktivitaRepository;
     @Autowired
     private VozidloRepository vozidloRepository;
-    @Autowired
-    private TypVozidlaRepository typVozidlaRepository;
 
     public UzivatelService(UzivatelRepository uzivatelRepository) {
         super(uzivatelRepository);
@@ -54,7 +55,6 @@ public class UzivatelService extends GenerickaSchemaService<Uzivatel, UzivatelRe
         if (vozidloRepository.count() == 0) {
             TypVozidla tramvaj = new TypVozidla("tramvaj", organizace);
             TypVozidla autobus = new TypVozidla("autobus", organizace);
-            typVozidlaRepository.saveAll(List.of(tramvaj, autobus));
             vozidloRepository.saveAll(List.of(
                     new Vozidlo("Tatra T3", "Délka: 15104 [mm]\n" +
                             "Šířka: 2500 [mm]\n" +
@@ -65,7 +65,12 @@ public class UzivatelService extends GenerickaSchemaService<Uzivatel, UzivatelRe
                             "Šířka: 2550 [mm]\n" +
                             "Hmotnost: 16900 [kg]\n" +
                             "Výkon: 231 [kW]\n" +
-                            "Rychlost: 80 [km/hod]", 165, autobus, organizace)
+                            "Rychlost: 80 [km/hod]", 165, autobus, organizace),
+                    new Vozidlo("Škoda 13T", "Délka: 31060 [mm]\n" +
+                            "Šířka: 2460 [mm]\n" +
+                            "Hmotnost: 41200 [kg]\n" +
+                            "Výkon: 6x90 [kW]\n" +
+                            "Rychlost: 70 [km/hod]", 204, tramvaj, organizace)
             ));
         }
     }
