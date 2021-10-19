@@ -3,14 +3,17 @@ package cz.okozel.ristral.backend.entity.vozidla;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "typy_vozidel")
 public class TypVozidla extends AbstractSchemaEntity {
 
     private String nazev;
+
+    @OneToMany(mappedBy = "typ", cascade = CascadeType.REMOVE)
+    private Set<Vozidlo> vozidla;
 
     public TypVozidla() {}
 
