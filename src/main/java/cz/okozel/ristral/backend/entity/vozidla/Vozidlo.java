@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.entity.vozidla;
 
-import cz.okozel.ristral.backend.entity.AbstractEntity;
+import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "vozidla")
-public class Vozidlo extends AbstractEntity {
+public class Vozidlo extends AbstractSchemaEntity {
 
     @Size(max = 50)
     @NotBlank
