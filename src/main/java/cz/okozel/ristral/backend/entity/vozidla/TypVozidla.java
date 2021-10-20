@@ -4,6 +4,7 @@ import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,7 @@ public class TypVozidla extends AbstractSchemaEntity {
     public TypVozidla(String nazev, Schema schema) {
         super(schema);
         this.nazev = nazev;
+        vozidla = new HashSet<>();
     }
 
     public String getNazev() {
