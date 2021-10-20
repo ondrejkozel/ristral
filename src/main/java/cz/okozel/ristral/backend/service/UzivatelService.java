@@ -7,17 +7,20 @@ import cz.okozel.ristral.backend.entity.schema.TypSchematu;
 import cz.okozel.ristral.backend.entity.uzivatele.*;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
 import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
-import cz.okozel.ristral.backend.repository.AktivitaRepository;
-import cz.okozel.ristral.backend.repository.SchemaRepository;
-import cz.okozel.ristral.backend.repository.UzivatelRepository;
-import cz.okozel.ristral.backend.repository.VozidloRepository;
+import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
+import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
+import cz.okozel.ristral.backend.repository.*;
 import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepository> {
@@ -28,6 +31,8 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
     private AktivitaRepository aktivitaRepository;
     @Autowired
     private VozidloRepository vozidloRepository;
+    @Autowired
+    private ZastavkaRepository zastavkaRepository;
 
     public UzivatelService(UzivatelRepository uzivatelRepository) {
         super(uzivatelRepository);
@@ -72,6 +77,17 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
                             "Výkon: 6x90 [kW]\n" +
                             "Rychlost: 70 [km/hod]", 204, tramvaj, organizace)
             ));
+        }
+        if (zastavkaRepository.count() == 0) {
+            final RezimObsluhy naZnameniOVikendu = new RezimObsluhy("na znamení o víkendu", "", organizace);
+            Set<DayOfWeek> dny = new HashSet<>();
+            dny.add(DayOfWeek.SATURDAY);
+            dny.add(DayOfWeek.SUNDAY);
+            naZnameniOVikendu.addZnameni(new RezimObsluhy.Znameni(LocalTime.of(18, 0), LocalTime.of(6,0), dny, organizace));
+            zastavkaRepository.saveAll(List.of(
+                    new Zastavka("Ríšova", "", naZnameniOVikendu, organizace)
+            ));
+            // TODO: 20.10.2021 Proč je naZnameniOVikendu v tabulce null?
         }
     }
 }
