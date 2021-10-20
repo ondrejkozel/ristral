@@ -16,6 +16,6 @@ public abstract class GenerickaSchemaService<T extends AbstractSchemaEntity, R e
     }
 
     public List<T> findAllBySchema(Schema schema) {
-        return hlavniRepositar.findAllBySchema(schema);
+        return hlavniRepositar.findAllBySchemaEquals(schema);
     }
 }
