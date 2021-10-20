@@ -18,4 +18,8 @@ public abstract class GenerickaSchemaService<T extends AbstractSchemaEntity, R e
     public List<T> findAll(Schema schema) {
         return hlavniRepositar.findAllBySchemaEquals(schema);
     }
+
+    public long count(Schema schema) {
+        return hlavniRepositar.countBySchemaEquals(schema);
+    }
 }
