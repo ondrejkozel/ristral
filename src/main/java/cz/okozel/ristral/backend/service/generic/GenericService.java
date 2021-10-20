@@ -9,10 +9,10 @@ import java.util.Optional;
 /**
  * generická služba pro AbstractEntity
  */
-public abstract class GenerickaService<T extends AbstractEntity, R extends GenericRepository<T>> {
+public abstract class GenericService<T extends AbstractEntity, R extends GenericRepository<T>> {
     protected final R hlavniRepositar;
 
-    public GenerickaService(R hlavniRepositar) {
+    public GenericService(R hlavniRepositar) {
         this.hlavniRepositar = hlavniRepositar;
     }
 

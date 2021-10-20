@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * generická služba pro AbstractSchemaEntity
  */
-public abstract class GenerickaSchemaService<T extends AbstractSchemaEntity, R extends GenericSchemaRepository<T>> extends GenerickaService<T, R> {
-    public GenerickaSchemaService(R hlavniRepositar) {
+public abstract class GenericSchemaService<T extends AbstractSchemaEntity, R extends GenericSchemaRepository<T>> extends GenericService<T, R> {
+    public GenericSchemaService(R hlavniRepositar) {
         super(hlavniRepositar);
     }
 

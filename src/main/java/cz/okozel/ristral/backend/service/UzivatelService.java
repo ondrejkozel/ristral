@@ -11,7 +11,7 @@ import cz.okozel.ristral.backend.repository.AktivitaRepository;
 import cz.okozel.ristral.backend.repository.SchemaRepository;
 import cz.okozel.ristral.backend.repository.UzivatelRepository;
 import cz.okozel.ristral.backend.repository.VozidloRepository;
-import cz.okozel.ristral.backend.service.generic.GenerickaSchemaService;
+import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class UzivatelService extends GenerickaSchemaService<Uzivatel, UzivatelRepository> {
+public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepository> {
 
     @Autowired
     private SchemaRepository schemaRepository;
