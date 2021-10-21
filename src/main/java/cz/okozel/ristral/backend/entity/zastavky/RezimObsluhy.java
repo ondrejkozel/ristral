@@ -32,7 +32,7 @@ public class RezimObsluhy extends AbstractSchemaEntity {
     private Set<Zastavka> zastavky;
 
     @OneToMany(mappedBy = "rezimObsluhy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Znameni> znameni;
+    private Set<PeriodaNaZnameni> periodyNaZnameni;
 
     public RezimObsluhy() {}
 
@@ -41,7 +41,7 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         this.nazev = nazev;
         this.popis = popis;
         this.zastavky = new HashSet<>();
-        this.znameni = new HashSet<>();
+        this.periodyNaZnameni = new HashSet<>();
     }
 
     public String getNazev() {
@@ -52,21 +52,21 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         return popis;
     }
 
-    public boolean addZnameni(Znameni znameni) {
-        return this.znameni.add(znameni);
+    public boolean addZnameni(PeriodaNaZnameni periodaNaZnameni) {
+        return this.periodyNaZnameni.add(periodaNaZnameni);
     }
 
-    public boolean removeZnameni(Znameni znameni) {
-        return this.znameni.remove(znameni);
+    public boolean removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
+        return this.periodyNaZnameni.remove(periodaNaZnameni);
     }
 
     public void clearZnameni() {
-        znameni.clear();
+        periodyNaZnameni.clear();
     }
 
     @Entity
-    @Table(name = "znameni")
-    public static class Znameni extends AbstractSchemaEntity {
+    @Table(name = "periody_na_znameni")
+    public static class PeriodaNaZnameni extends AbstractSchemaEntity {
 
         @ManyToOne(cascade = CascadeType.ALL)
         @JoinColumn
@@ -79,17 +79,17 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         @ElementCollection(fetch = FetchType.EAGER)
         @Enumerated(EnumType.STRING)
         @CollectionTable(name = "dny_na_znameni",
-                joinColumns = @JoinColumn(name = "znameni_id"))
+                joinColumns = @JoinColumn(name = "perioda_na_znameni_id"))
         @Column(name = "dny_na_znameni")
-        private Set<DayOfWeek> naZnameniDny;
+        private Set<DayOfWeek> dnyNaZnameni;
 
-        public Znameni() {}
+        public PeriodaNaZnameni() {}
 
-        public Znameni(LocalTime naZnameniOd, LocalTime naZnameniDo, Set<DayOfWeek> naZnameniDny, Schema schema) {
+        public PeriodaNaZnameni(LocalTime naZnameniOd, LocalTime naZnameniDo, Set<DayOfWeek> dnyNaZnameni, Schema schema) {
             super(schema);
             this.naZnameniOd = naZnameniOd;
             this.naZnameniDo = naZnameniDo;
-            this.naZnameniDny = naZnameniDny;
+            this.dnyNaZnameni = dnyNaZnameni;
         }
 
         public LocalTime getNaZnameniOd() {
@@ -100,8 +100,8 @@ public class RezimObsluhy extends AbstractSchemaEntity {
             return naZnameniDo;
         }
 
-        public Set<DayOfWeek> getNaZnameniDny() {
-            return naZnameniDny;
+        public Set<DayOfWeek> getDnyNaZnameni() {
+            return dnyNaZnameni;
         }
 
     }

@@ -83,7 +83,7 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
             Set<DayOfWeek> dny = new HashSet<>();
             dny.add(DayOfWeek.SATURDAY);
             dny.add(DayOfWeek.SUNDAY);
-            naZnameniOVikendu.addZnameni(new RezimObsluhy.Znameni(LocalTime.of(18, 0), LocalTime.of(6,0), dny, organizace));
+            naZnameniOVikendu.addZnameni(new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6,0), dny, organizace));
             zastavkaRepository.saveAll(List.of(
                     new Zastavka("Ríšova", "", naZnameniOVikendu, organizace)
             ));
