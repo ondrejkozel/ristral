@@ -56,6 +56,9 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         return this.periodyNaZnameni.add(periodaNaZnameni);
     }
 
+    /**
+     * funkce vytvoří garbage
+     */
     public boolean removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
         return this.periodyNaZnameni.remove(periodaNaZnameni);
     }
@@ -68,7 +71,7 @@ public class RezimObsluhy extends AbstractSchemaEntity {
     @Table(name = "periody_na_znameni")
     public static class PeriodaNaZnameni extends AbstractSchemaEntity {
 
-        @ManyToOne(cascade = CascadeType.ALL)
+        @ManyToOne
         @JoinColumn
         private RezimObsluhy rezimObsluhy;
 

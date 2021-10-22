@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.okozel.ristral.backend.entity.ObsahujeObousmernyVztah;
 import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
@@ -21,7 +22,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel extends AbstractSchemaEntity {
+public abstract class Uzivatel extends AbstractSchemaEntity implements ObsahujeObousmernyVztah<Aktivita> {
 
     /**
      * jméno uživatele
@@ -89,6 +90,21 @@ public abstract class Uzivatel extends AbstractSchemaEntity {
 
     public List<Aktivita> getAktivity() {
         return Collections.unmodifiableList(aktivity);
+    }
+
+    @Override
+    public boolean overSpojeni(Aktivita objekt) {
+        return aktivity.contains(objekt);
+    }
+
+    @Override
+    public void navazSpojeni(Aktivita objekt) {
+        aktivity.add(objekt);
+    }
+
+    @Override
+    public void rozvazSpojeni(Aktivita objekt) {
+        aktivity.remove(objekt);
     }
 
     @Override

@@ -87,7 +87,6 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
             zastavkaRepository.saveAll(List.of(
                     new Zastavka("Ríšova", "", naZnameniOVikendu, organizace)
             ));
-            // TODO: 20.10.2021 Proč je naZnameniOVikendu v tabulce null?
         }
     }
 }

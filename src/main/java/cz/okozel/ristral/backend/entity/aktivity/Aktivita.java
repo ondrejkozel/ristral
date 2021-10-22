@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.entity.aktivity;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.ObsahujeObousmernyVztah;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "aktivity")
-public class Aktivita extends AbstractSchemaEntity {
+public class Aktivita extends AbstractSchemaEntity implements ObsahujeObousmernyVztah<Uzivatel> {
 
     @Enumerated(value = EnumType.STRING)
     @NotNull
@@ -46,15 +47,11 @@ public class Aktivita extends AbstractSchemaEntity {
         this.popis = popis;
         this.casUskutecneni = casUskutecneni;
         this.akter = akter;
+        akter.overPritomnostSpojeniPripadneVytvor(this);
     }
 
     public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter) {
-        super(akter == null ? null : akter.getSchema());
-        this.typ = typ;
-        this.titulek = titulek;
-        this.popis = popis;
-        this.casUskutecneni = casUskutecneni;
-        this.akter = akter;
+        this(typ, titulek, popis, casUskutecneni, akter, akter != null ? akter.getSchema() : null);
     }
 
     public TypAktivity getTyp() {
@@ -80,5 +77,21 @@ public class Aktivita extends AbstractSchemaEntity {
     @Override
     public String toString() {
         return titulek;
+    }
+
+
+    @Override
+    public boolean overSpojeni(Uzivatel objekt) {
+        return akter.equals(objekt);
+    }
+
+    @Override
+    public void navazSpojeni(Uzivatel objekt) {
+        akter = objekt;
+    }
+
+    @Override
+    public void rozvazSpojeni(Uzivatel objekt) {
+        akter = null;
     }
 }
