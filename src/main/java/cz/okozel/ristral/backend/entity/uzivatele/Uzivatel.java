@@ -93,17 +93,17 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     }
 
     @Override
-    public boolean overSpojeni(Aktivita objekt) {
+    public boolean overSpojeniS(Aktivita objekt) {
         return aktivity.contains(objekt);
     }
 
     @Override
-    public void navazSpojeni(Aktivita objekt) {
+    public void navazSpojeniS(Aktivita objekt) {
         aktivity.add(objekt);
     }
 
     @Override
-    public void rozvazSpojeni(Aktivita objekt) {
+    public void rozvazSpojeniS(Aktivita objekt) {
         aktivity.remove(objekt);
     }
 

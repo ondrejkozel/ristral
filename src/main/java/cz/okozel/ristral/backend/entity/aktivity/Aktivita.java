@@ -81,17 +81,17 @@ public class Aktivita extends AbstractSchemaEntity implements NavazujeObosumerny
 
 
     @Override
-    public boolean overSpojeni(Uzivatel objekt) {
+    public boolean overSpojeniS(Uzivatel objekt) {
         return akter.equals(objekt);
     }
 
     @Override
-    public void navazSpojeni(Uzivatel objekt) {
+    public void navazSpojeniS(Uzivatel objekt) {
         akter = objekt;
     }
 
     @Override
-    public void rozvazSpojeni(Uzivatel objekt) {
+    public void rozvazSpojeniS(Uzivatel objekt) {
         akter = null;
     }
 }
