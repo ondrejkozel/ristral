@@ -46,8 +46,7 @@ public class Aktivita extends AbstractSchemaEntity implements NavazujeObosumerny
         this.titulek = titulek;
         this.popis = popis;
         this.casUskutecneni = casUskutecneni;
-        this.akter = akter;
-        akter.vynutPritomnostSpojeni(this);
+        vynutPritomnostSpojeni(akter);
     }
 
     public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter) {
@@ -79,10 +78,9 @@ public class Aktivita extends AbstractSchemaEntity implements NavazujeObosumerny
         return titulek;
     }
 
-
     @Override
     public boolean overSpojeniS(Uzivatel objekt) {
-        return akter.equals(objekt);
+        return akter != null && akter.equals(objekt);
     }
 
     @Override

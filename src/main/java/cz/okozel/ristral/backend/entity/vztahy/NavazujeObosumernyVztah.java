@@ -4,29 +4,25 @@ package cz.okozel.ristral.backend.entity.vztahy;
  * Třída pro správu bidirectional jpa mapování.
  * @param <T> entita, se kterou je navazován vztah
  */
-public interface NavazujeObosumernyVztah<T extends AbstractEntity> {
+public interface NavazujeObosumernyVztah<T extends NavazujeObosumernyVztah> {
 
     // TODO: 22.10.2021 implementovat všem třídám s obousměrným vztahem toto rozhraní jako u Uzivatel a Aktivita
     /**
      * Ověří přítomnost spojení a případně ho naváže.
      * @param objekt objekt, který má být přítomný ve spojení
-     * @return pokud entita měla navázané spojení s objektem true, jinak naváže spojení a vrátí false
      */
-    default boolean vynutPritomnostSpojeni(T objekt) {
-        if (overSpojeniS(objekt)) return true;
-        navazSpojeniS(objekt);
-        return false;
+    default void vynutPritomnostSpojeni(T objekt) {
+        if (!overSpojeniS(objekt)) navazSpojeniS(objekt);
+        if (!objekt.overSpojeniS(this)) objekt.navazSpojeniS(this);
     }
 
     /**
      * Ověří nepřítomnost spojení a případně ho rozváže.
      * @param objekt objekt, který nemá být přítomný ve spojení
-     * @return pokud entita neměla navázané spojení s objektem true, jinak rozváže spojení a vrátí false
      */
-    default boolean vynutNepritomnostSpojeni(T objekt) {
-        if (!overSpojeniS(objekt)) return true;
-        rozvazSpojeniS(objekt);
-        return false;
+    default void vynutNepritomnostSpojeni(T objekt) {
+        if (overSpojeniS(objekt)) rozvazSpojeniS(objekt);
+        if (objekt.overSpojeniS(this)) objekt.rozvazSpojeniS(this);
     }
 
     boolean overSpojeniS(T objekt);
