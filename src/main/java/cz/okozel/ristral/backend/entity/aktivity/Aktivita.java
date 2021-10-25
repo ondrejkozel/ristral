@@ -1,7 +1,7 @@
 package cz.okozel.ristral.backend.entity.aktivity;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObosumernyVztah;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "aktivity")
-public class Aktivita extends AbstractSchemaEntity implements NavazujeObosumernyVztah<Uzivatel> {
+public class Aktivita extends AbstractSchemaEntity implements NavazujeObousmernyVztah<Uzivatel> {
 
     @Enumerated(value = EnumType.STRING)
     @NotNull

@@ -1,7 +1,7 @@
 package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObosumernyVztah;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeObosumernyVztah<Aktivita> {
+public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeObousmernyVztah<Aktivita> {
 
     /**
      * jméno uživatele
