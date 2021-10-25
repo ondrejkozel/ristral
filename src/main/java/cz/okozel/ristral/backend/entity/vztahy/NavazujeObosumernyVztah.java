@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.entity;
+package cz.okozel.ristral.backend.entity.vztahy;
 
 /**
  * Třída pro správu bidirectional jpa mapování.
