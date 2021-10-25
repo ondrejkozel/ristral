@@ -1,7 +1,7 @@
 package cz.okozel.ristral.backend.entity.aktivity;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.entity.ObsahujeObousmernyVztah;
+import cz.okozel.ristral.backend.entity.NavazujeObosumernyVztah;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "aktivity")
-public class Aktivita extends AbstractSchemaEntity implements ObsahujeObousmernyVztah<Uzivatel> {
+public class Aktivita extends AbstractSchemaEntity implements NavazujeObosumernyVztah<Uzivatel> {
 
     @Enumerated(value = EnumType.STRING)
     @NotNull
@@ -47,7 +47,7 @@ public class Aktivita extends AbstractSchemaEntity implements ObsahujeObousmerny
         this.popis = popis;
         this.casUskutecneni = casUskutecneni;
         this.akter = akter;
-        akter.overPritomnostSpojeniPripadneVytvor(this);
+        akter.vynutPritomnostSpojeni(this);
     }
 
     public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter) {
