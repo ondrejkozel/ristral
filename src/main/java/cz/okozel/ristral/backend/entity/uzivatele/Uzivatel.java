@@ -45,7 +45,7 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     @JsonIgnore
     private String heslo;
 
-    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL)
     private List<Aktivita> aktivity;
 
     /**
