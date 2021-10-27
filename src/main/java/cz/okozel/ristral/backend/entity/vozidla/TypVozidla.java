@@ -2,6 +2,7 @@ package cz.okozel.ristral.backend.entity.vozidla;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "typy_vozidel")
-public class TypVozidla extends AbstractSchemaEntity {
+public class TypVozidla extends AbstractSchemaEntity implements NavazujeObousmernyVztah<Vozidlo> {
 
     private String nazev;
 
@@ -28,4 +29,18 @@ public class TypVozidla extends AbstractSchemaEntity {
         return nazev;
     }
 
+    @Override
+    public boolean overSpojeniS(Vozidlo objekt) {
+        return vozidla.contains(objekt);
+    }
+
+    @Override
+    public void navazSpojeniS(Vozidlo objekt) {
+        vozidla.add(objekt);
+    }
+
+    @Override
+    public void rozvazSpojeniS(Vozidlo objekt) {
+        vozidla.remove(objekt);
+    }
 }

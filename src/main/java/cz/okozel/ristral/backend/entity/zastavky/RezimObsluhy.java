@@ -2,6 +2,8 @@ package cz.okozel.ristral.backend.entity.zastavky;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.vztahy.EntitaNeobsahujeTentoVztahException;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "rezimy_obsluhy")
-public class RezimObsluhy extends AbstractSchemaEntity {
+public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah {
 
     public static RezimObsluhy vytvorRezimBezZnameni(Schema schema) {
         return new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
@@ -52,24 +54,45 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         return popis;
     }
 
-    public boolean addZnameni(PeriodaNaZnameni periodaNaZnameni) {
-        return this.periodyNaZnameni.add(periodaNaZnameni);
+    public void addZnameni(PeriodaNaZnameni periodaNaZnameni) {
+        vynutPritomnostSpojeni(periodaNaZnameni);
     }
 
     /**
      * funkce vytvoří garbage
      */
-    public boolean removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
-        return this.periodyNaZnameni.remove(periodaNaZnameni);
+    public void removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
+        vynutNepritomnostSpojeni(periodaNaZnameni);
     }
 
     public void clearZnameni() {
         periodyNaZnameni.clear();
     }
 
+    @Override
+    public boolean overSpojeniS(NavazujeObousmernyVztah objekt) {
+        if (objekt instanceof Zastavka) return zastavky.contains(objekt);
+        if (objekt instanceof PeriodaNaZnameni) return periodyNaZnameni.contains(objekt);
+        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+    }
+
+    @Override
+    public void navazSpojeniS(NavazujeObousmernyVztah objekt) {
+        if (objekt instanceof Zastavka) zastavky.add((Zastavka) objekt);
+        if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.add((PeriodaNaZnameni) objekt);
+        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+    }
+
+    @Override
+    public void rozvazSpojeniS(NavazujeObousmernyVztah objekt) {
+        if (objekt instanceof Zastavka) zastavky.remove(objekt);
+        if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.remove(objekt);
+        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+    }
+
     @Entity
     @Table(name = "periody_na_znameni")
-    public static class PeriodaNaZnameni extends AbstractSchemaEntity {
+    public static class PeriodaNaZnameni extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy> {
 
         @ManyToOne
         @JoinColumn
@@ -107,6 +130,20 @@ public class RezimObsluhy extends AbstractSchemaEntity {
             return dnyNaZnameni;
         }
 
+        @Override
+        public boolean overSpojeniS(RezimObsluhy objekt) {
+            return rezimObsluhy != null && rezimObsluhy.equals(objekt);
+        }
+
+        @Override
+        public void navazSpojeniS(RezimObsluhy objekt) {
+            rezimObsluhy = objekt;
+        }
+
+        @Override
+        public void rozvazSpojeniS(RezimObsluhy objekt) {
+            rezimObsluhy = null;
+        }
     }
 
 }

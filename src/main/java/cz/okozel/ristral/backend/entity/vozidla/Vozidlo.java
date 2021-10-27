@@ -2,6 +2,7 @@ package cz.okozel.ristral.backend.entity.vozidla;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "vozidla")
-public class Vozidlo extends AbstractSchemaEntity {
+public class Vozidlo extends AbstractSchemaEntity implements NavazujeObousmernyVztah<TypVozidla> {
 
     @Size(max = 50)
     @NotBlank
@@ -38,7 +39,7 @@ public class Vozidlo extends AbstractSchemaEntity {
         this.nazev = nazev;
         this.popis = popis;
         this.obsaditelnost = obsaditelnost;
-        this.typ = typ;
+        vynutPritomnostSpojeni(typ);
     }
 
     public String getNazev() {
@@ -55,5 +56,20 @@ public class Vozidlo extends AbstractSchemaEntity {
 
     public TypVozidla getTyp() {
         return typ;
+    }
+
+    @Override
+    public boolean overSpojeniS(TypVozidla objekt) {
+        return typ != null && typ.equals(objekt);
+    }
+
+    @Override
+    public void navazSpojeniS(TypVozidla objekt) {
+        typ = objekt;
+    }
+
+    @Override
+    public void rozvazSpojeniS(TypVozidla objekt) {
+        typ = null;
     }
 }

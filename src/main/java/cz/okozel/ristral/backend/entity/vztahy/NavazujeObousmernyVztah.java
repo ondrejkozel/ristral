@@ -9,20 +9,24 @@ public interface NavazujeObousmernyVztah<T extends NavazujeObousmernyVztah> {
     // TODO: 22.10.2021 implementovat všem třídám s obousměrným vztahem toto rozhraní jako u Uzivatel a Aktivita
     /**
      * Ověří přítomnost spojení a případně ho naváže.
-     * @param objekt objekt, který má být přítomný ve spojení
+     * @param objekty objekt(y), které mají být přítomny ve spojení
      */
-    default void vynutPritomnostSpojeni(T objekt) {
-        if (!overSpojeniS(objekt)) navazSpojeniS(objekt);
-        if (!objekt.overSpojeniS(this)) objekt.navazSpojeniS(this);
+    default void vynutPritomnostSpojeni(T... objekty) {
+        for (T objekt : objekty) {
+            if (!overSpojeniS(objekt)) navazSpojeniS(objekt);
+            if (!objekt.overSpojeniS(this)) objekt.navazSpojeniS(this);
+        }
     }
 
     /**
      * Ověří nepřítomnost spojení a případně ho rozváže.
-     * @param objekt objekt, který nemá být přítomný ve spojení
+     * @param objekty objekt(y), které nemají být přítomny ve spojení
      */
-    default void vynutNepritomnostSpojeni(T objekt) {
-        if (overSpojeniS(objekt)) rozvazSpojeniS(objekt);
-        if (objekt.overSpojeniS(this)) objekt.rozvazSpojeniS(this);
+    default void vynutNepritomnostSpojeni(T... objekty) {
+        for (T objekt : objekty) {
+            if (overSpojeniS(objekt)) rozvazSpojeniS(objekt);
+            if (objekt.overSpojeniS(this)) objekt.rozvazSpojeniS(this);
+        }
     }
 
     boolean overSpojeniS(T objekt);
