@@ -79,15 +79,15 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     @Override
     public void navazSpojeniS(NavazujeObousmernyVztah objekt) {
         if (objekt instanceof Zastavka) zastavky.add((Zastavka) objekt);
-        if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.add((PeriodaNaZnameni) objekt);
-        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+        else if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.add((PeriodaNaZnameni) objekt);
+        else throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
     }
 
     @Override
     public void rozvazSpojeniS(NavazujeObousmernyVztah objekt) {
         if (objekt instanceof Zastavka) zastavky.remove(objekt);
-        if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.remove(objekt);
-        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+        else if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.remove(objekt);
+        else throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
     }
 
     @Entity
