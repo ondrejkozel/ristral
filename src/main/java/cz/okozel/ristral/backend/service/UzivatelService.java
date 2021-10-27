@@ -43,9 +43,10 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
         Schema organizace = new Schema(TypSchematu.ORGANIZACE, "Dopravní podnik městské části Žebětín");
         Schema osobni = new Schema(TypSchematu.OSOBNI, "Pepa Novák");
         if (schemaRepository.count() == 0) schemaRepository.saveAll(List.of(organizace, osobni));
+        final UzivatelOrg uzivatel1 = new UzivatelOrg("Ondřej Kozel", "ondrakozel@outlook.com", "hovnokleslo", organizace);
         if (count() == 0) {
             saveAll(List.of(
-                    new UzivatelOrg("Ondřej Kozel", "ondrakozel@outlook.com", "hovnokleslo", organizace),
+                    uzivatel1,
                     new AdminOrg("administrátor", "admin@organizace.com", "admin", organizace),
                     new OsobniUzivatel("Os. uživatel", "osobak@email.com", "já tady vůbec nemám co dělat", osobni),
                     new SuperadminOrg("superadmin", "super@organizace.com", "nereknu", organizace)
@@ -53,8 +54,8 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
         }
         if (aktivitaRepository.count() == 0) {
             aktivitaRepository.saveAll(List.of(
-                    new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), findAll().get(0)),
-                    new Aktivita(TypAktivity.JINE, "Odeslání zprávy", "Byla odeslána zpráva administrátorovi.", LocalDateTime.now(), findAll().get(0))
+                    new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), uzivatel1),
+                    new Aktivita(TypAktivity.JINE, "Odeslání zprávy", "Byla odeslána zpráva administrátorovi.", LocalDateTime.now(), uzivatel1)
             ));
         }
         if (vozidloRepository.count() == 0) {
