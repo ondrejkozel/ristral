@@ -16,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "rezimy_obsluhy")
+@SuppressWarnings("rawtypes")
 public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah {
 
     public static RezimObsluhy vytvorRezimBezZnameni(Schema schema) {
@@ -54,6 +55,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         return popis;
     }
 
+    @SuppressWarnings("unchecked")
     public void addZnameni(PeriodaNaZnameni periodaNaZnameni) {
         vynutPritomnostSpojeni(periodaNaZnameni);
     }
@@ -61,6 +63,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     /**
      * funkce vytvoří garbage
      */
+    @SuppressWarnings("unchecked")
     public void removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
         vynutNepritomnostSpojeni(periodaNaZnameni);
     }

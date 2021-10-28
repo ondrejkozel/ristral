@@ -4,6 +4,7 @@ package cz.okozel.ristral.backend.entity.vztahy;
  * Třída pro správu bidirectional jpa mapování.
  * @param <T> entita, se kterou je navazován vztah
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public interface NavazujeObousmernyVztah<T extends NavazujeObousmernyVztah> {
 
     // TODO: 22.10.2021 implementovat všem třídám s obousměrným vztahem toto rozhraní jako u Uzivatel a Aktivita
