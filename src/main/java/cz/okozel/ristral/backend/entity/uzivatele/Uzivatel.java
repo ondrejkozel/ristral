@@ -1,10 +1,10 @@
 package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
-import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
