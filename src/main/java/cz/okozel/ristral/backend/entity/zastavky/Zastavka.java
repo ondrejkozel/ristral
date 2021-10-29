@@ -2,7 +2,6 @@ package cz.okozel.ristral.backend.entity.zastavky;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "zastavky")
-public class Zastavka extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy> {
+public class Zastavka extends AbstractSchemaEntity {
 
     @Size(max = 50)
     @NotBlank
@@ -31,7 +30,11 @@ public class Zastavka extends AbstractSchemaEntity implements NavazujeObousmerny
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
-        vynutPritomnostSpojeni(rezimObsluhy);
+        setRezimObsluhy(rezimObsluhy);
+    }
+
+    public Zastavka(String nazev, Schema schema) {
+        this(nazev, "", null, schema);
     }
 
     public String getNazev() {
@@ -46,18 +49,7 @@ public class Zastavka extends AbstractSchemaEntity implements NavazujeObousmerny
         return rezimObsluhy;
     }
 
-    @Override
-    public boolean overSpojeniS(RezimObsluhy objekt) {
-        return rezimObsluhy != null && rezimObsluhy.equals(objekt);
-    }
-
-    @Override
-    public void navazSpojeniS(RezimObsluhy objekt) {
-        rezimObsluhy = objekt;
-    }
-
-    @Override
-    public void rozvazSpojeniS(RezimObsluhy objekt) {
-        rezimObsluhy = null;
+    public void setRezimObsluhy(RezimObsluhy rezimObsluhy) {
+        this.rezimObsluhy = rezimObsluhy;
     }
 }

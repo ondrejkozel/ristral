@@ -2,7 +2,6 @@ package cz.okozel.ristral.backend.entity.zastavky;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
-import cz.okozel.ristral.backend.entity.vztahy.EntitaNeobsahujeTentoVztahException;
 import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
@@ -16,8 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "rezimy_obsluhy")
-@SuppressWarnings("rawtypes")
-public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah {
+public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy.PeriodaNaZnameni> {
 
     public static RezimObsluhy vytvorRezimBezZnameni(Schema schema) {
         return new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
@@ -31,9 +29,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     @NotNull
     private String popis;
 
-    @OneToMany(mappedBy = "rezimObsluhy")
-    private Set<Zastavka> zastavky;
-
     @OneToMany(mappedBy = "rezimObsluhy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeriodaNaZnameni> periodyNaZnameni;
 
@@ -43,7 +38,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
-        this.zastavky = new HashSet<>();
         this.periodyNaZnameni = new HashSet<>();
     }
 
@@ -55,7 +49,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         return popis;
     }
 
-    @SuppressWarnings("unchecked")
     public void addZnameni(PeriodaNaZnameni periodaNaZnameni) {
         vynutPritomnostSpojeni(periodaNaZnameni);
     }
@@ -63,7 +56,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     /**
      * funkce vytvoří garbage
      */
-    @SuppressWarnings("unchecked")
     public void removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
         vynutNepritomnostSpojeni(periodaNaZnameni);
     }
@@ -73,30 +65,18 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     }
 
     @Override
-    public boolean overSpojeniS(NavazujeObousmernyVztah objekt) {
-        if (objekt instanceof Zastavka) return zastavky.contains(objekt);
-        if (objekt instanceof PeriodaNaZnameni) return periodyNaZnameni.contains(objekt);
-        throwNeobsahujeVztahException(objekt);
-        //kvůli kompilátoru:
-        return false;
+    public boolean overSpojeniS(PeriodaNaZnameni objekt) {
+        return periodyNaZnameni.contains(objekt);
     }
 
     @Override
-    public void navazSpojeniS(NavazujeObousmernyVztah objekt) {
-        if (objekt instanceof Zastavka) zastavky.add((Zastavka) objekt);
-        else if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.add((PeriodaNaZnameni) objekt);
-        else throwNeobsahujeVztahException(objekt);
+    public void navazSpojeniS(PeriodaNaZnameni objekt) {
+        periodyNaZnameni.add((PeriodaNaZnameni) objekt);
     }
 
     @Override
-    public void rozvazSpojeniS(NavazujeObousmernyVztah objekt) {
-        if (objekt instanceof Zastavka) zastavky.remove(objekt);
-        else if (objekt instanceof PeriodaNaZnameni) periodyNaZnameni.remove(objekt);
-        else throwNeobsahujeVztahException(objekt);
-    }
-
-    private void throwNeobsahujeVztahException(NavazujeObousmernyVztah objekt) {
-        throw new EntitaNeobsahujeTentoVztahException(objekt + " není Zastavka nebo PeriodaNaZnameni");
+    public void rozvazSpojeniS(PeriodaNaZnameni objekt) {
+        periodyNaZnameni.remove(objekt);
     }
 
     @Entity
