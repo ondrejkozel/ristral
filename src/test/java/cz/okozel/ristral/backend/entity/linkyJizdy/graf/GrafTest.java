@@ -14,16 +14,6 @@ class GrafTest {
         graf = new Graf<>(0);
     }
 
-    String grafJakoText(Graf<?, ?> graf) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Vrchol<?, ?> vrchol : graf) {
-            if (stringBuilder.length() != 0) stringBuilder.append(" - ");
-            stringBuilder.append(vrchol.get());
-            if (!vrchol.jeKoncovy()) stringBuilder.append(" - ").append(vrchol.getHranaKDalsimu().getHodnota());
-        }
-        return stringBuilder.toString();
-    }
-
     @Test
     void vychozi() {
         assertThat(graf.getPrvni(), nullValue());
@@ -36,11 +26,11 @@ class GrafTest {
     void vlozNaZacatek() {
         graf.vloz(new Vrchol<>("ahoj"));
         graf.vloz(new Vrchol<>("čau"));
-        assertThat(grafJakoText(graf), equalTo("ahoj - 0 - čau"));
+        assertThat(graf.toString(), equalTo("ahoj - 0 - čau"));
         //
         graf = new Graf<>(237);
         graf.vloz(new Vrchol<>("Danny"));
         graf.vloz(new Vrchol<>("Tonny"));
-        assertThat(grafJakoText(graf), equalTo("Danny - 237 - Tonny"));
+        assertThat(graf.toString(), equalTo("Danny - 237 - Tonny"));
     }
 }

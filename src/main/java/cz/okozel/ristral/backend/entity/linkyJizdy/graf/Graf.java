@@ -103,4 +103,15 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
 
         };
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Vrchol<O, H> vrchol : this) {
+            if (stringBuilder.length() != 0) stringBuilder.append(" - ");
+            stringBuilder.append(vrchol.get());
+            if (!vrchol.jeKoncovy()) stringBuilder.append(" - ").append(vrchol.getHranaKDalsimu().getHodnota());
+        }
+        return stringBuilder.toString();
+    }
 }
