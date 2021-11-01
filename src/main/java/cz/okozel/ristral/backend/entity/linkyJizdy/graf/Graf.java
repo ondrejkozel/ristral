@@ -7,10 +7,43 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
 
     private Vrchol<O, H> vychozi;
 
-    // TODO: 30.10.2021 metody vkládání do grafu
+    private H vychoziHodnotaHrany;
+
+    public Graf() {
+    }
+
+    public Graf(H vychoziHodnotaHrany) {
+        this.vychoziHodnotaHrany = vychoziHodnotaHrany;
+    }
 
     public Vrchol<O, H> getPrvni() {
         return vychozi;
+    }
+
+    public void vloz(Vrchol<O, H> vkladanyVrchol) {
+        vloz(vychoziHodnotaHrany,vkladanyVrchol);
+    }
+
+    public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
+        Iterator<Vrchol<O, H>> iterator = this.iterator();
+        Vrchol<O, H> posledniVrchol = null;
+        while (iterator.hasNext()) posledniVrchol = iterator.next();
+        if (posledniVrchol == null) vychozi = vkladanyVrchol;
+        else posledniVrchol.setDalsi(hodnotaHrany, vkladanyVrchol);
+    }
+
+    public void vloz(Vrchol<O, H> zaKtery, Vrchol<O, H> vkladanyVrchol) {
+        vloz(zaKtery, vychoziHodnotaHrany, vkladanyVrchol);
+    }
+
+    public void vloz(Vrchol<O, H> zaKtery, H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
+        if (zaKtery.jeKoncovy()) zaKtery.setDalsi(hodnotaHrany, vkladanyVrchol);
+        else {
+            Hrana<O, H> hrana = zaKtery.getHranaKDalsimu();
+            Vrchol<O, H> puvodniCil = hrana.getCilovyVrchol();
+            hrana.setCilovyVrchol(vkladanyVrchol);
+            vkladanyVrchol.getKoncovy().setDalsi(hodnotaHrany, puvodniCil);
+        }
     }
 
     public boolean smaz(Vrchol<O, H> vrcholKeSmazani) {
@@ -25,6 +58,9 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return false;
     }
 
+    /**
+     * bude vůbec potřeba metoda pro smazání podle indexu?
+     */
     public boolean smaz(int index) {
         Vrchol<O, H> predchozi = null;
         for (Vrchol<O, H> aktualni : this) {

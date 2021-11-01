@@ -22,12 +22,12 @@ public class Vrchol<O, H> {
         return hranaKDalsimu == null;
     }
 
-    public void setDalsi(H hodnotaHranyKNovemuVrcholu, O objektNovehoVrcholu) {
-        setDalsi(hodnotaHranyKNovemuVrcholu, new Vrchol<>(objektNovehoVrcholu));
-    }
-
-    public void setDalsi(H hodnotaHranyKNovemuVrcholu, Vrchol<O, H> pridavanyVrchol) {
-        this.hranaKDalsimu = new Hrana<>(hodnotaHranyKNovemuVrcholu, pridavanyVrchol);
+    protected void setDalsi(H hodnotaHranyKNovemuVrcholu, Vrchol<O, H> pridavanyVrchol) {
+        if (jeKoncovy()) this.hranaKDalsimu = new Hrana<>(hodnotaHranyKNovemuVrcholu, pridavanyVrchol);
+        else {
+            hranaKDalsimu.setHodnota(hodnotaHranyKNovemuVrcholu);
+            hranaKDalsimu.setCilovyVrchol(pridavanyVrchol);
+        }
     }
 
     public Vrchol<O, H> getKoncovy() {
