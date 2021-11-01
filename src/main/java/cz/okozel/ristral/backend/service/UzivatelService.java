@@ -39,7 +39,7 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
     }
 
     @PostConstruct
-    public void populateTestData() {
+    public void populateDemonstrativeData() {
         Schema organizace = new Schema(TypSchematu.ORGANIZACE, "Dopravní podnik městské části Žebětín");
         Schema osobni = new Schema(TypSchematu.OSOBNI, "Pepa Novák");
         if (schemaRepository.count() == 0) schemaRepository.saveAll(List.of(organizace, osobni));
