@@ -13,26 +13,34 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return vychozi;
     }
 
-    public Vrchol<O, H> getPosledni() {
-        if (jePrazdny()) return null;
-        else return vychozi.getKoncovy();
+    public boolean smaz(Vrchol<O, H> vrcholKeSmazani) {
+        Vrchol<O, H> predchozi = null;
+        for (Vrchol<O, H> aktualni : this) {
+            if (vrcholKeSmazani.equals(aktualni)) {
+                smazTento(predchozi, aktualni);
+                return true;
+            }
+            predchozi = aktualni;
+        }
+        return false;
     }
 
-    public void smaz(Vrchol<O, H> vrcholKeSmazani) {
-        Vrchol<O, H> predchozi = null, aktualni = vychozi;
-        boolean pokracuj = true;
-        while (pokracuj) {
-            if (aktualni.equals(vrcholKeSmazani)) {
-                if (predchozi == null) vychozi = vychozi.jeKoncovy() ? null : vychozi.getHranaKDalsimu().getCilovyVrchol();
-                else predchozi.getHranaKDalsimu().setCilovyVrchol(aktualni.getHranaKDalsimu().getCilovyVrchol());
-                aktualni.getHranaKDalsimu().setCilovyVrchol(null);
+    public boolean smaz(int index) {
+        Vrchol<O, H> predchozi = null;
+        for (Vrchol<O, H> aktualni : this) {
+            if (index-- == 0) {
+                smazTento(predchozi, aktualni);
+                return true;
             }
-            if (aktualni.jeKoncovy()) pokracuj = false;
-            else {
-                predchozi = aktualni;
-                aktualni = aktualni.getHranaKDalsimu().getCilovyVrchol();
-            }
+            predchozi = aktualni;
         }
+        return false;
+    }
+
+    private void smazTento(Vrchol<O, H> predchozi, Vrchol<O, H> keSmazani) {
+        if (predchozi == null) vychozi = vychozi.jeKoncovy() ? null : vychozi.getHranaKDalsimu().getCilovyVrchol();
+        else predchozi.getHranaKDalsimu().setCilovyVrchol(keSmazani.getHranaKDalsimu().getCilovyVrchol());
+        keSmazani.getHranaKDalsimu().setCilovyVrchol(null);
     }
 
     public boolean jePrazdny() {
