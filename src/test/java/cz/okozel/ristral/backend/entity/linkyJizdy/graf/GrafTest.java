@@ -30,7 +30,8 @@ class GrafTest {
         //
         graf = new Graf<>(237);
         graf.vloz(new Vrchol<>("Danny"));
-        graf.vloz(new Vrchol<>("Tonny"));
-        assertThat(graf.toString(), equalTo("Danny - 237 - Tonny"));
+        graf.vloz(new Vrchol<>("Tony"));
+        graf.vloz(new Vrchol<>("Johny"));
+        assertThat(graf.toString(), equalTo("Danny - 237 - Tony - 237 - Johny"));
     }
 }
