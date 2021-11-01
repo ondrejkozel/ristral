@@ -1,7 +1,9 @@
 package cz.okozel.ristral.backend.entity.linkyJizdy.graf;
 
 
-public class Graf<O, H> {
+import java.util.Iterator;
+
+public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
 
     private Vrchol<O, H> vychozi;
 
@@ -35,5 +37,26 @@ public class Graf<O, H> {
 
     public boolean jePrazdny() {
         return vychozi == null;
+    }
+
+    @Override
+    public Iterator<Vrchol<O, H>> iterator() {
+        return new Iterator<>() {
+
+            private Vrchol<O, H> aktVrchol = vychozi;
+
+            @Override
+            public boolean hasNext() {
+                return aktVrchol != null && !aktVrchol.jeKoncovy();
+            }
+
+            @Override
+            public Vrchol<O, H> next() {
+                Vrchol<O, H> predeslyVrchol = aktVrchol;
+                aktVrchol = aktVrchol.getHranaKDalsimu().getCilovyVrchol();
+                return predeslyVrchol;
+            }
+
+        };
     }
 }
