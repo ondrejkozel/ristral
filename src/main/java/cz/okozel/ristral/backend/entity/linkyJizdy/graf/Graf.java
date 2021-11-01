@@ -91,13 +91,13 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
 
             @Override
             public boolean hasNext() {
-                return aktVrchol != null && !aktVrchol.jeKoncovy();
+                return aktVrchol != null;
             }
 
             @Override
             public Vrchol<O, H> next() {
                 Vrchol<O, H> predeslyVrchol = aktVrchol;
-                aktVrchol = aktVrchol.getHranaKDalsimu().getCilovyVrchol();
+                aktVrchol = aktVrchol.jeKoncovy() ? null : aktVrchol.getHranaKDalsimu().getCilovyVrchol();
                 return predeslyVrchol;
             }
 
