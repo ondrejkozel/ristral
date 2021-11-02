@@ -40,11 +40,11 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         else posledniVrchol.setDalsi(hodnotaHrany, vkladanyVrchol);
     }
 
-    public void vloz(Vrchol<O, H> zaKtery, Vrchol<O, H> vkladanyVrchol) {
-        vloz(zaKtery, vychoziHodnotaHrany, vkladanyVrchol);
+    public void vloz(Vrchol<O, H> vkladanyVrchol, Vrchol<O, H> zaKtery) {
+        vloz(vychoziHodnotaHrany, vkladanyVrchol, zaKtery);
     }
 
-    public void vloz(Vrchol<O, H> zaKtery, H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
+    public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol, Vrchol<O, H> zaKtery) {
         if (zaKtery.jeKoncovy()) zaKtery.setDalsi(hodnotaHrany, vkladanyVrchol);
         else {
             Hrana<O, H> hrana = zaKtery.getHranaKDalsimu();
