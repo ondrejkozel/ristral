@@ -52,6 +52,8 @@ class GrafTest {
     @Test
     void vkladaniNaZacatek() {
         graf.vlozNaZacatek(new Vrchol<>("ahoj"));
+        assertThat(graf.toString(), equalTo("ahoj"));
+        //
         graf.vlozNaZacatek(new Vrchol<>("čau"));
         assertThat(graf.toString(), equalTo("čau - 0 - ahoj"));
         //
@@ -69,7 +71,6 @@ class GrafTest {
         //
         jinyGraf.vlozNaZacatek(null);
         assertThat(jinyGraf.toString(), equalTo("8 - nenastaveno - 3 - nenastaveno - 5"));
-
     }
 
     @Test
@@ -117,7 +118,6 @@ class GrafTest {
         getDemoVrcholyANaplnGraf();
         assertThat(graf.smaz(null), equalTo(false));
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
-        //
     }
 
     private Vrchol<String, Integer>[] getDemoVrcholyANaplnGraf() {
