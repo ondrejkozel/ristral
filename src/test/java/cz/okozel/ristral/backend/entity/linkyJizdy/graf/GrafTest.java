@@ -44,6 +44,9 @@ class GrafTest {
         jinyGraf.vlozNaKonec(new Vrchol<>(3));
         jinyGraf.vlozNaKonec(new Vrchol<>(8));
         assertThat(jinyGraf.toString(), equalTo("5 - nenastaveno - 3 - nenastaveno - 8"));
+        //
+        jinyGraf.vlozNaKonec(null);
+        assertThat(jinyGraf.toString(), equalTo("5 - nenastaveno - 3 - nenastaveno - 8"));
     }
 
     @Test
@@ -63,12 +66,15 @@ class GrafTest {
         jinyGraf.vlozNaZacatek(new Vrchol<>(3));
         jinyGraf.vlozNaZacatek(new Vrchol<>(8));
         assertThat(jinyGraf.toString(), equalTo("8 - nenastaveno - 3 - nenastaveno - 5"));
+        //
+        jinyGraf.vlozNaZacatek(null);
+        assertThat(jinyGraf.toString(), equalTo("8 - nenastaveno - 3 - nenastaveno - 5"));
+
     }
 
     @Test
     void vkladaniJinam() {
-        Vrchol<String, Integer>[] vrcholy = demoVrcholy();
-        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        Vrchol<String, Integer>[] vrcholy = getDemoVrcholyANaplnGraf();
         //
         graf.vloz(new Vrchol<>("dva a půl"), vrcholy[1]);
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
@@ -84,9 +90,37 @@ class GrafTest {
         //
         graf.vlozNaZacatek(new Vrchol<>("jedna polovina"));
         assertThat(graf.toString(), equalTo("jedna polovina - 0 - jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět - 0 - šest"));
+        //
+        graf.vlozNaKonec(null);
+        assertThat(graf.toString(), equalTo("jedna polovina - 0 - jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět - 0 - šest"));
     }
 
-    private Vrchol<String, Integer>[] demoVrcholy() {
+    @Test
+    void mazani() {
+        Vrchol<String, Integer>[] vrcholy = getDemoVrcholyANaplnGraf();
+        //
+        assertThat(graf.smaz(vrcholy[2]), equalTo(true));
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - čtyři - 0 - pět"));
+        //
+        vrcholy = getDemoVrcholyANaplnGraf();
+        assertThat(graf.smaz(vrcholy[0]), equalTo(true));
+        assertThat(graf.toString(), equalTo("dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
+        vrcholy = getDemoVrcholyANaplnGraf();
+        assertThat(graf.smaz(vrcholy[4]), equalTo(true));
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři"));
+        //
+        getDemoVrcholyANaplnGraf();
+        assertThat(graf.smaz(new Vrchol<>("bla bla")), equalTo(false));
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
+        getDemoVrcholyANaplnGraf();
+        assertThat(graf.smaz(null), equalTo(false));
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
+    }
+
+    private Vrchol<String, Integer>[] getDemoVrcholyANaplnGraf() {
         @SuppressWarnings("unchecked")
         Vrchol<String, Integer>[] vrcholy = new Vrchol[] {
                 new Vrchol<>("jedna"),
@@ -95,6 +129,7 @@ class GrafTest {
                 new Vrchol<>("čtyři"),
                 new Vrchol<>("pět")
         };
+        graf.vyprazdni();
         Arrays.stream(vrcholy).forEachOrdered(vrchol -> graf.vlozNaKonec(vrchol));
         return vrcholy;
     }
