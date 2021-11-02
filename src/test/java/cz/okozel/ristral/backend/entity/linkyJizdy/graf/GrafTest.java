@@ -19,12 +19,23 @@ class GrafTest {
     }
 
     @Test
-    void vychozi() {
+    void ziskaniPrvniho() {
         assertThat(graf.getPrvni(), nullValue());
         //
+        getDemoVrcholyANaplnGraf();
         Vrchol<String, Integer> vrchol = new Vrchol<>("já jsem nový výchozí vrchol");
-        graf.vlozNaKonec(vrchol);
+        graf.vlozNaZacatek(vrchol);
         assertThat(graf.getPrvni(), equalTo(vrchol));
+    }
+
+    @Test
+    void ziskaniPosledniho() {
+        assertThat(graf.getPosledni(), nullValue());
+        //
+        getDemoVrcholyANaplnGraf();
+        Vrchol<String, Integer> vrchol = new Vrchol<>("já jsem nový koncový vrchol");
+        graf.vlozNaKonec(vrchol);
+        assertThat(graf.getPosledni(), equalTo(vrchol));
     }
 
     @Test
