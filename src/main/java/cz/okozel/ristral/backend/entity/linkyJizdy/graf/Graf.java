@@ -20,8 +20,16 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return vychozi;
     }
 
+    public void vloz(O objekt) {
+        vloz(new Vrchol<>(objekt));
+    }
+
     public void vloz(Vrchol<O, H> vkladanyVrchol) {
         vloz(vychoziHodnotaHrany,vkladanyVrchol);
+    }
+
+    public void vloz(H hodnotaHrany, O objekt) {
+        vloz(hodnotaHrany, new Vrchol<>(objekt));
     }
 
     public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
