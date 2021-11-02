@@ -20,24 +20,20 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return vychozi;
     }
 
-    public void vloz(O objekt) {
-        vloz(new Vrchol<>(objekt));
+    public void vlozNaZacatek(Vrchol<O, H> vkladanyVrchol) {
+        vlozNaZacatek(vychoziHodnotaHrany, vkladanyVrchol);
     }
 
-    public void vloz(Vrchol<O, H> vkladanyVrchol) {
-        vloz(vychoziHodnotaHrany,vkladanyVrchol);
+    public void vlozNaZacatek(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
+        vloz(hodnotaHrany, vkladanyVrchol, null);
     }
 
-    public void vloz(H hodnotaHrany, O objekt) {
-        vloz(hodnotaHrany, new Vrchol<>(objekt));
+    public void vlozNaKonec(Vrchol<O, H> vkladanyVrchol) {
+        vlozNaKonec(vychoziHodnotaHrany,vkladanyVrchol);
     }
 
-    public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
-        Iterator<Vrchol<O, H>> iterator = this.iterator();
-        Vrchol<O, H> posledniVrchol = null;
-        while (iterator.hasNext()) posledniVrchol = iterator.next();
-        if (posledniVrchol == null) vychozi = vkladanyVrchol;
-        else posledniVrchol.setDalsi(hodnotaHrany, vkladanyVrchol);
+    public void vlozNaKonec(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
+        vloz(hodnotaHrany, vkladanyVrchol, jePrazdny() ? null : vychozi.getKoncovy());
     }
 
     public void vloz(Vrchol<O, H> vkladanyVrchol, Vrchol<O, H> zaKtery) {
@@ -45,7 +41,11 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
     }
 
     public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol, Vrchol<O, H> zaKtery) {
-        if (zaKtery.jeKoncovy()) zaKtery.setDalsi(hodnotaHrany, vkladanyVrchol);
+        if (zaKtery == null) {
+            if (!jePrazdny()) vkladanyVrchol.getKoncovy().setDalsi(hodnotaHrany, vychozi);
+            vychozi = vkladanyVrchol;
+        }
+        else if (zaKtery.jeKoncovy()) zaKtery.setDalsi(hodnotaHrany, vkladanyVrchol);
         else {
             Hrana<O, H> hrana = zaKtery.getHranaKDalsimu();
             Vrchol<O, H> puvodniCil = hrana.getCilovyVrchol();
