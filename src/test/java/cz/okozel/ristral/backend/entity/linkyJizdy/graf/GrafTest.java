@@ -45,4 +45,24 @@ class GrafTest {
         jinyGraf.vloz(new Vrchol<>(8));
         assertThat(jinyGraf.toString(), equalTo("5 - nenastaveno - 3 - nenastaveno - 8"));
     }
+
+    @Test
+    void vkladaniJinam() {
+        @SuppressWarnings("unchecked")
+        Vrchol<String, Integer>[] vrcholy = new Vrchol[] {
+                new Vrchol<>("jedna"),
+                new Vrchol<>("dva"),
+                new Vrchol<>("tři"),
+                new Vrchol<>("čtyři"),
+                new Vrchol<>("pět")
+        };
+        Arrays.stream(vrcholy).forEachOrdered(vrchol -> graf.vloz(vrchol));
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        graf.vloz(new Vrchol<>("dva a půl"), vrcholy[1]);
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
+        graf.vloz(new Vrchol<>("jedna a čtvrt"), vrcholy[0]);
+        assertThat(graf.toString(), equalTo("jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
+        graf.vloz(new Vrchol<>("šest"), vrcholy[4]);
+        assertThat(graf.toString(), equalTo("jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět - 0 - šest"));
+    }
 }
