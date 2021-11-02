@@ -66,21 +66,6 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return false;
     }
 
-    /**
-     * bude vůbec potřeba metoda pro smazání podle indexu?
-     */
-    public boolean smaz(int index) {
-        Vrchol<O, H> predchozi = null;
-        for (Vrchol<O, H> aktualni : this) {
-            if (index-- == 0) {
-                smazTento(predchozi, aktualni);
-                return true;
-            }
-            predchozi = aktualni;
-        }
-        return false;
-    }
-
     private void smazTento(Vrchol<O, H> predchozi, Vrchol<O, H> keSmazani) {
         if (predchozi == null) vychozi = vychozi.jeKoncovy() ? null : vychozi.getHranaKDalsimu().getCilovyVrchol();
         else predchozi.getHranaKDalsimu().setCilovyVrchol(keSmazani.getHranaKDalsimu().getCilovyVrchol());
