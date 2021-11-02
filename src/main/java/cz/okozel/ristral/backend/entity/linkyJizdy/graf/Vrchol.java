@@ -30,6 +30,13 @@ public class Vrchol<O, H> {
         }
     }
 
+    protected void odstranDalsi() {
+        if (!jeKoncovy()) {
+            hranaKDalsimu.setCilovyVrchol(null);
+            hranaKDalsimu = null;
+        }
+    }
+
     public Vrchol<O, H> getKoncovy() {
         return jeKoncovy() ? this : hranaKDalsimu.getCilovyVrchol().getKoncovy();
     }
