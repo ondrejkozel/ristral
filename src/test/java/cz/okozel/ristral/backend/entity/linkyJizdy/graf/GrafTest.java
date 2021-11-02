@@ -21,6 +21,7 @@ class GrafTest {
     @Test
     void vychozi() {
         assertThat(graf.getPrvni(), nullValue());
+        //
         Vrchol<String, Integer> vrchol = new Vrchol<>("já jsem nový výchozí vrchol");
         graf.vlozNaKonec(vrchol);
         assertThat(graf.getPrvni(), equalTo(vrchol));
@@ -68,14 +69,19 @@ class GrafTest {
     void vkladaniJinam() {
         Vrchol<String, Integer>[] vrcholy = demoVrcholy();
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
         graf.vloz(new Vrchol<>("dva a půl"), vrcholy[1]);
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
         graf.vloz(new Vrchol<>("číslo"), new Vrchol<>("nevím"));
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
         graf.vloz(new Vrchol<>("jedna a čtvrt"), vrcholy[0]);
         assertThat(graf.toString(), equalTo("jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
         graf.vloz(new Vrchol<>("šest"), vrcholy[4]);
         assertThat(graf.toString(), equalTo("jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět - 0 - šest"));
+        //
         graf.vlozNaZacatek(new Vrchol<>("jedna polovina"));
         assertThat(graf.toString(), equalTo("jedna polovina - 0 - jedna - 0 - jedna a čtvrt - 0 - dva - 0 - dva a půl - 0 - tři - 0 - čtyři - 0 - pět - 0 - šest"));
     }
