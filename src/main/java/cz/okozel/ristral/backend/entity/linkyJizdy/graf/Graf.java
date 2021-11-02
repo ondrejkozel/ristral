@@ -29,7 +29,7 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
     }
 
     public void vlozNaKonec(Vrchol<O, H> vkladanyVrchol) {
-        vlozNaKonec(vychoziHodnotaHrany,vkladanyVrchol);
+        vlozNaKonec(vychoziHodnotaHrany, vkladanyVrchol);
     }
 
     public void vlozNaKonec(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol) {
@@ -41,23 +41,24 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
     }
 
     public void vloz(H hodnotaHrany, Vrchol<O, H> vkladanyVrchol, Vrchol<O, H> zaKtery) {
+        if (vkladanyVrchol == null || hodnotaHrany == null) return;
         if (zaKtery == null) {
             if (!jePrazdny()) vkladanyVrchol.getKoncovy().setDalsi(hodnotaHrany, vychozi);
             vychozi = vkladanyVrchol;
         }
         else if (zaKtery.jeKoncovy()) zaKtery.setDalsi(hodnotaHrany, vkladanyVrchol);
         else {
-            Hrana<O, H> hrana = zaKtery.getHranaKDalsimu();
-            Vrchol<O, H> puvodniCil = hrana.getCilovyVrchol();
-            hrana.setCilovyVrchol(vkladanyVrchol);
+            Vrchol<O, H> puvodniCil = zaKtery.getDalsi();
+            zaKtery.setDalsi(vkladanyVrchol);
             vkladanyVrchol.getKoncovy().setDalsi(hodnotaHrany, puvodniCil);
         }
     }
 
     public boolean smaz(Vrchol<O, H> vrcholKeSmazani) {
+        if (vrcholKeSmazani == null) return false;
         Vrchol<O, H> predchozi = null;
         for (Vrchol<O, H> aktualni : this) {
-            if (vrcholKeSmazani.equals(aktualni)) {
+            if (aktualni.get().equals(vrcholKeSmazani.get())) {
                 smazTento(predchozi, aktualni);
                 return true;
             }
@@ -67,13 +68,20 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
     }
 
     private void smazTento(Vrchol<O, H> predchozi, Vrchol<O, H> keSmazani) {
-        if (predchozi == null) vychozi = vychozi.jeKoncovy() ? null : vychozi.getHranaKDalsimu().getCilovyVrchol();
-        else predchozi.getHranaKDalsimu().setCilovyVrchol(keSmazani.getHranaKDalsimu().getCilovyVrchol());
-        keSmazani.getHranaKDalsimu().setCilovyVrchol(null);
+        if (predchozi == null) vychozi = vychozi.jeKoncovy() ? null : vychozi.getDalsi();
+        else predchozi.setDalsi(keSmazani.getDalsi());
+        keSmazani.setDalsi(null);
     }
 
     public boolean jePrazdny() {
         return vychozi == null;
+    }
+
+    public void vyprazdni() {
+        for (Vrchol<O, H> vrchol : this) {
+            vrchol.odstranVztahKDalsimu();
+        }
+        vychozi = null;
     }
 
     @Override
@@ -90,7 +98,7 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
             @Override
             public Vrchol<O, H> next() {
                 Vrchol<O, H> predeslyVrchol = aktVrchol;
-                aktVrchol = aktVrchol.jeKoncovy() ? null : aktVrchol.getHranaKDalsimu().getCilovyVrchol();
+                aktVrchol = aktVrchol.jeKoncovy() ? null : aktVrchol.getDalsi();
                 return predeslyVrchol;
             }
 
