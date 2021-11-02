@@ -84,6 +84,12 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         vychozi = null;
     }
 
+    public int pocetVrcholu() {
+        int pocet = 0;
+        for (Vrchol<O, H> ignored : this) pocet++;
+        return pocet;
+    }
+
     @Override
     public Iterator<Vrchol<O, H>> iterator() {
         return new Iterator<>() {
