@@ -20,6 +20,17 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         return vychozi;
     }
 
+    /**
+     * neefektivní
+     */
+    public Vrchol<O, H> getPosledni() {
+        Vrchol<O, H> vrchol = vychozi;
+        for (Vrchol<O, H> aktVrchol : this) {
+            vrchol = aktVrchol;
+        }
+        return vrchol;
+    }
+
     public void vlozNaZacatek(Vrchol<O, H> vkladanyVrchol) {
         vlozNaZacatek(vychoziHodnotaHrany, vkladanyVrchol);
     }
