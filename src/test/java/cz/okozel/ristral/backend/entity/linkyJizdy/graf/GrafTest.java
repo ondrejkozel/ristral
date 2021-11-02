@@ -120,6 +120,29 @@ class GrafTest {
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
     }
 
+    @Test
+    void vyprazdnovani() {
+        getDemoVrcholyANaplnGraf();
+        assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
+        //
+        graf.vyprazdni();
+        assertThat(graf.toString(), equalTo(""));
+        //
+        graf.vlozNaZacatek(new Vrchol<>("ahoj"));
+        assertThat(graf.toString(), equalTo("ahoj"));
+    }
+
+    @Test
+    void spocitaniVrcholu() {
+        assertThat(graf.pocetVrcholu(), equalTo(0));
+        //
+        getDemoVrcholyANaplnGraf();
+        assertThat(graf.pocetVrcholu(), equalTo(5));
+        //
+        graf.smaz(graf.getPrvni());
+        assertThat(graf.pocetVrcholu(), equalTo(4));
+    }
+
     private Vrchol<String, Integer>[] getDemoVrcholyANaplnGraf() {
         @SuppressWarnings("unchecked")
         Vrchol<String, Integer>[] vrcholy = new Vrchol[] {
