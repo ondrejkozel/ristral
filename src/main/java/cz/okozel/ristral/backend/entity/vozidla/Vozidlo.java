@@ -5,6 +5,7 @@ import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,8 +25,8 @@ public class Vozidlo extends AbstractSchemaEntity implements NavazujeObousmernyV
     /**
      * maximální počet pasažérů
      */
-    @Size(min = 1)
-    private Integer obsaditelnost;
+    @Min(0)
+    private int obsaditelnost;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn()
@@ -34,7 +35,7 @@ public class Vozidlo extends AbstractSchemaEntity implements NavazujeObousmernyV
 
     public Vozidlo() {}
 
-    public Vozidlo(String nazev, String popis, Integer obsaditelnost, TypVozidla typ, Schema schema) {
+    public Vozidlo(String nazev, String popis, int obsaditelnost, TypVozidla typ, Schema schema) {
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
@@ -50,7 +51,7 @@ public class Vozidlo extends AbstractSchemaEntity implements NavazujeObousmernyV
         return popis;
     }
 
-    public Integer getObsaditelnost() {
+    public int getObsaditelnost() {
         return obsaditelnost;
     }
 
