@@ -2,7 +2,7 @@ package cz.okozel.ristral.backend.entity.uzivatele;
 
 import java.util.HashMap;
 
-public enum TypUzivatele {
+public enum Role {
     UZIVATEL_ORG("uživatel organizace", UzivatelOrg.class),
     ADMIN_ORG("administrátor organizace", AdminOrg.class),
     OSOBNI_UZIVATEL("uživatel osobního účtu", OsobniUzivatel.class),
@@ -11,7 +11,7 @@ public enum TypUzivatele {
     private final String nazev;
     private final Class<? extends Uzivatel> trida;
 
-    TypUzivatele(String nazev, Class<? extends Uzivatel> trida) {
+    Role(String nazev, Class<? extends Uzivatel> trida) {
         this.nazev = nazev;
         this.trida = trida;
     }
@@ -25,19 +25,17 @@ public enum TypUzivatele {
         return nazev;
     }
 
-    private static final HashMap<Class<? extends Uzivatel>, TypUzivatele> TYPY_UZIVATELU = new HashMap<>();
+    private static final HashMap<Class<? extends Uzivatel>, Role> ROLE = new HashMap<>();
 
     static {
-        for (TypUzivatele value : values()) {
-            TYPY_UZIVATELU.put(value.trida, value);
+        for (Role value : values()) {
+            ROLE.put(value.trida, value);
         }
-        System.out.println(TYPY_UZIVATELU);
+        System.out.println(ROLE);
     }
 
-    public static TypUzivatele getTypUzivatele(Class<? extends Uzivatel> trida) {
-        for (TypUzivatele typUzivatele : values()) {
-            if (typUzivatele.trida.equals(trida)) return typUzivatele;
-        }
+    public static Role getRole(Class<? extends Uzivatel> trida) {
+        for (Role role : values()) if (role.trida.equals(trida)) return role;
         return null;
     }
 

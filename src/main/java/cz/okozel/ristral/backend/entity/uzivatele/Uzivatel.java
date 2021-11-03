@@ -84,8 +84,8 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         this.email = email;
     }
 
-    public TypUzivatele getTyp() {
-        return TypUzivatele.getTypUzivatele(this.getClass());
+    public Role getRole() {
+        return Role.getRole(this.getClass());
     }
 
     public List<Aktivita> getAktivity() {
@@ -109,6 +109,6 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
 
     @Override
     public String toString() {
-        return String.format("%s %s – %s (schema %s)", getTyp(), jmeno, email, getSchema());
+        return String.format("%s %s – %s (schema %s)", getRole(), jmeno, email, getSchema());
     }
 }
