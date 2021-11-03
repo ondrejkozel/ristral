@@ -39,6 +39,13 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     private String email;
 
     /**
+     * uživatelské jméno
+     */
+    @Size(max = 50)
+    @NotBlank
+    private String uzivatelskeJmeno;
+
+    /**
      * uživatelovo zahashované heslo
      */
     @NotNull
@@ -90,6 +97,14 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
 
     public List<Aktivita> getAktivity() {
         return Collections.unmodifiableList(aktivity);
+    }
+
+    public String getUzivatelskeJmeno() {
+        return uzivatelskeJmeno;
+    }
+
+    public String getHeslo() {
+        return heslo;
     }
 
     @Override

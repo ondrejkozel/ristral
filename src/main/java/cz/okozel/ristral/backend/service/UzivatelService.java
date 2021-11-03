@@ -38,6 +38,10 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
         super(uzivatelRepository);
     }
 
+    public Uzivatel findByUzivatelskeJmeno(String uzivatelskeJmeno) {
+        return hlavniRepositar.findByUzivatelskeJmenoEquals(uzivatelskeJmeno);
+    }
+
     @PostConstruct
     public void populateDemonstrativeData() {
         Schema organizace = new Schema(TypSchematu.ORGANIZACE, "Dopravní podnik městské části Žebětín");
