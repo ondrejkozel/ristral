@@ -132,6 +132,13 @@ class GrafTest {
     }
 
     @Test
+    void nastaveniHran() {
+        Vrchol<String, Integer>[] vrcholy = getDemoVrcholyANaplnGraf();
+        for (int i = 0; i < 4; i++) vrcholy[i].getHranaKDalsimu().setHodnota(1);
+        assertThat(graf.toString(), equalTo("jedna - 1 - dva - 1 - tři - 1 - čtyři - 1 - pět"));
+    }
+
+    @Test
     void vyprazdnovani() {
         getDemoVrcholyANaplnGraf();
         assertThat(graf.toString(), equalTo("jedna - 0 - dva - 0 - tři - 0 - čtyři - 0 - pět"));
