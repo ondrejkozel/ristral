@@ -47,13 +47,13 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
         Schema organizace = new Schema(TypSchematu.ORGANIZACE, "Dopravní podnik městské části Žebětín");
         Schema osobni = new Schema(TypSchematu.OSOBNI, "Pepa Novák");
         if (schemaRepository.count() == 0) schemaRepository.saveAll(List.of(organizace, osobni));
-        final UzivatelOrg uzivatel1 = new UzivatelOrg("Ondřej Kozel", "ondrakozel@outlook.com", "hovnokleslo", organizace);
+        final UzivatelOrg uzivatel1 = new UzivatelOrg("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "hovnokleslo", organizace);
         if (count() == 0) {
             saveAll(List.of(
                     uzivatel1,
-                    new AdminOrg("administrátor", "admin@organizace.com", "admin", organizace),
-                    new OsobniUzivatel("Os. uživatel", "osobak@email.com", "já tady vůbec nemám co dělat", osobni),
-                    new SuperadminOrg("superadmin", "super@organizace.com", "nereknu", organizace)
+                    new AdminOrg("admin", "administrátor", "admin@organizace.com", "admin", organizace),
+                    new OsobniUzivatel("osobak", "Os. uživatel", "osobak@email.com", "já tady vůbec nemám co dělat", osobni),
+                    new SuperadminOrg("superadmin", "superadmin", "super@organizace.com", "nereknu", organizace)
             ));
         }
         if (aktivitaRepository.count() == 0) {

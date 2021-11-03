@@ -62,13 +62,15 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
 
     /**
      * Vytvoří novou instanci uživatele.
+     * @param uzivatelskeJmeno
      * @param jmeno křestní a příjmení
      * @param email emailová adresa
      * @param heslo zahashované heslo
      * @param schema schéma, ve kterém se má nový uživatel nacházet
      */
-    public Uzivatel(String jmeno, String email, String heslo, Schema schema) {
+    public Uzivatel(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
         super(schema);
+        this.uzivatelskeJmeno = uzivatelskeJmeno;
         this.jmeno = jmeno;
         this.email = email;
         this.heslo = heslo;
