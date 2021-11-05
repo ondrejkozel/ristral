@@ -31,7 +31,6 @@ public enum Role {
         for (Role value : values()) {
             ROLE.put(value.trida, value);
         }
-        System.out.println(ROLE);
     }
 
     public static Role getRole(Class<? extends Uzivatel> trida) {
