@@ -4,20 +4,24 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
+import cz.okozel.ristral.frontend.views.login.LoginView;
+import cz.okozel.ristral.frontend.views.prehled.PrehledView;
 import cz.okozel.ristral.frontend.views.vitejte.VitejteView;
 
 import java.util.*;
 
 /**
- * The main view is a top-level placeholder for other views.
+ * Hlavní layout pro ostatní pohledy.
  */
 @PageTitle("Main")
 public class MainLayout extends AppLayout {
@@ -48,9 +52,9 @@ public class MainLayout extends AppLayout {
 
     }
 
-    private H1 viewTitle;
+    private H1 titulekPohledu;
 
-    private cz.okozel.ristral.backend.security.PrihlasenyUzivatel PrihlasenyUzivatel;
+    private PrihlasenyUzivatel PrihlasenyUzivatel;
     private AccessAnnotationChecker accessChecker;
 
     public MainLayout(PrihlasenyUzivatel PrihlasenyUzivatel, AccessAnnotationChecker accessChecker) {
@@ -68,10 +72,10 @@ public class MainLayout extends AppLayout {
         toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         toggle.getElement().setAttribute("aria-label", "Menu toggle");
 
-        viewTitle = new H1();
-        viewTitle.addClassNames("m-0", "text-l");
+        titulekPohledu = new H1();
+        titulekPohledu.addClassNames("m-0", "text-l");
 
-        Header header = new Header(toggle, viewTitle);
+        Header header = new Header(toggle, titulekPohledu);
         header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
                 "w-full");
         return header;
@@ -110,14 +114,19 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
-                new MenuItemInfo("Vitejte", "la la-bus", VitejteView.class)
+                new MenuItemInfo("Vítejte", "la la-bus", VitejteView.class),
+                new MenuItemInfo("Přehled", "la la-chart-area", PrehledView.class)
         };
+        //
+        Set<Integer> ignorovaneIndexy = new HashSet<>();
+        if (PrihlasenyUzivatel.get().isPresent()) ignorovaneIndexy.add(0);
+        //
         List<RouterLink> links = new ArrayList<>();
-        for (MenuItemInfo menuItemInfo : menuItems) {
-            if (accessChecker.hasAccess(menuItemInfo.getView())) {
+        for (int i = 0; i < menuItems.length; i++) {
+            MenuItemInfo menuItemInfo = menuItems[i];
+            if (accessChecker.hasAccess(menuItemInfo.getView()) && !ignorovaneIndexy.contains(i)) {
                 links.add(createLink(menuItemInfo));
             }
-
         }
         return links;
     }
@@ -141,36 +150,42 @@ public class MainLayout extends AppLayout {
     }
 
     private Footer createFooter() {
-        Footer layout = new Footer();
-        layout.addClassNames("flex", "items-center", "my-s", "px-m", "py-xs");
-
-        Optional<Uzivatel> maybeUser = PrihlasenyUzivatel.get();
-        if (maybeUser.isPresent()) {
-            Uzivatel user = maybeUser.get();
-
-            Avatar avatar = new Avatar(user.getJmeno());
+        Footer footer = new Footer();
+        footer.addClassNames("flex", "items-center", "my-s", "px-m", "py-xs");
+        //
+        Optional<Uzivatel> prihlasenyUzivatel = PrihlasenyUzivatel.get();
+        if (prihlasenyUzivatel.isPresent()) {
+            Uzivatel uzivatel = prihlasenyUzivatel.get();
+            //
+            Avatar avatar = new Avatar(uzivatel.getJmeno());
             avatar.addClassNames("me-xs");
-
-            ContextMenu userMenu = new ContextMenu(avatar);
-            userMenu.setOpenOnClick(true);
-            userMenu.addItem("Logout", e -> PrihlasenyUzivatel.odhlasSe());
-
-            Span name = new Span(user.getJmeno());
-            name.addClassNames("font-medium", "text-s", "text-secondary");
-
-            layout.add(avatar, name);
+            //
+            Button triTeckyButton = new Button(VaadinIcon.ELLIPSIS_DOTS_V.create());
+            triTeckyButton.addClassNames("px-xs");
+            //
+            ContextMenu uzivatelMenu = new ContextMenu(triTeckyButton);
+            uzivatelMenu.setOpenOnClick(true);
+            uzivatelMenu.addItem("Odhlásit se", e -> PrihlasenyUzivatel.odhlasSe());
+            //
+            Span name = new Span(uzivatel.getJmeno());
+            name.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
+            //
+            footer.add(avatar, name, triTeckyButton);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+            Button prihlasitSeButton = new Button("Přihlásit se");
+            RouterLink routerLink = new RouterLink();
+            routerLink.setRoute(LoginView.class);
+            routerLink.add(prihlasitSeButton);
+            footer.add(routerLink);
         }
 
-        return layout;
+        return footer;
     }
 
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
-        viewTitle.setText(getCurrentPageTitle());
+        titulekPohledu.setText(getCurrentPageTitle());
     }
 
     private String getCurrentPageTitle() {
