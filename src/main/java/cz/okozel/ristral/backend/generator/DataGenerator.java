@@ -14,8 +14,6 @@ import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.backend.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,9 +38,9 @@ public class DataGenerator {
             if (uzivatelService.count() == 0) {
                 uzivatelService.saveAll(List.of(
                         uzivatel1,
-                        new AdminOrg("admin", "administrátor", "admin@organizace.com", "admin", organizace),
-                        new OsobniUzivatel("osobak", "Os. uživatel", "osobak@email.com", "já tady vůbec nemám co dělat", osobni),
-                        new SuperadminOrg("superadmin", "superadmin", "super@organizace.com", "nereknu", organizace)
+                        new AdminOrg("admin", "administrátor", "admin@organizace.com", passwordEncoder.encode("1234"), organizace),
+                        new OsobniUzivatel("osobak", "Os. uživatel", "osobak@email.com", passwordEncoder.encode("1234"), osobni),
+                        new SuperadminOrg("superadmin", "superadmin", "super@organizace.com", passwordEncoder.encode("1234"), organizace)
                 ));
             }
             if (aktivitaRepository.count() == 0) {
