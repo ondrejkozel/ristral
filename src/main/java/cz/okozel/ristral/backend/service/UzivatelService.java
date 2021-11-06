@@ -1,6 +1,6 @@
 package cz.okozel.ristral.backend.service;
 
-import cz.okozel.ristral.backend.entity.uzivatele.*;
+import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.repository.UzivatelRepository;
 import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
 import org.springframework.stereotype.Service;

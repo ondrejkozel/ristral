@@ -4,7 +4,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.service.UzivatelService;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

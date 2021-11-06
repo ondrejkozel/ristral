@@ -14,9 +14,7 @@ import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.views.vitejte.VitejteView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The main view is a top-level placeholder for other views.
