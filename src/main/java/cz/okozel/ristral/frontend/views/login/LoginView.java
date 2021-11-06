@@ -6,12 +6,17 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
+import cz.okozel.ristral.frontend.views.prehled.PrehledView;
 
 @PageTitle("Přihlášení")
 @Route(value = "login")
 public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
-    public LoginView() {
+    private PrihlasenyUzivatel prihlasenyUzivatel;
+
+    public LoginView(PrihlasenyUzivatel prihlasenyUzivatel) {
+        this.prihlasenyUzivatel = prihlasenyUzivatel;
         setAction("login");
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(buildHeader());
@@ -48,6 +53,10 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (prihlasenyUzivatel.get().isPresent()) {
+            beforeEnterEvent.forwardTo(PrehledView.class);
+            setOpened(false);
+        }
         if (beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
