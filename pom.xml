@@ -150,6 +150,11 @@
             <version>4.4.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.appreciated</groupId>
+            <artifactId>mvp-flow</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
