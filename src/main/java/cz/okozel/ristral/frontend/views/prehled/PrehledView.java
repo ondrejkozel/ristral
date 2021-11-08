@@ -10,64 +10,37 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
-import javax.annotation.security.PermitAll;
-
 @PageTitle("Přehled")
-@Route(value = "prehled", layout = MainLayout.class)
-@PermitAll
 public class PrehledView extends Main {
+
+    private Span pocetZastavek = new Span("0");
+    private Span pocetLinek = new Span("0");
+    private Span pocetVozidel = new Span("0");
 
     public PrehledView() {
         addClassName("prehled-view");
-
         Board board = new Board();
-        board.addRow(createHighlight("Current users", "745", 33.7), createHighlight("View events", "54.6k", -112.45),
-                createHighlight("Conversion rate", "18%", 3.9), createHighlight("Custom metric", "-123.45", 0.0));
+        board.addRow(createHighlight("Počet zastávek", pocetZastavek), createHighlight("Počet Vozidel", pocetVozidel), createHighlight("Počet Linek", pocetLinek));
         board.addRow(createViewEvents());
         board.addRow(createServiceHealth(), createResponseTimes());
         add(board);
     }
 
-    private Component createHighlight(String title, String value, Double percentage) {
-        VaadinIcon icon = VaadinIcon.ARROW_UP;
-        String prefix = "";
-        String theme = "badge";
-
-        if (percentage == 0) {
-            prefix = "±";
-        } else if (percentage > 0) {
-            prefix = "+";
-            theme += " success";
-        } else if (percentage < 0) {
-            icon = VaadinIcon.ARROW_DOWN;
-            theme += " error";
-        }
-
-        H2 h2 = new H2(title);
+    private Component createHighlight(String titulek, Span hodnota) {
+        H2 h2 = new H2(titulek);
         h2.addClassNames("font-normal", "m-0", "text-secondary", "text-xs");
 
-        Span span = new Span(value);
-        span.addClassNames("font-semibold", "text-3xl");
+        hodnota.addClassNames("font-semibold", "text-3xl");
 
-        Icon i = icon.create();
-        i.addClassNames("box-border", "p-xs");
-
-        Span badge = new Span(i, new Span(prefix + percentage));
-        badge.getElement().getThemeList().add(theme);
-
-        VerticalLayout layout = new VerticalLayout(h2, span, badge);
+        VerticalLayout layout = new VerticalLayout(h2, hodnota);
         layout.addClassName("p-l");
         layout.setPadding(false);
         layout.setSpacing(false);
@@ -212,6 +185,18 @@ public class PrehledView extends Main {
             theme += " error";
         }
         return theme;
+    }
+
+    public void setPocetZastavekHighlight(String text) {
+        pocetZastavek.setText(text);
+    }
+
+    public void setPocetLinekHighlight(String text) {
+        pocetLinek.setText(text);
+    }
+
+    public void setPocetVozidelHighlight(String text) {
+        pocetVozidel.setText(text);
     }
 
 }

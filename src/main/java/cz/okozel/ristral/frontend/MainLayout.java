@@ -14,9 +14,9 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
+import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
+import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 import cz.okozel.ristral.frontend.views.login.LoginView;
-import cz.okozel.ristral.frontend.views.prehled.PrehledView;
-import cz.okozel.ristral.frontend.views.vitejte.VitejteView;
 
 import java.util.*;
 
