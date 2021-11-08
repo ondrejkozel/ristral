@@ -29,12 +29,12 @@ public class MainLayout extends AppLayout {
     public static class MenuItemInfo {
 
         private String text;
-        private String iconClass;
+        private Ikona icon;
         private Class<? extends Component> view;
 
-        public MenuItemInfo(String text, String iconClass, Class<? extends Component> view) {
+        public MenuItemInfo(String text, Ikona icon, Class<? extends Component> view) {
             this.text = text;
-            this.iconClass = iconClass;
+            this.icon = icon;
             this.view = view;
         }
 
@@ -42,8 +42,8 @@ public class MainLayout extends AppLayout {
             return text;
         }
 
-        public String getIconClass() {
-            return iconClass;
+        public Ikona getIcon() {
+            return icon;
         }
 
         public Class<? extends Component> getView() {
@@ -114,8 +114,8 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
-                new MenuItemInfo("Vítejte", "la la-bus", VitejteView.class),
-                new MenuItemInfo("Přehled", "la la-chart-area", PrehledView.class)
+                new MenuItemInfo("Vítejte", Ikona.VITEJTE, VitejtePresenter.class),
+                new MenuItemInfo("Přehled", Ikona.PREHLED, PrehledPresenter.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
@@ -136,11 +136,8 @@ public class MainLayout extends AppLayout {
         link.addClassNames("flex", "mx-s", "p-s", "relative", "text-secondary");
         link.setRoute(menuItemInfo.getView());
 
-        Span icon = new Span();
+        Span icon = menuItemInfo.getIcon().get();
         icon.addClassNames("me-s", "text-l");
-        if (!menuItemInfo.getIconClass().isEmpty()) {
-            icon.addClassNames(menuItemInfo.getIconClass());
-        }
 
         Span text = new Span(menuItemInfo.getText());
         text.addClassNames("font-medium", "text-s");
