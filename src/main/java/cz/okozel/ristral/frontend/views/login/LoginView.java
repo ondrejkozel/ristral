@@ -13,7 +13,7 @@ import cz.okozel.ristral.frontend.views.prehled.PrehledView;
 @Route(value = "login")
 public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
-    private PrihlasenyUzivatel prihlasenyUzivatel;
+    private final PrihlasenyUzivatel prihlasenyUzivatel;
 
     public LoginView(PrihlasenyUzivatel prihlasenyUzivatel) {
         this.prihlasenyUzivatel = prihlasenyUzivatel;
@@ -62,4 +62,5 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
                 .getParameters()
                 .containsKey("error")) setError(true);
     }
+
 }
