@@ -14,9 +14,9 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
+import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
-import cz.okozel.ristral.frontend.views.login.LoginView;
 
 import java.util.*;
 
@@ -168,13 +168,7 @@ public class MainLayout extends AppLayout {
             name.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
             //
             footer.add(avatar, name, triTeckyButton);
-        } else {
-            Button prihlasitSeButton = new Button("Přihlásit se");
-            RouterLink routerLink = new RouterLink();
-            routerLink.setRoute(LoginView.class);
-            routerLink.add(prihlasitSeButton);
-            footer.add(routerLink);
-        }
+        } else footer.add(PrihlasitSeButton.getPrihlasitSeButtonRouterLink());
 
         return footer;
     }
