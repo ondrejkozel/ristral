@@ -15,12 +15,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.router.PageTitle;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
 import java.util.HashMap;
 
-@PageTitle("Přehled")
 public class PrehledView extends Main {
 
     private HashMap<String, Highlight> highlighty;
