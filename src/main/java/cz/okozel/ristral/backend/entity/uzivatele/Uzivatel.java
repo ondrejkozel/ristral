@@ -97,6 +97,11 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         return Role.getRole(this.getClass());
     }
 
+    public boolean isAtLeastAdmin() {
+        Role role = getRole();
+        return role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG;
+    }
+
     public List<Aktivita> getAktivity() {
         return Collections.unmodifiableList(aktivity);
     }
