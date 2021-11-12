@@ -9,20 +9,34 @@ import cz.okozel.ristral.frontend.customComponents.ZaregistrovatSeButton;
 
 public class VitejteView extends VerticalLayout {
 
+    private final Paragraph vyborne, prihlasteSe;
+    private final HorizontalLayout tlacitkaAutentikace;
+
     public VitejteView() {
+        vyborne = new Paragraph("Nyní můžete začít používat aplikaci.");
+        prihlasteSe = new Paragraph("Nyní se prosím přihlaste.");
+        tlacitkaAutentikace = new HorizontalLayout(
+                PrihlasitSeButton.getPrihlasitSeButtonRouterLink(),
+                ZaregistrovatSeButton.getZaregistrovatSeButtonRouterLink()
+        );
+        //
         add(
                 new H1("Ristral"),
                 new Paragraph("Vítejte v Ristralu! Ristral je řídicí informační systém dopravního podniku."),
-                new Paragraph("Nyní se prosím přihlaste."),
-                new HorizontalLayout(
-                        PrihlasitSeButton.getPrihlasitSeButtonRouterLink(),
-                        ZaregistrovatSeButton.getZaregistrovatSeButtonRouterLink()
-                )
+                prihlasteSe,
+                vyborne,
+                tlacitkaAutentikace
         );
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
+    }
+
+    public void setUzivatelPrihlaseny(boolean prihlaseny) {
+        prihlasteSe.setVisible(!prihlaseny);
+        vyborne.setVisible(prihlaseny);
+        tlacitkaAutentikace.setVisible(!prihlaseny);
     }
 
 }

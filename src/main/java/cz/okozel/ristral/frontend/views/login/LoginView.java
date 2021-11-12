@@ -7,7 +7,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
-import cz.okozel.ristral.frontend.views.prehled.PrehledView;
+import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 
 @PageTitle("Přihlášení")
 @Route(value = "login")
@@ -54,7 +54,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (prihlasenyUzivatel.jePrihlaseny()) {
-            beforeEnterEvent.forwardTo(PrehledView.class);
+            beforeEnterEvent.forwardTo(VitejtePresenter.class);
             setOpened(false);
         }
         if (beforeEnterEvent.getLocation()

@@ -8,7 +8,6 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.Presenter;
-import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
 import cz.okozel.ristral.frontend.views.vitejte.VitejteView;
 
 @PageTitle("Vítejte")
@@ -24,7 +23,7 @@ public class VitejtePresenter extends Presenter<VitejteView> implements BeforeEn
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        if (prihlasenyUzivatel.jePrihlaseny()) event.forwardTo(PrehledPresenter.class);
+        getContent().setUzivatelPrihlaseny(prihlasenyUzivatel.jePrihlaseny());
     }
 
 }
