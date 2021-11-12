@@ -1,0 +1,3 @@
+[submodule "prace"]
+	path = prace
+	url = https://github.com/ondrejkozel/ristral-prace
