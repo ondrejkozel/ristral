@@ -119,7 +119,7 @@ public class MainLayout extends AppLayout {
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
-        if (PrihlasenyUzivatel.get().isPresent()) ignorovaneIndexy.add(0);
+        if (PrihlasenyUzivatel.jePrihlaseny()) ignorovaneIndexy.add(0);
         //
         List<RouterLink> links = new ArrayList<>();
         for (int i = 0; i < menuItems.length; i++) {
@@ -150,7 +150,7 @@ public class MainLayout extends AppLayout {
         Footer footer = new Footer();
         footer.addClassNames("flex", "items-center", "my-s", "px-m", "py-xs");
         //
-        Optional<Uzivatel> prihlasenyUzivatel = PrihlasenyUzivatel.get();
+        Optional<Uzivatel> prihlasenyUzivatel = PrihlasenyUzivatel.getPrihlasenyUzivatel();
         if (prihlasenyUzivatel.isPresent()) {
             Uzivatel uzivatel = prihlasenyUzivatel.get();
             //

@@ -22,7 +22,7 @@ public class VitejtePresenter extends Presenter<VitejteView> implements BeforeEn
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        if (prihlasenyUzivatel.get().isPresent()) event.forwardTo(PrehledPresenter.class);
+        if (prihlasenyUzivatel.jePrihlaseny()) event.forwardTo(PrehledPresenter.class);
     }
 
 }

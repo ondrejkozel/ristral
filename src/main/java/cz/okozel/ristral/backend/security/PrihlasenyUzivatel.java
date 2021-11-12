@@ -21,15 +21,15 @@ public class PrihlasenyUzivatel {
         this.uzivatelService = uzivatelService;
     }
 
-    private UserDetails getPrihlasenyUzivatel() {
+    private UserDetails getPrihlasenyUzivatell() {
         SecurityContext context = SecurityContextHolder.getContext();
         Object principal = context.getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) return (UserDetails) context.getAuthentication().getPrincipal();
         return null;
     }
 
-    public Optional<Uzivatel> get() {
-        UserDetails details = getPrihlasenyUzivatel();
+    public Optional<Uzivatel> getPrihlasenyUzivatel() {
+        UserDetails details = getPrihlasenyUzivatell();
         if (details == null) return Optional.empty();
         return Optional.of(uzivatelService.findByUzivatelskeJmeno(details.getUsername()));
     }
@@ -38,6 +38,10 @@ public class PrihlasenyUzivatel {
         UI.getCurrent().getPage().setLocation(SecurityConfiguration.LOGOUT_URL);
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(VaadinServletRequest.getCurrent().getHttpServletRequest(), null, null);
+    }
+
+    public boolean jePrihlaseny() {
+        return getPrihlasenyUzivatel().isPresent();
     }
 
 }

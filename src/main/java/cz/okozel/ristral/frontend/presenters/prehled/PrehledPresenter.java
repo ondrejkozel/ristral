@@ -21,7 +21,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private final VozidloService vozidloService;
 
     public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService) {
-        this.prihlasenyUzivatel = prihlasenyUzivatel.get().get();
+        this.prihlasenyUzivatel = prihlasenyUzivatel.getPrihlasenyUzivatel().get();
         this.zastavkaService = zastavkaService;
         this.vozidloService = vozidloService;
     }

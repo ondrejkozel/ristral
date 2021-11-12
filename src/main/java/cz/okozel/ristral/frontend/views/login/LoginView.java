@@ -53,7 +53,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (prihlasenyUzivatel.get().isPresent()) {
+        if (prihlasenyUzivatel.jePrihlaseny()) {
             beforeEnterEvent.forwardTo(PrehledView.class);
             setOpened(false);
         }
