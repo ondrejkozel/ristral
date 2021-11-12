@@ -18,33 +18,25 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
+import java.util.HashMap;
+
 @PageTitle("Přehled")
 public class PrehledView extends Main {
 
-    private Span pocetZastavek = new Span("0");
-    private Span pocetLinek = new Span("0");
-    private Span pocetVozidel = new Span("0");
+    private HashMap<String, Highlight> highlighty;
 
     public PrehledView() {
+        highlighty = new HashMap<>();
+        highlighty.put("pocetZastavek", new Highlight("Počet zastávek", false));
+        highlighty.put("pocetVozidel", new Highlight("Počet vozidel", false));
+        highlighty.put("pocetLinek", new Highlight("Počet linek", false));
+        //
         addClassName("prehled-view");
         Board board = new Board();
-        board.addRow(createHighlight("Počet zastávek", pocetZastavek), createHighlight("Počet Vozidel", pocetVozidel), createHighlight("Počet Linek", pocetLinek));
+        board.addRow(highlighty.get("pocetZastavek"), highlighty.get("pocetVozidel"), highlighty.get("pocetLinek"));
         board.addRow(createViewEvents());
         board.addRow(createServiceHealth(), createResponseTimes());
         add(board);
-    }
-
-    private Component createHighlight(String titulek, Span hodnota) {
-        H2 h2 = new H2(titulek);
-        h2.addClassNames("font-normal", "m-0", "text-secondary", "text-xs");
-
-        hodnota.addClassNames("font-semibold", "text-3xl");
-
-        VerticalLayout layout = new VerticalLayout(h2, hodnota);
-        layout.addClassName("p-l");
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        return layout;
     }
 
     private Component createViewEvents() {
@@ -187,16 +179,18 @@ public class PrehledView extends Main {
         return theme;
     }
 
-    public void setPocetZastavekHighlight(String text) {
-        pocetZastavek.setText(text);
+    public void setHighlightText(String highlight, String text) {
+        highlighty.get(highlight).setHodnota(text);
     }
 
-    public void setPocetLinekHighlight(String text) {
-        pocetLinek.setText(text);
+    public void setHighlightText(String highlight, long cislo) {
+        highlighty.get(highlight).setHodnota(String.valueOf(cislo));
     }
 
-    public void setPocetVozidelHighlight(String text) {
-        pocetVozidel.setText(text);
+    public void setAdminJePrihlaseny(boolean prihlaseny) {
+        highlighty.forEach((s, highlight) -> {
+            if (highlight.isJenomUAdminu()) highlight.setVisible(prihlaseny);
+        });
     }
 
 }

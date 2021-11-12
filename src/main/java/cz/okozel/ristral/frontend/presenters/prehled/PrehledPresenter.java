@@ -15,9 +15,9 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEnterObserver {
 
-    private Uzivatel prihlasenyUzivatel;
-    private ZastavkaService zastavkaService;
-    private VozidloService vozidloService;
+    private final Uzivatel prihlasenyUzivatel;
+    private final ZastavkaService zastavkaService;
+    private final VozidloService vozidloService;
 
     public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService) {
         this.prihlasenyUzivatel = prihlasenyUzivatel.get().get();
@@ -27,7 +27,8 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        getContent().setPocetZastavekHighlight(String.valueOf(zastavkaService.count(prihlasenyUzivatel.getSchema())));
-        getContent().setPocetVozidelHighlight(String.valueOf(vozidloService.count(prihlasenyUzivatel.getSchema())));
+        getContent().setAdminJePrihlaseny(prihlasenyUzivatel.isAtLeastAdmin());
+        getContent().setHighlightText("pocetZastavek", zastavkaService.count(prihlasenyUzivatel.getSchema()));
+        getContent().setHighlightText("pocetVozidel", vozidloService.count(prihlasenyUzivatel.getSchema()));
     }
 }
