@@ -4,11 +4,9 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.customComponents.ZaregistrovatSeButton;
 
-@PageTitle("Vítejte")
 public class VitejteView extends VerticalLayout {
 
     public VitejteView() {
