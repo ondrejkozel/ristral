@@ -28,7 +28,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        getContent().setAdminJePrihlaseny(prihlasenyUzivatel.isAtLeastAdmin());
+        getContent().setAdminPrihlaseny(prihlasenyUzivatel.isAtLeastAdmin());
         getContent().setHighlightText("pocetZastavek", zastavkaService.count(prihlasenyUzivatel.getSchema()));
         getContent().setHighlightText("pocetVozidel", vozidloService.count(prihlasenyUzivatel.getSchema()));
     }

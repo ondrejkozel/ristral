@@ -185,7 +185,7 @@ public class PrehledView extends Main {
         highlighty.get(highlight).setHodnota(String.valueOf(cislo));
     }
 
-    public void setAdminJePrihlaseny(boolean prihlaseny) {
+    public void setAdminPrihlaseny(boolean prihlaseny) {
         highlighty.forEach((s, highlight) -> {
             if (highlight.isJenomUAdminu()) highlight.setVisible(prihlaseny);
         });
