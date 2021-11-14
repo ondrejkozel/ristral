@@ -187,7 +187,7 @@ public class PrehledView extends Main {
 
     public void setAdminPrihlaseny(boolean prihlaseny) {
         highlighty.forEach((s, highlight) -> {
-            if (highlight.isJenomUAdminu()) highlight.setVisible(prihlaseny);
+            if (highlight.isPouzeUAdminu()) highlight.setVisible(prihlaseny);
         });
     }
 

@@ -7,14 +7,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 public class Highlight extends VerticalLayout {
 
     Span text;
-    private boolean jenomUAdminu;
+    private boolean pouzeUAdminu;
 
-    public Highlight(String titulek, boolean jenomUAdminu) {
-        this(titulek, "", jenomUAdminu);
+    public Highlight(String titulek, boolean pouzeUAdminu) {
+        this(titulek, "", pouzeUAdminu);
     }
 
-    public Highlight(String titulek, String hodnota, boolean jenomUAdminu) {
-        this.jenomUAdminu = jenomUAdminu;
+    public Highlight(String titulek, String hodnota, boolean pouzeUAdminu) {
+        this.pouzeUAdminu = pouzeUAdminu;
         H2 h2 = new H2(titulek);
         text = new Span(hodnota);
         //
@@ -31,8 +31,8 @@ public class Highlight extends VerticalLayout {
         text.setText(hodnota);
     }
 
-    public boolean isJenomUAdminu() {
-        return jenomUAdminu;
+    public boolean isPouzeUAdminu() {
+        return pouzeUAdminu;
     }
 
 }
