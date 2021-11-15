@@ -110,8 +110,16 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         return uzivatelskeJmeno;
     }
 
+    public void setUzivatelskeJmeno(String uzivatelskeJmeno) {
+        this.uzivatelskeJmeno = uzivatelskeJmeno;
+    }
+
     public String getHeslo() {
         return heslo;
+    }
+
+    public void setHeslo(String heslo) {
+        this.heslo = heslo;
     }
 
     @Override
