@@ -16,4 +16,8 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
         return hlavniRepositar.findByUzivatelskeJmenoEquals(uzivatelskeJmeno);
     }
 
+    public boolean jeTotoUzivateskeJmenoObsazene(String uzivatelskeJmeno) {
+        return hlavniRepositar.countUzivatelByUzivatelskeJmenoEquals(uzivatelskeJmeno) > 0;
+    }
+
 }

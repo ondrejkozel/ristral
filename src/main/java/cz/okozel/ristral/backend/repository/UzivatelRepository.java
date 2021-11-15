@@ -7,4 +7,6 @@ public interface UzivatelRepository extends GenericSchemaRepository<Uzivatel> {
 
     Uzivatel findByUzivatelskeJmenoEquals(String uzivatelskeJmeno);
 
+    long countUzivatelByUzivatelskeJmenoEquals(String uzivatelskeJmeno);
+
 }
