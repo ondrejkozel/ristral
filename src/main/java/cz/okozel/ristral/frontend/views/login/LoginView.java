@@ -1,7 +1,9 @@
 package cz.okozel.ristral.frontend.views.login;
 
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -11,20 +13,25 @@ import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 
 @PageTitle("Přihlášení")
 @Route(value = "login")
-public class LoginView extends LoginOverlay implements BeforeEnterObserver {
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private final PrihlasenyUzivatel prihlasenyUzivatel;
+    private LoginForm loginForm;
 
     public LoginView(PrihlasenyUzivatel prihlasenyUzivatel) {
         this.prihlasenyUzivatel = prihlasenyUzivatel;
-        setAction("login");
+        loginForm = new LoginForm();
+        loginForm.setAction("login");
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(buildHeader());
         i18n.setForm(buildForm());
         i18n.setErrorMessage(buildErrorMessage());
-        setI18n(i18n);
-        setForgotPasswordButtonVisible(false);
-        setOpened(true);
+        loginForm.setI18n(i18n);
+        loginForm.setForgotPasswordButtonVisible(false);
+        setSizeFull();
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        add(loginForm);
     }
 
     private LoginI18n.Header buildHeader() {
@@ -55,12 +62,11 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (prihlasenyUzivatel.jePrihlaseny()) {
             beforeEnterEvent.forwardTo(VitejtePresenter.class);
-            setOpened(false);
         }
         if (beforeEnterEvent.getLocation()
                 .getQueryParameters()
                 .getParameters()
-                .containsKey("error")) setError(true);
+                .containsKey("error")) loginForm.setError(true);
     }
 
 }
