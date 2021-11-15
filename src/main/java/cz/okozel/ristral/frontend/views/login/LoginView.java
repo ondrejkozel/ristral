@@ -23,7 +23,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginForm = new LoginForm();
         loginForm.setAction("login");
         LoginI18n i18n = LoginI18n.createDefault();
-        i18n.setHeader(buildHeader());
         i18n.setForm(buildForm());
         i18n.setErrorMessage(buildErrorMessage());
         loginForm.setI18n(i18n);
@@ -32,13 +31,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(loginForm);
-    }
-
-    private LoginI18n.Header buildHeader() {
-        LoginI18n.Header header = new LoginI18n.Header();
-        header.setTitle("Ristral");
-        header.setDescription("Přihlášení do informačního systému");
-        return header;
     }
 
     private LoginI18n.Form buildForm() {
