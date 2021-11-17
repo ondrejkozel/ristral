@@ -116,8 +116,8 @@ public class MainLayout extends AppLayout {
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
                 new MenuItemInfo("Vítejte", Ikona.VITEJTE, VitejtePresenter.class),
-//                new MenuItemInfo("O Ristralu", Ikona.O_RISTRALU, ORistraluView.class),
-                new MenuItemInfo("Přehled", Ikona.PREHLED, PrehledPresenter.class)
+                new MenuItemInfo("Přehled", Ikona.PREHLED, PrehledPresenter.class),
+                new MenuItemInfo("O Ristralu", Ikona.O_RISTRALU, ORistraluView.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
