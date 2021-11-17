@@ -17,6 +17,7 @@ import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
+import cz.okozel.ristral.frontend.views.oRistralu.ORistraluView;
 
 import java.util.*;
 
@@ -115,6 +116,7 @@ public class MainLayout extends AppLayout {
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
                 new MenuItemInfo("Vítejte", Ikona.VITEJTE, VitejtePresenter.class),
+//                new MenuItemInfo("O Ristralu", Ikona.O_RISTRALU, ORistraluView.class),
                 new MenuItemInfo("Přehled", Ikona.PREHLED, PrehledPresenter.class)
         };
         //
