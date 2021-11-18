@@ -55,11 +55,11 @@ public class MainLayout extends AppLayout {
 
     private H1 titulekPohledu;
 
-    private PrihlasenyUzivatel PrihlasenyUzivatel;
+    private PrihlasenyUzivatel prihlasenyUzivatel;
     private AccessAnnotationChecker accessChecker;
 
     public MainLayout(PrihlasenyUzivatel PrihlasenyUzivatel, AccessAnnotationChecker accessChecker) {
-        this.PrihlasenyUzivatel = PrihlasenyUzivatel;
+        this.prihlasenyUzivatel = PrihlasenyUzivatel;
         this.accessChecker = accessChecker;
 
         setPrimarySection(Section.DRAWER);
@@ -121,7 +121,7 @@ public class MainLayout extends AppLayout {
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
-        if (PrihlasenyUzivatel.jePrihlaseny()) ignorovaneIndexy.add(0);
+        if (prihlasenyUzivatel.jePrihlaseny()) ignorovaneIndexy.add(0);
         //
         List<RouterLink> links = new ArrayList<>();
         for (int i = 0; i < menuItems.length; i++) {
@@ -152,7 +152,7 @@ public class MainLayout extends AppLayout {
         Footer footer = new Footer();
         footer.addClassNames("flex", "items-center", "my-s", "px-m", "py-xs");
         //
-        Optional<Uzivatel> prihlasenyUzivatel = PrihlasenyUzivatel.getPrihlasenyUzivatel();
+        Optional<Uzivatel> prihlasenyUzivatel = this.prihlasenyUzivatel.getPrihlasenyUzivatel();
         if (prihlasenyUzivatel.isPresent()) {
             Uzivatel uzivatel = prihlasenyUzivatel.get();
             //
@@ -164,7 +164,7 @@ public class MainLayout extends AppLayout {
             //
             ContextMenu uzivatelMenu = new ContextMenu(triTeckyButton);
             uzivatelMenu.setOpenOnClick(true);
-            uzivatelMenu.addItem("Odhlásit se", e -> PrihlasenyUzivatel.odhlasSe());
+            uzivatelMenu.addItem("Odhlásit se", e -> this.prihlasenyUzivatel.odhlasSe());
             //
             Span name = new Span(uzivatel.getJmeno());
             name.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
