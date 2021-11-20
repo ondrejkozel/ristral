@@ -116,10 +116,10 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
-                new MenuItemInfo("Vítejte", Ikona.VITEJTE, VitejtePresenter.class),
-                new MenuItemInfo("Přehled", Ikona.PREHLED, PrehledPresenter.class),
-                new MenuItemInfo("Zastávky", Ikona.ZASTAVKY, ZastavkyPresenter.class),
-                new MenuItemInfo("O Ristralu", Ikona.O_RISTRALU, ORistraluView.class)
+                new MenuItemInfo("Vítejte", Ikona.BUS, VitejtePresenter.class),
+                new MenuItemInfo("Přehled", Ikona.GRAF, PrehledPresenter.class),
+                new MenuItemInfo("Zastávky", Ikona.ZASTAVKA, ZastavkyPresenter.class),
+                new MenuItemInfo("O Ristralu", Ikona.INFO, ORistraluView.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
@@ -140,7 +140,7 @@ public class MainLayout extends AppLayout {
         link.addClassNames("flex", "mx-s", "p-s", "relative", "text-secondary");
         link.setRoute(menuItemInfo.getView());
 
-        Span icon = menuItemInfo.getIcon().get();
+        Span icon = menuItemInfo.getIcon().getSpan();
         icon.addClassNames("me-s", "text-l");
 
         Span text = new Span(menuItemInfo.getText());
