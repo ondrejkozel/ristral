@@ -14,7 +14,6 @@ import cz.okozel.ristral.backend.entity.AbstractEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
@@ -94,6 +93,11 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         crud.getGrid().getColumns().forEach(sloupec -> {
             if (!kliceVyjimekKopie.contains(sloupec.getKey())) crud.getGrid().removeColumn(sloupec);
         });
+    }
+
+    public void setExpandRatioSloupce(String klic, int expandRatio) {
+        Optional<Grid.Column<T>> keZmene = crud.getGrid().getColumns().stream().filter(sloupec -> sloupec.getKey().equals(klic)).findAny();
+        keZmene.ifPresent(sloupec -> sloupec.setFlexGrow(expandRatio));
     }
 
     public void prejmenujSloupec(String klic, String novaHlavicka) {
