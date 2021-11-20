@@ -3,8 +3,6 @@ package cz.okozel.ristral.frontend.views.zastavky;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 
-import java.util.List;
-
 public class ZastavkyCrudView extends GenericCrudView<Zastavka> {
 
     public ZastavkyCrudView() {
@@ -13,8 +11,9 @@ public class ZastavkyCrudView extends GenericCrudView<Zastavka> {
 
     @Override
     public void poInicializaci() {
-        odstranSloupceAzNa("nazev");
+        odstranSloupceAzNa("nazev", "popis");
         prejmenujSloupec("nazev", "Název");
+        setExpandRatioSloupce("popis", 2);
     }
 
 }
