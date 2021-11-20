@@ -1,5 +1,9 @@
 package cz.okozel.ristral.frontend.views.crud;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudI18n;
 import com.vaadin.flow.component.grid.Grid;
@@ -103,13 +107,22 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         kPrejmenovani.ifPresent(sloupec -> sloupec.setHeader(novaHlavicka));
     }
 
+    MenuItem obnovit;
+
     private MenuBar vytvorMenuBar() {
         MenuBar menuBar = new MenuBar();
-        menuBar.addItem("Soubor");
-        menuBar.addItem("Upravit");
-        menuBar.addItem("Nápověda");
-        menuBar.getItems().forEach(menuItem -> menuItem.addClickListener(event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!")));
+        //
+        MenuItem soubor = menuBar.addItem("Soubor");
+        obnovit = soubor.getSubMenu().addItem("Obnovit");
+        obnovit.addClickShortcut(Key.of("r"));
+        //
+        menuBar.addItem("Upravit", event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
+        //
+        menuBar.addItem("Nápověda", event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
         return menuBar;
     }
 
+    public void addObnovitClickListener(ComponentEventListener<ClickEvent<MenuItem>> obnovitClickListener) {
+        obnovit.addClickListener(obnovitClickListener);
+    }
 }

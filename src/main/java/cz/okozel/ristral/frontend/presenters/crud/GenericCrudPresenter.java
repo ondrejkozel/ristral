@@ -13,6 +13,7 @@ public abstract class GenericCrudPresenter<T extends AbstractSchemaEntity, V ext
     public GenericCrudPresenter(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericSchemaService<T, ? extends GenericRepository<T>>> dataProvider) {
         nastavCrud(tridaObjektu, dataProvider, vytvorEditor());
         getContent().poInicializaci();
+        getContent().addObnovitClickListener(event -> dataProvider.refreshAll());
     }
 
     private void nastavCrud(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericSchemaService<T, ? extends GenericRepository<T>>> dataProvider, CrudEditor<T> editor) {
