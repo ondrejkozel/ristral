@@ -28,41 +28,15 @@ import java.util.*;
 @PageTitle("Main")
 public class MainLayout extends AppLayout {
 
-    public static class MenuItemInfo {
-
-        private String text;
-        private Ikona icon;
-        private Class<? extends Component> view;
-
-        public MenuItemInfo(String text, Ikona icon, Class<? extends Component> view) {
-            this.text = text;
-            this.icon = icon;
-            this.view = view;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public Ikona getIcon() {
-            return icon;
-        }
-
-        public Class<? extends Component> getView() {
-            return view;
-        }
-
-    }
-
     private H1 titulekPohledu;
 
-    private PrihlasenyUzivatel prihlasenyUzivatel;
-    private AccessAnnotationChecker accessChecker;
+    private final PrihlasenyUzivatel prihlasenyUzivatel;
+    private final AccessAnnotationChecker accessChecker;
 
     public MainLayout(PrihlasenyUzivatel PrihlasenyUzivatel, AccessAnnotationChecker accessChecker) {
         this.prihlasenyUzivatel = PrihlasenyUzivatel;
         this.accessChecker = accessChecker;
-
+        //
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         addToDrawer(createDrawerContent());
@@ -73,22 +47,20 @@ public class MainLayout extends AppLayout {
         toggle.addClassName("text-secondary");
         toggle.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         toggle.getElement().setAttribute("aria-label", "Menu toggle");
-
+        //
         titulekPohledu = new H1();
         titulekPohledu.addClassNames("m-0", "text-l");
-
+        //
         Header header = new Header(toggle, titulekPohledu);
-        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center",
-                "w-full");
+        header.addClassNames("bg-base", "border-b", "border-contrast-10", "box-border", "flex", "h-xl", "items-center", "w-full");
         return header;
     }
 
     private Component createDrawerContent() {
-        H2 appName = new H2("Ristral");
-        appName.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
-
-        com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
-                createNavigation(), createFooter());
+        H2 nazevAplikace = new H2("Ristral");
+        nazevAplikace.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
+        //
+        com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(nazevAplikace, createNavigation(), createFooter());
         section.addClassNames("flex", "flex-col", "items-stretch", "max-h-full", "min-h-full");
         return section;
     }
@@ -98,15 +70,16 @@ public class MainLayout extends AppLayout {
         nav.addClassNames("border-b", "border-contrast-10", "flex-grow", "overflow-auto");
         nav.getElement().setAttribute("aria-labelledby", "views");
 
-        H3 views = new H3("Views");
-        views.addClassNames("flex", "h-m", "items-center", "mx-m", "my-0", "text-s", "text-tertiary");
-        views.setId("views");
+        //toto pak jde vkládat mezi jednotlivé položky menu
+//        H3 views = new H3("Pohledy");
+//        views.addClassNames("flex", "h-m", "items-center", "mx-m", "my-0", "text-s", "text-tertiary");
+//        views.setId("views");
 
-        // Wrap the links in a list; improves accessibility
+        // pro lepší přístupnost
         UnorderedList list = new UnorderedList();
         list.addClassNames("list-none", "m-0", "p-0");
         nav.add(list);
-
+        //
         for (RouterLink link : createLinks()) {
             ListItem item = new ListItem(link);
             list.add(item);
@@ -115,11 +88,11 @@ public class MainLayout extends AppLayout {
     }
 
     private List<RouterLink> createLinks() {
-        MenuItemInfo[] menuItems = new MenuItemInfo[]{
-                new MenuItemInfo("Vítejte", Ikona.BUS, VitejtePresenter.class),
-                new MenuItemInfo("Přehled", Ikona.GRAF, PrehledPresenter.class),
-                new MenuItemInfo("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
-                new MenuItemInfo("O Ristralu", Ikona.INFO, ORistraluView.class)
+        PolozkaMenu[] menuItems = new PolozkaMenu[]{
+                new PolozkaMenu("Vítejte", Ikona.BUS, VitejtePresenter.class),
+                new PolozkaMenu("Přehled", Ikona.GRAF, PrehledPresenter.class),
+                new PolozkaMenu("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
+                new PolozkaMenu("O Ristralu", Ikona.INFO, ORistraluView.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
@@ -127,26 +100,26 @@ public class MainLayout extends AppLayout {
         //
         List<RouterLink> links = new ArrayList<>();
         for (int i = 0; i < menuItems.length; i++) {
-            MenuItemInfo menuItemInfo = menuItems[i];
-            if (accessChecker.hasAccess(menuItemInfo.getView()) && !ignorovaneIndexy.contains(i)) {
-                links.add(createLink(menuItemInfo));
+            PolozkaMenu polozkaMenu = menuItems[i];
+            if (accessChecker.hasAccess(polozkaMenu.getView()) && !ignorovaneIndexy.contains(i)) {
+                links.add(createLink(polozkaMenu));
             }
         }
         return links;
     }
 
-    private static RouterLink createLink(MenuItemInfo menuItemInfo) {
+    private static RouterLink createLink(PolozkaMenu polozkaMenu) {
         RouterLink link = new RouterLink();
         link.addClassNames("flex", "mx-s", "p-s", "relative", "text-secondary");
-        link.setRoute(menuItemInfo.getView());
-
-        Span icon = menuItemInfo.getIcon().getSpan();
-        icon.addClassNames("me-s", "text-l");
-
-        Span text = new Span(menuItemInfo.getText());
+        link.setRoute(polozkaMenu.getView());
+        //
+        Span ikona = polozkaMenu.getIkona().getSpan();
+        ikona.addClassNames("me-s", "text-l");
+        //
+        Span text = new Span(polozkaMenu.getText());
         text.addClassNames("font-medium", "text-s");
-
-        link.add(icon, text);
+        //
+        link.add(ikona, text);
         return link;
     }
 
@@ -168,12 +141,12 @@ public class MainLayout extends AppLayout {
             uzivatelMenu.setOpenOnClick(true);
             uzivatelMenu.addItem("Odhlásit se", e -> this.prihlasenyUzivatel.odhlasSe());
             //
-            Span name = new Span(uzivatel.getJmeno());
-            name.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
+            Span jmeno = new Span(uzivatel.getJmeno());
+            jmeno.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
             //
-            footer.add(avatar, name, triTeckyButton);
-        } else footer.add(PrihlasitSeButton.getPrihlasitSeButtonRouterLink());
-
+            footer.add(avatar, jmeno, triTeckyButton);
+        }
+        else footer.add(PrihlasitSeButton.getPrihlasitSeButtonRouterLink());
         return footer;
     }
 
@@ -187,4 +160,31 @@ public class MainLayout extends AppLayout {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
+
+    public static class PolozkaMenu {
+
+        private final String text;
+        private final Ikona ikona;
+        private final Class<? extends Component> view;
+
+        public PolozkaMenu(String text, Ikona ikona, Class<? extends Component> view) {
+            this.text = text;
+            this.ikona = ikona;
+            this.view = view;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public Ikona getIkona() {
+            return ikona;
+        }
+
+        public Class<? extends Component> getView() {
+            return view;
+        }
+
+    }
+
 }
