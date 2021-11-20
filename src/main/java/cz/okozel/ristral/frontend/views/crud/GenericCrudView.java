@@ -31,6 +31,7 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
                 vytvorMenuBar(),
                 crud
         );
+        setSizeFull();
     }
 
     /**
