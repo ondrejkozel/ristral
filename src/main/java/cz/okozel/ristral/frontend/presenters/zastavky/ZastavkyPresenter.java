@@ -35,6 +35,7 @@ public class ZastavkyPresenter extends GenericCrudPresenter<Zastavka, ZastavkyVi
     protected CrudEditor<Zastavka> vytvorEditor() {
         nazev = new TextField("Název");
         popis = new TextArea("Popis");
+        nazev.setRequired(true);
         FormLayout form = new FormLayout(nazev, popis);
         Binder<Zastavka> binder = new BeanValidationBinder<>(Zastavka.class);
         binder.bindInstanceFields(this);
