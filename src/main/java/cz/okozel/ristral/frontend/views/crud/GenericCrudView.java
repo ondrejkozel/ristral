@@ -87,9 +87,9 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
     public void poInicializaci() {
     }
 
-    public void odstranSloupceAzNa(List<String> kliceVyjimek) {
+    public void odstranSloupceAzNa(String... kliceVyjimek) {
         //kopie vyjímek pro případ, kdy do předaného seznamu nešlo přidávat objekty
-        List<String> kliceVyjimekKopie = new ArrayList<>(kliceVyjimek);
+        List<String> kliceVyjimekKopie = new ArrayList<>(List.of(kliceVyjimek));
         kliceVyjimekKopie.add("vaadin-crud-edit-column");
         crud.getGrid().getColumns().forEach(sloupec -> {
             if (!kliceVyjimekKopie.contains(sloupec.getKey())) crud.getGrid().removeColumn(sloupec);

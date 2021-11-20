@@ -13,7 +13,7 @@ public class ZastavkyCrudView extends GenericCrudView<Zastavka> {
 
     @Override
     public void poInicializaci() {
-        odstranSloupceAzNa(List.of("nazev"));
+        odstranSloupceAzNa("nazev");
         prejmenujSloupec("nazev", "Název");
     }
 
