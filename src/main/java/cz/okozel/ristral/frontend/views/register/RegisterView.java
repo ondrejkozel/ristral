@@ -4,10 +4,12 @@ import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Section;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -35,9 +37,15 @@ public class RegisterView extends VerticalLayout {
         heslo = new PasswordField("Heslo");
         jmeno = new TextField("Jméno");
         email = new EmailField("Email");
+        //
         Button potvrdit = new Button("Zaregistrovat se");
         potvrdit.addClickListener(event -> validujAUloz());
         potvrdit.addClickShortcut(Key.ENTER);
+        potvrdit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        //
+        Button zapomenuteHeslo = new Button("Zapomenuté heslo");
+        zapomenuteHeslo.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        zapomenuteHeslo.addClickListener(event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
         //
         uzivatelskeJmeno.setRequired(true);
         heslo.setRequired(true);
@@ -56,7 +64,9 @@ public class RegisterView extends VerticalLayout {
         section.add(
                 new H2("Registrace"),
                 form,
-                potvrdit
+                new HorizontalLayout(
+                        potvrdit,
+                        zapomenuteHeslo)
         );
         add(section);
         setSizeFull();
