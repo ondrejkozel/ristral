@@ -108,6 +108,7 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         menuBar.addItem("Soubor");
         menuBar.addItem("Upravit");
         menuBar.addItem("Nápověda");
+        menuBar.getItems().forEach(menuItem -> menuItem.addClickListener(event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!")));
         return menuBar;
     }
 
