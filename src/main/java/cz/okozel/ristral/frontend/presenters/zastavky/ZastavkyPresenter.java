@@ -1,8 +1,16 @@
 package cz.okozel.ristral.frontend.presenters.zastavky;
 
+import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
+import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.ZastavkaService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
@@ -15,10 +23,21 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ZastavkyPresenter extends GenericCrudPresenter<Zastavka, ZastavkyView> {
 
-    public ZastavkyPresenter(ZastavkaService zastavkaService) {
-        super(Zastavka.class, new ZastavkyDataProvider(zastavkaService));
+    TextField nazev;
+    TextArea popis;
+
+    public ZastavkyPresenter(ZastavkaService zastavkaService, PrihlasenyUzivatel prihlasenyUzivatel) {
+        //noinspection OptionalGetWithoutIsPresent
+        super(Zastavka.class, new ZastavkyDataProvider(zastavkaService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()));
     }
 
-    // TODO: 17.11.2021 Proč se grid neplní zastávkami?
-
+    @Override
+    protected CrudEditor<Zastavka> vytvorEditor() {
+        nazev = new TextField("Název");
+        popis = new TextArea("Popis");
+        FormLayout form = new FormLayout(nazev, popis);
+        Binder<Zastavka> binder = new BeanValidationBinder<>(Zastavka.class);
+        binder.bindInstanceFields(this);
+        return new BinderCrudEditor<>(binder, form);
+    }
 }

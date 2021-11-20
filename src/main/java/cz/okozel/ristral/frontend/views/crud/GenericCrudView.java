@@ -1,31 +1,54 @@
 package cz.okozel.ristral.frontend.views.crud;
 
 import com.vaadin.flow.component.crud.Crud;
-import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import cz.okozel.ristral.backend.entity.AbstractEntity;
-import cz.okozel.ristral.backend.repository.generic.GenericRepository;
-import cz.okozel.ristral.backend.service.generic.GenericService;
-import cz.okozel.ristral.frontend.presenters.crud.GenericDataProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
 
-    private Crud<T> crud = new Crud<>();
+    protected Crud<T> crud;
 
     public GenericCrudView() {
+        crud = new Crud<>();
         add(
                 vytvorMenuBar(),
                 crud
         );
     }
 
-    /**
-     * metodu volá presenter
-     */
-    public void nastavCrud(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericService<T, ? extends GenericRepository<T>>> dataProvider) {
-        crud = new Crud<>(tridaObjektu, vytvorEditor(tridaObjektu));
-        crud.setDataProvider(dataProvider);
+    public Crud<T> getCrud() {
+        return crud;
+    }
+
+    public void poInicializaci() {
+    }
+
+    public void odstranSloupceAzNa(List<String> kliceVyjimek) {
+        //kopie vyjímek pro případ, kdy do předaného seznamu nešlo přidávat objekty
+        List<String> kliceVyjimekKopie = new ArrayList<>(kliceVyjimek);
+        kliceVyjimekKopie.add("vaadin-crud-edit-column");
+        crud.getGrid().getColumns().forEach(sloupec -> {
+            if (!kliceVyjimekKopie.contains(sloupec.getKey())) crud.getGrid().removeColumn(sloupec);
+        });
+    }
+
+    public void prejmenujSloupce(Map<String, String> sloupceNaPrejmenovani) {
+        crud.getGrid().getColumns().forEach(sloupec -> {
+            if (sloupceNaPrejmenovani.containsKey(sloupec.getKey())) sloupec.setHeader(sloupceNaPrejmenovani.get(sloupec.getKey()));
+        });
+    }
+
+    public void prejmenujSloupec(String klic, String novaHlavicka) {
+        List<Grid.Column<T>> sloupce = crud.getGrid().getColumns();
+        Optional<Grid.Column<T>> kPrejmenovani = sloupce.stream().filter(sloupec -> sloupec.getKey().equals(klic)).findAny();
+        kPrejmenovani.ifPresent(sloupec -> sloupec.setHeader(novaHlavicka));
     }
 
     private MenuBar vytvorMenuBar() {
@@ -34,13 +57,6 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         menuBar.addItem("Upravit");
         menuBar.addItem("Nápověda");
         return menuBar;
-    }
-
-    /**
-     * očekává se, že je přepsána potomkem
-     */
-    protected CrudEditor<T> vytvorEditor(Class<T> tridaObjektu) {
-        return null;
     }
 
 }

@@ -4,9 +4,10 @@ import com.vaadin.flow.component.crud.CrudFilter;
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
-import cz.okozel.ristral.backend.entity.AbstractEntity;
+import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
+import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;
-import cz.okozel.ristral.backend.service.generic.GenericService;
+import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
@@ -14,23 +15,25 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class GenericDataProvider<T extends AbstractEntity, S extends GenericService<T, ? extends GenericRepository<T>>> extends AbstractBackEndDataProvider<T, CrudFilter> {
+public class GenericDataProvider<T extends AbstractSchemaEntity, S extends GenericSchemaService<T, ? extends GenericRepository<T>>> extends AbstractBackEndDataProvider<T, CrudFilter> {
 
     S service;
     private final Class<T> tridaObjektu;
+    private Schema schema;
 
     private Consumer<Long> sizeChangeListener;
 
-    public GenericDataProvider(S service, Class<T> tridaObjektu) {
+    public GenericDataProvider(S service, Class<T> tridaObjektu, Schema schema) {
         this.service = service;
         this.tridaObjektu = tridaObjektu;
+        this.schema = schema;
     }
 
     @Override
     protected Stream<T> fetchFromBackEnd(Query<T, CrudFilter> query) {
         int offset = query.getOffset();
         int limit = query.getLimit();
-        Stream<T> stream = service.findAll().stream();
+        Stream<T> stream = service.findAll(schema).stream();
         if (query.getFilter().isPresent()) {
             stream = stream
                     .filter(predicate(query.getFilter().get()))
@@ -96,6 +99,7 @@ public class GenericDataProvider<T extends AbstractEntity, S extends GenericServ
     }
 
     public void uloz(T objekt) {
+        objekt.setSchema(schema);
         service.save(objekt);
     }
 
