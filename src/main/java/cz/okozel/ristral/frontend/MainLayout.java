@@ -17,7 +17,7 @@ import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
-import cz.okozel.ristral.frontend.presenters.zastavky.ZastavkyPresenter;
+import cz.okozel.ristral.frontend.presenters.zastavky.ZastavkyCrudPresenter;
 import cz.okozel.ristral.frontend.views.oRistralu.ORistraluView;
 
 import java.util.*;
@@ -118,7 +118,7 @@ public class MainLayout extends AppLayout {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{
                 new MenuItemInfo("Vítejte", Ikona.BUS, VitejtePresenter.class),
                 new MenuItemInfo("Přehled", Ikona.GRAF, PrehledPresenter.class),
-                new MenuItemInfo("Zastávky", Ikona.ZASTAVKA, ZastavkyPresenter.class),
+                new MenuItemInfo("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
                 new MenuItemInfo("O Ristralu", Ikona.INFO, ORistraluView.class)
         };
         //

@@ -5,9 +5,9 @@ import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 
 import java.util.List;
 
-public class ZastavkyView extends GenericCrudView<Zastavka> {
+public class ZastavkyCrudView extends GenericCrudView<Zastavka> {
 
-    public ZastavkyView() {
+    public ZastavkyCrudView() {
         setCrudTexty("Nová zastávka", "Upravit zastávku", "Odstranit zastávku");
     }
 

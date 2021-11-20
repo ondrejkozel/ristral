@@ -14,21 +14,21 @@ import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.ZastavkaService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
-import cz.okozel.ristral.frontend.views.zastavky.ZastavkyView;
+import cz.okozel.ristral.frontend.views.zastavky.ZastavkyCrudView;
 
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Zastávky")
 @Route(value = "zastavky", layout = MainLayout.class)
 @PermitAll
-public class ZastavkyPresenter extends GenericCrudPresenter<Zastavka, ZastavkyView> {
+public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, ZastavkyCrudView> {
 
     TextField nazev;
     TextArea popis;
 
-    public ZastavkyPresenter(ZastavkaService zastavkaService, PrihlasenyUzivatel prihlasenyUzivatel) {
+    public ZastavkyCrudPresenter(ZastavkaService zastavkaService, PrihlasenyUzivatel prihlasenyUzivatel) {
         //noinspection OptionalGetWithoutIsPresent
-        super(Zastavka.class, new ZastavkyDataProvider(zastavkaService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()));
+        super(Zastavka.class, new ZastavkyCrudDataProvider(zastavkaService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()));
     }
 
     @Override
