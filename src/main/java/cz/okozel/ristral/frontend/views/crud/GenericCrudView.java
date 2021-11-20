@@ -106,6 +106,10 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         kPrejmenovani.ifPresent(sloupec -> sloupec.setHeader(novaHlavicka));
     }
 
+    public void setRoztahovatelneSloupce() {
+        crud.getGrid().getColumns().forEach(sloupec -> sloupec.setResizable(true));
+    }
+
     MenuItem obnovit;
 
     private MenuBar vytvorMenuBar() {
