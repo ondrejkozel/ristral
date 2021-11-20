@@ -41,8 +41,16 @@ public class Zastavka extends AbstractSchemaEntity {
         return nazev;
     }
 
+    public void setNazev(String nazev) {
+        this.nazev = nazev;
+    }
+
     public String getPopis() {
         return popis;
+    }
+
+    public void setPopis(String popis) {
+        this.popis = popis;
     }
 
     public RezimObsluhy getRezimObsluhy() {
