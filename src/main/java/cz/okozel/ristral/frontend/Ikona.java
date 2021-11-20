@@ -4,8 +4,9 @@ import com.vaadin.flow.component.html.Span;
 
 public enum Ikona {
     VITEJTE("la la-bus"),
-    O_RISTRALU("la la-info"),
-    PREHLED("la la-chart-area");
+    PREHLED("la la-chart-area"),
+    ZASTAVKY("las la-map-pin"),
+    O_RISTRALU("la la-info");
 
     private String lineAwesome;
 
