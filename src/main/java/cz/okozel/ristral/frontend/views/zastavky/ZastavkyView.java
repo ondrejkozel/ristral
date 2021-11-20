@@ -8,6 +8,7 @@ import java.util.List;
 public class ZastavkyView extends GenericCrudView<Zastavka> {
 
     public ZastavkyView() {
+        setCrudTexty("Nová zastávka", "Upravit zastávku", "Odstranit zastávku");
     }
 
     @Override

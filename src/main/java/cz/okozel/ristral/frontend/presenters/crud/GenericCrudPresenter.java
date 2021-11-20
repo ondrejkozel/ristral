@@ -22,6 +22,7 @@ public abstract class GenericCrudPresenter<T extends AbstractSchemaEntity, V ext
         crud.setDataProvider(dataProvider);
         crud.addSaveListener(event -> dataProvider.uloz(event.getItem()));
         crud.addDeleteListener(event -> dataProvider.smaz(event.getItem()));
+        getContent().nastavI18n();
     }
 
     protected abstract CrudEditor<T> vytvorEditor();
