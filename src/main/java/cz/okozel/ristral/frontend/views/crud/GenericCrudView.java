@@ -96,12 +96,6 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         });
     }
 
-    public void prejmenujSloupce(Map<String, String> sloupceNaPrejmenovani) {
-        crud.getGrid().getColumns().forEach(sloupec -> {
-            if (sloupceNaPrejmenovani.containsKey(sloupec.getKey())) sloupec.setHeader(sloupceNaPrejmenovani.get(sloupec.getKey()));
-        });
-    }
-
     public void prejmenujSloupec(String klic, String novaHlavicka) {
         List<Grid.Column<T>> sloupce = crud.getGrid().getColumns();
         Optional<Grid.Column<T>> kPrejmenovani = sloupce.stream().filter(sloupec -> sloupec.getKey().equals(klic)).findAny();
