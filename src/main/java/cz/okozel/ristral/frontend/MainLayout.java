@@ -17,7 +17,7 @@ import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
-import cz.okozel.ristral.frontend.presenters.zastavky.ZastavkyCrudPresenter;
+import cz.okozel.ristral.frontend.presenters.zastavkyCrud.ZastavkyCrudPresenter;
 import cz.okozel.ristral.frontend.views.oRistralu.ORistraluView;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package cz.okozel.ristral.frontend.presenters.zastavky;
+package cz.okozel.ristral.frontend.presenters.zastavkyCrud;
 
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;

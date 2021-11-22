@@ -1,4 +1,4 @@
-package cz.okozel.ristral.frontend.views.zastavky;
+package cz.okozel.ristral.frontend.views.zastavkyCrud;
 
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.frontend.views.crud.GenericCrudView;

@@ -1,4 +1,4 @@
-package cz.okozel.ristral.frontend.presenters.zastavky;
+package cz.okozel.ristral.frontend.presenters.zastavkyCrud;
 
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.CrudEditor;
@@ -14,7 +14,7 @@ import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.ZastavkaService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
-import cz.okozel.ristral.frontend.views.zastavky.ZastavkyCrudView;
+import cz.okozel.ristral.frontend.views.zastavkyCrud.ZastavkyCrudView;
 
 import javax.annotation.security.PermitAll;
 
