@@ -14,7 +14,6 @@ public class ZastavkyCrudView extends GenericCrudView<Zastavka> {
         odstranSloupceAzNa("nazev", "popis");
         prejmenujSloupec("nazev", "Název");
         setExpandRatioSloupce("popis", 2);
-        setRoztahovatelneSloupce();
     }
 
 }
