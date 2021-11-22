@@ -7,10 +7,7 @@ import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +38,8 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     /**
      * uživatelské jméno
      */
-    @Size(max = 50)
+    @Size(min = 3, max = 50)
+    @Pattern(regexp = "^(\\w|\\.)*$", message = "může obsahovat pouze písmena bez diakritiky, čísla, podtržítko a tečku")
     @NotBlank
     private String uzivatelskeJmeno;
 
