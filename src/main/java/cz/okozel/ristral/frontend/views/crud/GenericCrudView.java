@@ -117,8 +117,9 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         MenuBar menuBar = new MenuBar();
         MenuItem soubor = menuBar.addItem("Soubor");
         //
-//        multiVyber = soubor.getSubMenu().addItem("Vícenásobný výběr");
-//        multiVyber.setCheckable(true);
+        multiVyber = soubor.getSubMenu().addItem("Vícenásobný výběr");
+        multiVyber.setCheckable(true);
+        multiVyber.setVisible(false);
 //        soubor.getSubMenu().add(new Hr());
         //
         obnovit = soubor.getSubMenu().addItem("Obnovit");
