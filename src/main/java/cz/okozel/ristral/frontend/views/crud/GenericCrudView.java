@@ -122,7 +122,6 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
 //        soubor.getSubMenu().add(new Hr());
         //
         obnovit = soubor.getSubMenu().addItem("Obnovit");
-        obnovit.addClickShortcut(Key.of("r"));
         //
         menuBar.addItem("Upravit", event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
         //
