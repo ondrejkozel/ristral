@@ -7,6 +7,7 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudI18n;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -110,12 +111,16 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         crud.getGrid().getColumns().forEach(sloupec -> sloupec.setResizable(true));
     }
 
-    MenuItem obnovit;
+    MenuItem obnovit, multiVyber;
 
     private MenuBar vytvorMenuBar() {
         MenuBar menuBar = new MenuBar();
-        //
         MenuItem soubor = menuBar.addItem("Soubor");
+        //
+//        multiVyber = soubor.getSubMenu().addItem("Vícenásobný výběr");
+//        multiVyber.setCheckable(true);
+//        soubor.getSubMenu().add(new Hr());
+        //
         obnovit = soubor.getSubMenu().addItem("Obnovit");
         obnovit.addClickShortcut(Key.of("r"));
         //
@@ -128,4 +133,13 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
     public void addObnovitClickListener(ComponentEventListener<ClickEvent<MenuItem>> obnovitClickListener) {
         obnovit.addClickListener(obnovitClickListener);
     }
+
+    public void addVicenasobnyVyberClickListener(ComponentEventListener<ClickEvent<MenuItem>> vicenasobnyVyberClickListener) {
+        multiVyber.addClickListener(vicenasobnyVyberClickListener);
+    }
+
+    public void setVicenasobnyVyberChecked(boolean vybrano) {
+        multiVyber.setChecked(vybrano);
+    }
+
 }
