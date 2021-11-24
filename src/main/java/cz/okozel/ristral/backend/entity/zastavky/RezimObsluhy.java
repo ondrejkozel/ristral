@@ -17,8 +17,10 @@ import java.util.Set;
 @Table(name = "rezimy_obsluhy")
 public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy.PeriodaNaZnameni> {
 
-    public static RezimObsluhy vytvorRezimBezZnameni(Schema schema) {
-        return new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
+    public static RezimObsluhy vytvorVychoziRezimBezZnameni(Schema schema) {
+        RezimObsluhy rezimObsluhy = new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
+        rezimObsluhy.smazatelny = false;
+        return rezimObsluhy;
     }
 
     @Size(max = 50)
@@ -31,6 +33,8 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
 
     @OneToMany(mappedBy = "rezimObsluhy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeriodaNaZnameni> periodyNaZnameni;
+
+    private boolean smazatelny = true;
 
     public RezimObsluhy() {}
 
@@ -56,12 +60,16 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     /**
      * funkce vytvoří garbage
      */
-    public void removeZnameni(PeriodaNaZnameni periodaNaZnameni) {
+    public void odstranPerioduNaZnameni(PeriodaNaZnameni periodaNaZnameni) {
         vynutNepritomnostSpojeni(periodaNaZnameni);
     }
 
-    public void clearZnameni() {
+    public void clearPeriodyNaZnameni() {
         periodyNaZnameni.clear();
+    }
+
+    public boolean isSmazatelny() {
+        return smazatelny;
     }
 
     @Override
@@ -71,7 +79,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
 
     @Override
     public void navazSpojeniS(PeriodaNaZnameni objekt) {
-        periodyNaZnameni.add((PeriodaNaZnameni) objekt);
+        periodyNaZnameni.add(objekt);
     }
 
     @Override
@@ -133,6 +141,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         public void rozvazSpojeniS(RezimObsluhy objekt) {
             rezimObsluhy = null;
         }
+
     }
 
 }
