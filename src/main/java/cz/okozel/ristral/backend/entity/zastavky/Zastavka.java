@@ -22,6 +22,7 @@ public class Zastavka extends AbstractSchemaEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn
+    @NotNull
     private RezimObsluhy rezimObsluhy;
 
     public Zastavka() {}
