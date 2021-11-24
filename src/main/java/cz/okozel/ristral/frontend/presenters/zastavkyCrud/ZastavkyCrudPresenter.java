@@ -4,6 +4,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -29,7 +30,7 @@ import javax.annotation.security.PermitAll;
 public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, ZastavkyCrudView> {
 
     TextField nazev;
-    ComboBox<RezimObsluhy> rezimObsluhy;
+    Select<RezimObsluhy> rezimObsluhy;
     TextArea popis;
 
     private final Schema schema;
@@ -47,8 +48,8 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
         nazev = new TextField("Název");
         nazev.setRequired(true);
         //
-        rezimObsluhy = new ComboBox<>("Režim obsluhy");
-        rezimObsluhy.setRequired(true);
+        rezimObsluhy = new Select<>();
+        rezimObsluhy.setLabel("Režim obsluhy");
         //
         popis = new TextArea("Popis");
         //
@@ -59,7 +60,7 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
     }
 
     @PostConstruct
-    public void naplnComboBox() {
+    public void naplnSelect() {
         rezimObsluhy.setItems(rezimObsluhyService.findAll(schema));
     }
 
