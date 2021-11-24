@@ -87,6 +87,11 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         periodyNaZnameni.remove(objekt);
     }
 
+    @Override
+    public String toString() {
+        return nazev;
+    }
+
     @Entity
     @Table(name = "periody_na_znameni")
     public static class PeriodaNaZnameni extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy> {
