@@ -1,7 +1,7 @@
 package cz.okozel.ristral.backend.security;
 
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
-import cz.okozel.ristral.backend.service.UzivatelService;
+import cz.okozel.ristral.backend.service.entity.UzivatelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

@@ -11,7 +11,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
-import cz.okozel.ristral.backend.service.ZastavkaService;
+import cz.okozel.ristral.backend.service.entity.ZastavkaService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
 import cz.okozel.ristral.frontend.views.zastavkyCrud.ZastavkyCrudView;

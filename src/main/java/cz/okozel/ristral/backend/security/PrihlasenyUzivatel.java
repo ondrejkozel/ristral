@@ -3,7 +3,7 @@ package cz.okozel.ristral.backend.security;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
-import cz.okozel.ristral.backend.service.UzivatelService;
+import cz.okozel.ristral.backend.service.entity.UzivatelService;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.service.generic;
+package cz.okozel.ristral.backend.service.entity.generic;
 
 import cz.okozel.ristral.backend.entity.AbstractEntity;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;

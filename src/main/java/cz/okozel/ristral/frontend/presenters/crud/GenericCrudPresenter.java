@@ -5,7 +5,7 @@ import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.grid.Grid;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;
-import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
+import cz.okozel.ristral.backend.service.entity.generic.GenericSchemaService;
 import cz.okozel.ristral.frontend.presenters.Presenter;
 import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 

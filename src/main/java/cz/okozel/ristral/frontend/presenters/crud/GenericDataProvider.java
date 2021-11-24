@@ -7,7 +7,7 @@ import com.vaadin.flow.data.provider.SortDirection;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;
-import cz.okozel.ristral.backend.service.generic.GenericSchemaService;
+import cz.okozel.ristral.backend.service.entity.generic.GenericSchemaService;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
