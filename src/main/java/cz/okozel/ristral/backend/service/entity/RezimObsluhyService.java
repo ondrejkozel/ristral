@@ -15,11 +15,11 @@ public class RezimObsluhyService extends GenericSchemaService<RezimObsluhy, Rezi
 
     @Override
     public void delete(RezimObsluhy objekt) {
-        if (objekt.isSmazatelny()) super.delete(objekt);
+        if (objekt.isUpravitelny()) super.delete(objekt);
     }
 
     public RezimObsluhy findVychoziRezim(Schema schema) {
-        return hlavniRepositar.findBySchemaEqualsAndAndSmazatelny(schema, false);
+        return hlavniRepositar.findBySchemaEqualsAndUpravitelny(schema, false);
     }
 
 }

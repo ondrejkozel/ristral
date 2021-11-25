@@ -19,7 +19,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
 
     public static RezimObsluhy vytvorVychoziRezimBezZnameni(Schema schema) {
         RezimObsluhy rezimObsluhy = new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
-        rezimObsluhy.smazatelny = false;
+        rezimObsluhy.upravitelny = false;
         return rezimObsluhy;
     }
 
@@ -34,7 +34,7 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     @OneToMany(mappedBy = "rezimObsluhy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PeriodaNaZnameni> periodyNaZnameni;
 
-    private boolean smazatelny = true;
+    private boolean upravitelny = true;
 
     public RezimObsluhy() {}
 
@@ -68,8 +68,8 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         periodyNaZnameni.clear();
     }
 
-    public boolean isSmazatelny() {
-        return smazatelny;
+    public boolean isUpravitelny() {
+        return upravitelny;
     }
 
     @Override
