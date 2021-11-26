@@ -1,6 +1,7 @@
 package cz.okozel.ristral.frontend.presenters.crud;
 
 import com.vaadin.flow.component.crud.CrudFilter;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
@@ -17,9 +18,9 @@ import java.util.stream.Stream;
 
 public class GenericDataProvider<T extends AbstractSchemaEntity, S extends GenericSchemaService<T, ? extends GenericRepository<T>>> extends AbstractBackEndDataProvider<T, CrudFilter> {
 
-    S service;
+    protected S service;
     private final Class<T> tridaObjektu;
-    private Schema schema;
+    protected Schema schema;
 
     private Consumer<Long> sizeChangeListener;
 
@@ -101,10 +102,12 @@ public class GenericDataProvider<T extends AbstractSchemaEntity, S extends Gener
     public void uloz(T objekt) {
         objekt.setSchema(schema);
         service.save(objekt);
+        Notification.show("Uloženo.");
     }
 
     public void smaz(T objekt) {
         service.delete(objekt);
+        Notification.show("Smazáno.");
     }
 
 }

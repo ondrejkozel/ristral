@@ -49,8 +49,16 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         return nazev;
     }
 
+    public void setNazev(String nazev) {
+        this.nazev = nazev;
+    }
+
     public String getPopis() {
         return popis;
+    }
+
+    public void setPopis(String popis) {
+        this.popis = popis;
     }
 
     public void addZnameni(PeriodaNaZnameni periodaNaZnameni) {
