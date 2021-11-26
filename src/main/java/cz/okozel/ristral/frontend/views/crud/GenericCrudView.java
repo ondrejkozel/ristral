@@ -2,7 +2,6 @@ package cz.okozel.ristral.frontend.views.crud;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudI18n;
@@ -111,11 +110,12 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         crud.getGrid().getColumns().forEach(sloupec -> sloupec.setResizable(true));
     }
 
-    MenuItem obnovit, multiVyber;
+    private MenuItem soubor;
+    private MenuItem obnovit, multiVyber;
 
     private MenuBar vytvorMenuBar() {
         MenuBar menuBar = new MenuBar();
-        MenuItem soubor = menuBar.addItem("Soubor");
+        soubor = menuBar.addItem("Soubor");
         //
         multiVyber = soubor.getSubMenu().addItem("Vícenásobný výběr");
         multiVyber.setCheckable(true);
@@ -128,6 +128,22 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         //
         menuBar.addItem("Nápověda", event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
         return menuBar;
+    }
+
+    public void pridejMenuItemPodSoubor(String text, ComponentEventListener<ClickEvent<MenuItem>> listener, boolean checkable) {
+        pridejMenuItemPodMenuItem(soubor, text, listener, checkable);
+    }
+
+    private void pridejMenuItemPodMenuItem(MenuItem menuItem, String text, ComponentEventListener<ClickEvent<MenuItem>> listener, boolean checkable) {
+        menuItem.getSubMenu().addItem(text, listener).setCheckable(checkable);
+    }
+
+    public void pridejHrPodSoubor() {
+        pridejHrPodMenuItem(soubor);
+    }
+
+    private void pridejHrPodMenuItem(MenuItem menuItem) {
+        menuItem.getSubMenu().add(new Hr());
     }
 
     public void addObnovitClickListener(ComponentEventListener<ClickEvent<MenuItem>> obnovitClickListener) {
