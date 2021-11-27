@@ -27,6 +27,16 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     public RezimyObsluhyCrudPresenter(RezimObsluhyService rezimObsluhyService, PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService) {
         //noinspection OptionalGetWithoutIsPresent
         super(RezimObsluhy.class, new RezimyObsluhyCrudDataProvider(rezimObsluhyService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema(), zastavkaService));
+        getContent().getCrud().addEditListener(event -> {
+            boolean upravitelny = event.getItem().isUpravitelny();
+            nazev.setReadOnly(!upravitelny);
+            popis.setReadOnly(!upravitelny);
+            getContent().getCrud().getDeleteButton().setEnabled(upravitelny);
+        });
+        getContent().getCrud().addNewListener(event -> {
+            nazev.setReadOnly(false);
+            popis.setReadOnly(false);
+        });
     }
 
     TextField nazev;
