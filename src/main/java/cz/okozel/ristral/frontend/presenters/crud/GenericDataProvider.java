@@ -102,12 +102,10 @@ public class GenericDataProvider<T extends AbstractSchemaEntity, S extends Gener
     public void uloz(T objekt) {
         objekt.setSchema(schema);
         service.save(objekt);
-        Notification.show("Uloženo.");
     }
 
     public void smaz(T objekt) {
         service.delete(objekt);
-        Notification.show("Smazáno.");
     }
 
 }
