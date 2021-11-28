@@ -9,6 +9,7 @@ import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.backend.repository.AktivitaRepository;
+import cz.okozel.ristral.backend.repository.PeriodaNaZnameniRepository;
 import cz.okozel.ristral.backend.repository.VozidloRepository;
 import cz.okozel.ristral.backend.repository.ZastavkaRepository;
 import cz.okozel.ristral.backend.service.RegistratorService;
@@ -27,7 +28,7 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, RezimObsluhyService rezimObsluhyService) {
+    public CommandLineRunner generateDemonstrativeData(VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, RezimObsluhyService rezimObsluhyService, PeriodaNaZnameniRepository periodaNaZnameniRepository) {
         return args -> {
             final UzivatelOrg uzivatel1 = new UzivatelOrg("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistruj(uzivatel1);
@@ -63,13 +64,15 @@ public class DataGenerator {
                 Set<DayOfWeek> dny = new HashSet<>();
                 dny.add(DayOfWeek.SATURDAY);
                 dny.add(DayOfWeek.SUNDAY);
-                naZnameniOVikendu.addZnameni(new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6,0), dny, uzivatel1.getSchema()));
+                RezimObsluhy.PeriodaNaZnameni periodaNaZnameni = new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6, 0), dny, uzivatel1.getSchema());
+                periodaNaZnameni.setRezimObsluhy(naZnameniOVikendu);
                 //
                 zastavkaRepository.saveAll(List.of(
                         new Zastavka("Ríšova", "", naZnameniOVikendu, uzivatel1.getSchema())
                         // TODO: 24.11.2021 tady to háže výjimku detached entity passed to persist
 //                        new Zastavka("Bartolomějská", "", rezimObsluhyService.findVychoziRezim(uzivatel1.getSchema()), uzivatel1.getSchema())
                 ));
+                periodaNaZnameniRepository.save(periodaNaZnameni);
             }
         };
     }

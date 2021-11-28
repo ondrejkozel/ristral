@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "rezimy_obsluhy")
-public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy.PeriodaNaZnameni> {
+public class RezimObsluhy extends AbstractSchemaEntity {
 
     public static RezimObsluhy vytvorVychoziRezimBezZnameni(Schema schema) {
         RezimObsluhy rezimObsluhy = new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
@@ -31,9 +31,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
     @NotNull
     private String popis;
 
-    @OneToMany(mappedBy = "rezimObsluhy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<PeriodaNaZnameni> periodyNaZnameni;
-
     private boolean upravitelny = true;
 
     public RezimObsluhy() {}
@@ -42,7 +39,6 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
-        this.periodyNaZnameni = new HashSet<>();
     }
 
     public String getNazev() {
@@ -61,38 +57,8 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         this.popis = popis;
     }
 
-    public void addZnameni(PeriodaNaZnameni periodaNaZnameni) {
-        vynutPritomnostSpojeni(periodaNaZnameni);
-    }
-
-    /**
-     * funkce vytvoří garbage
-     */
-    public void odstranPerioduNaZnameni(PeriodaNaZnameni periodaNaZnameni) {
-        vynutNepritomnostSpojeni(periodaNaZnameni);
-    }
-
-    public void clearPeriodyNaZnameni() {
-        periodyNaZnameni.clear();
-    }
-
     public boolean isUpravitelny() {
         return upravitelny;
-    }
-
-    @Override
-    public boolean overSpojeniS(PeriodaNaZnameni objekt) {
-        return periodyNaZnameni.contains(objekt);
-    }
-
-    @Override
-    public void navazSpojeniS(PeriodaNaZnameni objekt) {
-        periodyNaZnameni.add(objekt);
-    }
-
-    @Override
-    public void rozvazSpojeniS(PeriodaNaZnameni objekt) {
-        periodyNaZnameni.remove(objekt);
     }
 
     @Override
@@ -100,9 +66,9 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
         return nazev;
     }
 
-    @Entity
+    @Entity(name = "PeriodaNaZnameni")
     @Table(name = "periody_na_znameni")
-    public static class PeriodaNaZnameni extends AbstractSchemaEntity implements NavazujeObousmernyVztah<RezimObsluhy> {
+    public static class PeriodaNaZnameni extends AbstractSchemaEntity {
 
         @ManyToOne
         @JoinColumn
@@ -128,33 +94,47 @@ public class RezimObsluhy extends AbstractSchemaEntity implements NavazujeObousm
             this.dnyNaZnameni = dnyNaZnameni;
         }
 
+        public RezimObsluhy getRezimObsluhy() {
+            return rezimObsluhy;
+        }
+
+        public void setRezimObsluhy(RezimObsluhy rezimObsluhy) {
+            this.rezimObsluhy = rezimObsluhy;
+        }
+
         public LocalTime getNaZnameniOd() {
             return naZnameniOd;
+        }
+
+        public void setNaZnameniOd(LocalTime naZnameniOd) {
+            this.naZnameniOd = naZnameniOd;
         }
 
         public LocalTime getNaZnameniDo() {
             return naZnameniDo;
         }
 
+        public void setNaZnameniDo(LocalTime naZnameniDo) {
+            this.naZnameniDo = naZnameniDo;
+        }
+
         public Set<DayOfWeek> getDnyNaZnameni() {
             return dnyNaZnameni;
         }
 
-        @Override
-        public boolean overSpojeniS(RezimObsluhy objekt) {
-            return rezimObsluhy != null && rezimObsluhy.equals(objekt);
+        public void setDnyNaZnameni(Set<DayOfWeek> dnyNaZnameni) {
+            this.dnyNaZnameni = dnyNaZnameni;
         }
 
         @Override
-        public void navazSpojeniS(RezimObsluhy objekt) {
-            rezimObsluhy = objekt;
+        public String toString() {
+            return "PeriodaNaZnameni{" +
+                    "rezimObsluhy=" + rezimObsluhy +
+                    ", naZnameniOd=" + naZnameniOd +
+                    ", naZnameniDo=" + naZnameniDo +
+                    ", dnyNaZnameni=" + dnyNaZnameni +
+                    '}';
         }
-
-        @Override
-        public void rozvazSpojeniS(RezimObsluhy objekt) {
-            rezimObsluhy = null;
-        }
-
     }
 
 }

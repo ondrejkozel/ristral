@@ -13,10 +13,13 @@ public abstract class GenericCrudPresenter<T extends AbstractSchemaEntity, V ext
 
     private boolean vicenasobnyVyber = false;
 
+    // TODO: 26.11.2021 aby si to automaticky vytáhlo schéma
+
     public GenericCrudPresenter(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericSchemaService<T, ? extends GenericRepository<T>>> dataProvider) {
         nastavCrud(tridaObjektu, dataProvider, vytvorEditor());
         getContent().poInicializaci();
         getContent().addObnovitClickListener(event -> dataProvider.refreshAll());
+        //// TODO: 26.11.2021 má cenu obnovovat i editor?
         getContent().addVicenasobnyVyberClickListener(event -> toggleVicenasobnyVyber());
     }
 
