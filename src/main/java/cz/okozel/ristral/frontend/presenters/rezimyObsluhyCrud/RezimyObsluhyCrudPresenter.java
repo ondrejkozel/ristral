@@ -1,10 +1,14 @@
 package cz.okozel.ristral.frontend.presenters.rezimyObsluhyCrud;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.gridpro.ItemUpdater;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -13,8 +17,10 @@ import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.data.renderer.TextRenderer;
+import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
@@ -30,6 +36,7 @@ import javax.annotation.security.PermitAll;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @PageTitle("Režimy obsluhy")
@@ -37,22 +44,36 @@ import java.util.stream.Collectors;
 @PermitAll
 public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluhy, RezimyObsluhyCrudView> {
 
+    private final List<RezimObsluhy.PeriodaNaZnameni> keSmazani = new ArrayList<>();
+
     public RezimyObsluhyCrudPresenter(RezimObsluhyService rezimObsluhyService, PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService) {
         //noinspection OptionalGetWithoutIsPresent
         super(RezimObsluhy.class, new RezimyObsluhyCrudDataProvider(rezimObsluhyService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema(), zastavkaService, periodaNaZnameniService));
+        //
+        getContent().getCrud().addNewListener(event -> {
+            nazev.setReadOnly(false);
+            popis.setReadOnly(false);
+        });
+        getContent().getCrud().addNewListener(event -> {
+            naplnGridPro(null, null);
+            vyprazdniKeSmazani();
+        });
+        //
         getContent().getCrud().addEditListener(event -> {
             boolean upravitelny = event.getItem().isUpravitelny();
             nazev.setReadOnly(!upravitelny);
             popis.setReadOnly(!upravitelny);
             getContent().getCrud().getDeleteButton().setEnabled(upravitelny);
         });
-        getContent().getCrud().addEditListener(event -> naplnGridPro(event.getItem(), periodaNaZnameniService));
-        getContent().getCrud().addNewListener(event -> {
-            nazev.setReadOnly(false);
-            popis.setReadOnly(false);
+        getContent().getCrud().addEditListener(event -> {
+            naplnGridPro(event.getItem(), periodaNaZnameniService);
+            vyprazdniKeSmazani();
         });
-        getContent().getCrud().addNewListener(event -> naplnGridPro(null, null));
-        getContent().getCrud().addSaveListener(event -> ulozGridPro(periodaNaZnameniService));
+        //
+        getContent().getCrud().addSaveListener(event -> {
+            ulozGridPro(periodaNaZnameniService);
+            vymazKeSmazani(periodaNaZnameniService);
+        });
     }
 
     TextField nazev;
@@ -100,7 +121,37 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
                 .custom(dnyVTydnuListBox, RezimObsluhy.PeriodaNaZnameni::setDnyNaZnameni)
                 .setHeader("Dny").setFlexGrow(4);
         //
+        periodaNaZnameniGridPro.addColumn(new ComponentRenderer<>((SerializableFunction<RezimObsluhy.PeriodaNaZnameni, Button>) this::vytvorOdstranitPerioduNaZnameniButton))
+                .setAutoWidth(true)
+                .setFlexGrow(0);
+        //
         return periodaNaZnameniGridPro;
+    }
+
+    private Button vytvorOdstranitPerioduNaZnameniButton(RezimObsluhy.PeriodaNaZnameni periodaNaZnameni) {
+        Icon icon = VaadinIcon.CLOSE_BIG.create();
+        icon.setColor("red");
+        Button button = new Button(icon);
+        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        //
+        button.addClickListener(event -> odstranPerioduNaZnameniZGridPro(periodaNaZnameni));
+        return button;
+    }
+
+    private void odstranPerioduNaZnameniZGridPro(RezimObsluhy.PeriodaNaZnameni periodaNaZnameni) {
+        List<RezimObsluhy.PeriodaNaZnameni> periodyNaZnameni = getPolozkyGridPro();
+        periodyNaZnameni.remove(periodaNaZnameni);
+        keSmazani.add(periodaNaZnameni);
+        periodaNaZnameniGridPro.setItems(periodyNaZnameni);
+        getContent().getCrud().setDirty(true);
+    }
+
+    private void vymazKeSmazani(PeriodaNaZnameniService periodaNaZnameniService) {
+        keSmazani.forEach(periodaNaZnameniService::delete);
+    }
+
+    private void vyprazdniKeSmazani() {
+        keSmazani.clear();
     }
 
     private ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> pokudJeValidniTakProved(ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> neco) {
@@ -119,7 +170,11 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     }
 
     private void ulozGridPro(PeriodaNaZnameniService periodaNaZnameniService) {
-        periodaNaZnameniService.saveAll(periodaNaZnameniGridPro.getDataProvider().fetch(new Query<>()).collect(Collectors.toList()));
+        periodaNaZnameniService.saveAll(getPolozkyGridPro());
+    }
+
+    private List<RezimObsluhy.PeriodaNaZnameni> getPolozkyGridPro() {
+        return periodaNaZnameniGridPro.getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
     }
 
 }
