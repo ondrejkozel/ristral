@@ -4,7 +4,9 @@ import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.gridpro.GridPro;
+import com.vaadin.flow.component.gridpro.ItemUpdater;
 import com.vaadin.flow.component.listbox.MultiSelectListBox;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
@@ -26,6 +28,7 @@ import cz.okozel.ristral.frontend.views.rezimyObsluhyCrud.RezimyObsluhyCrudView;
 
 import javax.annotation.security.PermitAll;
 import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -80,13 +83,13 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         TimePicker odTimePicker = new TimePicker();
         odTimePicker.setSizeFull();
         periodaNaZnameniGridPro.addEditColumn(RezimObsluhy.PeriodaNaZnameni::getNaZnameniOd)
-                .custom(odTimePicker, RezimObsluhy.PeriodaNaZnameni::setNaZnameniOd)
+                .custom(odTimePicker, pokudJeValidniTakProved(RezimObsluhy.PeriodaNaZnameni::setNaZnameniOd))
                 .setHeader("Od").setAutoWidth(true);
         //
         TimePicker doTimePicker = new TimePicker();
         doTimePicker.setSizeFull();
         periodaNaZnameniGridPro.addEditColumn(RezimObsluhy.PeriodaNaZnameni::getNaZnameniDo)
-                .custom(doTimePicker, RezimObsluhy.PeriodaNaZnameni::setNaZnameniDo)
+                .custom(doTimePicker, pokudJeValidniTakProved(RezimObsluhy.PeriodaNaZnameni::setNaZnameniDo))
                 .setHeader("Do").setAutoWidth(true);
         //
         Renderer<RezimObsluhy.PeriodaNaZnameni> dnyNaZnameniRenderer = new TextRenderer<>(item -> item.getDnyNaZnameni().toString());
@@ -98,6 +101,13 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
                 .setHeader("Dny").setFlexGrow(4);
         //
         return periodaNaZnameniGridPro;
+    }
+
+    private ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> pokudJeValidniTakProved(ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> neco) {
+        return (item, newValue) -> {
+            if (newValue != null) neco.accept(item, newValue);
+            else Notification.show("Byla zadána neplatná hodnota.");
+        };
     }
 
     private void naplnGridPro(RezimObsluhy aktRezimObsluhy, PeriodaNaZnameniService periodaNaZnameniService) {
