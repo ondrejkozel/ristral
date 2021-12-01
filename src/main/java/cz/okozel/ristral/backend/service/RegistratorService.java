@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class RegistratorService {
 
-    Logger logger = LoggerFactory.getLogger(RegistratorService.class);
-
     private final UzivatelService uzivatelService;
     private final SchemaService schemaService;
     private final RezimObsluhyService rezimObsluhyService;
@@ -38,8 +36,6 @@ public class RegistratorService {
         uzivatelService.save(uzivatel);
         //
         rezimObsluhyService.save(RezimObsluhy.vytvorVychoziRezimBezZnameni(schema));
-        //
-        logger.info("Byl vytvořen nový uživatel " + uzivatel.getUzivatelskeJmeno());
         return true;
     }
 
