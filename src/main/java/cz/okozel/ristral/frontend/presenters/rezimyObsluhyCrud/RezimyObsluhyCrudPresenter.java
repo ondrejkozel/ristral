@@ -3,6 +3,7 @@ package cz.okozel.ristral.frontend.presenters.rezimyObsluhyCrud;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.gridpro.GridPro;
@@ -54,32 +55,27 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         super(RezimObsluhy.class, new RezimyObsluhyCrudDataProvider(rezimObsluhyService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema(), zastavkaService, periodaNaZnameniService));
         //
         aktSchema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
-        getContent().getCrud().addNewListener(event -> {
-            nazev.setReadOnly(false);
-            popis.setReadOnly(false);
-            pridatPerioduNaZnameniButton.setEnabled(true);
-        });
-        getContent().getCrud().addNewListener(event -> {
-            naplnGridPro(null, null);
-            vyprazdniKeSmazani();
-        });
+        getContent().getCrud().addNewListener(event -> nastavUpravitelnostPrvkuFormulare(true));
+        getContent().getCrud().addNewListener(event -> naplnGridPro(null, null));
         //
-        getContent().getCrud().addEditListener(event -> {
-            boolean upravitelny = event.getItem().isUpravitelny();
-            nazev.setReadOnly(!upravitelny);
-            popis.setReadOnly(!upravitelny);
-            getContent().getCrud().getDeleteButton().setEnabled(upravitelny);
-            pridatPerioduNaZnameniButton.setEnabled(upravitelny);
-        });
-        getContent().getCrud().addEditListener(event -> {
-            naplnGridPro(event.getItem(), periodaNaZnameniService);
-            vyprazdniKeSmazani();
-        });
+        getContent().getCrud().addEditListener(this::nastavUpravitelnostPrvkuFormulare);
+        getContent().getCrud().addEditListener(event -> naplnGridPro(event.getItem(), periodaNaZnameniService));
         //
-        getContent().getCrud().addSaveListener(event -> {
-            ulozGridPro(periodaNaZnameniService);
-            vymazKeSmazani(periodaNaZnameniService);
-        });
+        getContent().getCrud().addSaveListener(event -> ulozGridPro(periodaNaZnameniService));
+        getContent().getCrud().addSaveListener(event -> vymazKeSmazani(periodaNaZnameniService));
+        //
+        getContent().getCrud().addCancelListener(event -> vyprazdniKeSmazani());
+    }
+
+    private void nastavUpravitelnostPrvkuFormulare(Crud.EditEvent<RezimObsluhy> event) {
+        nastavUpravitelnostPrvkuFormulare(event.getItem().isUpravitelny());
+    }
+
+    private void nastavUpravitelnostPrvkuFormulare(boolean upravitelny) {
+        nazev.setReadOnly(!upravitelny);
+        popis.setReadOnly(!upravitelny);
+        getContent().getCrud().getDeleteButton().setEnabled(upravitelny);
+        pridatPerioduNaZnameniButton.setEnabled(upravitelny);
     }
 
     private TextField nazev;
