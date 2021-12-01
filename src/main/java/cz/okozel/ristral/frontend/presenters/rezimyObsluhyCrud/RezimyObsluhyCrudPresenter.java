@@ -11,6 +11,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.listbox.MultiSelectListBox;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
@@ -23,6 +24,7 @@ import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.entity.PeriodaNaZnameniService;
@@ -45,14 +47,17 @@ import java.util.stream.Collectors;
 public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluhy, RezimyObsluhyCrudView> {
 
     private final List<RezimObsluhy.PeriodaNaZnameni> keSmazani = new ArrayList<>();
+    private final Schema aktSchema;
 
     public RezimyObsluhyCrudPresenter(RezimObsluhyService rezimObsluhyService, PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService) {
         //noinspection OptionalGetWithoutIsPresent
         super(RezimObsluhy.class, new RezimyObsluhyCrudDataProvider(rezimObsluhyService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema(), zastavkaService, periodaNaZnameniService));
         //
+        aktSchema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
         getContent().getCrud().addNewListener(event -> {
             nazev.setReadOnly(false);
             popis.setReadOnly(false);
+            pridatPerioduNaZnameniButton.setEnabled(true);
         });
         getContent().getCrud().addNewListener(event -> {
             naplnGridPro(null, null);
@@ -64,6 +69,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
             nazev.setReadOnly(!upravitelny);
             popis.setReadOnly(!upravitelny);
             getContent().getCrud().getDeleteButton().setEnabled(upravitelny);
+            pridatPerioduNaZnameniButton.setEnabled(upravitelny);
         });
         getContent().getCrud().addEditListener(event -> {
             naplnGridPro(event.getItem(), periodaNaZnameniService);
@@ -79,6 +85,8 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     TextField nazev;
     TextArea popis;
 
+    Button pridatPerioduNaZnameniButton;
+
     @Override
     protected CrudEditor<RezimObsluhy> vytvorEditor() {
         nazev = new TextField("Název");
@@ -86,9 +94,14 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         //
         popis = new TextArea("Popis");
         //
-        GridPro<RezimObsluhy.PeriodaNaZnameni> periodyNaZnameni = buildPeriodyNaZnameniGrid();
+        buildPridatPerioduButton();
+        VerticalLayout periodyLayout = new VerticalLayout(buildPeriodyNaZnameniGrid(), pridatPerioduNaZnameniButton);
+        periodyLayout.setPadding(false);
         //
-        FormLayout form = new FormLayout(nazev, popis, periodyNaZnameni);
+        FormLayout form = new FormLayout(nazev, popis);
+        form.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP));
+        form.addFormItem(periodyLayout, "Periody na znamení");
+        //
         Binder<RezimObsluhy> binder = new BeanValidationBinder<>(RezimObsluhy.class);
         binder.bindInstanceFields(this);
         return new BinderCrudEditor<>(binder, form);
@@ -147,11 +160,24 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     }
 
     private void vymazKeSmazani(PeriodaNaZnameniService periodaNaZnameniService) {
-        keSmazani.forEach(periodaNaZnameniService::delete);
+        keSmazani.forEach(objekt -> {
+            if (objekt.isPersisted()) periodaNaZnameniService.delete(objekt);
+        });
     }
 
     private void vyprazdniKeSmazani() {
         keSmazani.clear();
+    }
+
+    private void buildPridatPerioduButton() {
+        pridatPerioduNaZnameniButton = new Button("Přidat periodu na znamení", VaadinIcon.PLUS.create());
+        pridatPerioduNaZnameniButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        pridatPerioduNaZnameniButton.addClickListener(event -> {
+            List<RezimObsluhy.PeriodaNaZnameni> polozkyGridPro = getPolozkyGridPro();
+            polozkyGridPro.add(RezimObsluhy.PeriodaNaZnameni.vytvorVychoziPerioduNaZnameni(aktSchema, getContent().getCrud().getEditor().getItem()));
+            periodaNaZnameniGridPro.setItems(polozkyGridPro);
+            getContent().getCrud().setDirty(true);
+        });
     }
 
     private ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> pokudJeValidniTakProved(ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> neco) {
