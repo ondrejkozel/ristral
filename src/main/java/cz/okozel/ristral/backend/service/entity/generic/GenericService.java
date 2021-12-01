@@ -41,4 +41,8 @@ public abstract class GenericService<T extends AbstractEntity, R extends Generic
         hlavniRepositar.delete(objekt);
     }
 
+    public void deleteAll(Iterable<T> objekty) {
+        hlavniRepositar.deleteAll(objekty);
+    }
+
 }

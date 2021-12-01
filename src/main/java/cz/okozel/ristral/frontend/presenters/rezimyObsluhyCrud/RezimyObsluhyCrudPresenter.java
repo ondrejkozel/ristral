@@ -161,8 +161,10 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
 
     private void vymazKeSmazani(PeriodaNaZnameniService periodaNaZnameniService) {
         keSmazani.forEach(objekt -> {
-            if (objekt.isPersisted()) periodaNaZnameniService.delete(objekt);
+            if (!objekt.isPersisted()) keSmazani.remove(objekt);
         });
+        periodaNaZnameniService.deleteAll(keSmazani);
+        vyprazdniKeSmazani();
     }
 
     private void vyprazdniKeSmazani() {
