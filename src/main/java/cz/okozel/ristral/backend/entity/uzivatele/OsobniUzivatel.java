@@ -13,8 +13,8 @@ public class OsobniUzivatel extends AdminOrg {
         super();
     }
 
-    public OsobniUzivatel(String jmeno, String email, String heslo, Schema schema) {
-        super(jmeno, email, heslo, schema);
+    public OsobniUzivatel(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
+        super(uzivatelskeJmeno, jmeno, email, heslo, schema);
     }
 
 }

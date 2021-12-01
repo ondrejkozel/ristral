@@ -2,18 +2,10 @@ package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.schema.Schema;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.validation.constraints.*;
 
 /**
  * Třída reprezentující jakéhokoliv registrovaného uživatele.
@@ -22,7 +14,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeObousmernyVztah<Aktivita> {
+public abstract class Uzivatel extends AbstractSchemaEntity {
 
     /**
      * jméno uživatele
@@ -39,14 +31,19 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     private String email;
 
     /**
+     * uživatelské jméno
+     */
+    @Size(min = 3, max = 50)
+    @Pattern(regexp = "^(\\w|\\.)*$", message = "může obsahovat pouze písmena bez diakritiky, čísla, podtržítko a tečku")
+    @NotBlank
+    private String uzivatelskeJmeno;
+
+    /**
      * uživatelovo zahashované heslo
      */
     @NotNull
     @JsonIgnore
     private String heslo;
-
-    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL)
-    private List<Aktivita> aktivity;
 
     /**
      * Vytvoří novou instanci čistého uživatele.
@@ -55,17 +52,18 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
 
     /**
      * Vytvoří novou instanci uživatele.
+     * @param uzivatelskeJmeno uživatelské jméno
      * @param jmeno křestní a příjmení
      * @param email emailová adresa
      * @param heslo zahashované heslo
      * @param schema schéma, ve kterém se má nový uživatel nacházet
      */
-    public Uzivatel(String jmeno, String email, String heslo, Schema schema) {
+    public Uzivatel(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
         super(schema);
+        this.uzivatelskeJmeno = uzivatelskeJmeno;
         this.jmeno = jmeno;
         this.email = email;
         this.heslo = heslo;
-        this.aktivity = new ArrayList<>();
     }
 
     public String getJmeno() {
@@ -88,23 +86,25 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         return Role.getRole(this.getClass());
     }
 
-    public List<Aktivita> getAktivity() {
-        return Collections.unmodifiableList(aktivity);
+    public boolean isAtLeastAdmin() {
+        Role role = getRole();
+        return role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG;
     }
 
-    @Override
-    public boolean overSpojeniS(Aktivita objekt) {
-        return aktivity.contains(objekt);
+    public String getUzivatelskeJmeno() {
+        return uzivatelskeJmeno;
     }
 
-    @Override
-    public void navazSpojeniS(Aktivita objekt) {
-        aktivity.add(objekt);
+    public void setUzivatelskeJmeno(String uzivatelskeJmeno) {
+        this.uzivatelskeJmeno = uzivatelskeJmeno;
     }
 
-    @Override
-    public void rozvazSpojeniS(Aktivita objekt) {
-        aktivity.remove(objekt);
+    public String getHeslo() {
+        return heslo;
+    }
+
+    public void setHeslo(String heslo) {
+        this.heslo = heslo;
     }
 
     @Override

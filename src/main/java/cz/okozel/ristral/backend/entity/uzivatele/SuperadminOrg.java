@@ -13,8 +13,8 @@ public class SuperadminOrg extends OsobniUzivatel {
         super();
     }
 
-    public SuperadminOrg(String jmeno, String email, String heslo, Schema schema) {
-        super(jmeno, email, heslo, schema);
+    public SuperadminOrg(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
+        super(uzivatelskeJmeno, jmeno, email, heslo, schema);
     }
 
 }

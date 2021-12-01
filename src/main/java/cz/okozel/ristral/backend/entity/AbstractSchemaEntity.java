@@ -28,4 +28,7 @@ public abstract class AbstractSchemaEntity extends AbstractEntity {
         return schema;
     }
 
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
 }

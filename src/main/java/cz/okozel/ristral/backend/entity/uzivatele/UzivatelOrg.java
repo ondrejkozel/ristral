@@ -13,8 +13,8 @@ public class UzivatelOrg extends Uzivatel {
         super();
     }
 
-    public UzivatelOrg(String jmeno, String email, String heslo, Schema schema) {
-        super(jmeno, email, heslo, schema);
+    public UzivatelOrg(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
+        super(uzivatelskeJmeno, jmeno, email, heslo, schema);
     }
 
 }

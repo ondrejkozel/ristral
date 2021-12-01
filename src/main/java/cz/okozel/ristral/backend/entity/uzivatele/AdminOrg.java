@@ -13,8 +13,8 @@ public class AdminOrg extends UzivatelOrg {
         super();
     }
 
-    public AdminOrg(String jmeno, String email, String heslo, Schema schema) {
-        super(jmeno, email, heslo, schema);
+    public AdminOrg(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
+        super(uzivatelskeJmeno, jmeno, email, heslo, schema);
     }
 
 }
