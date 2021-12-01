@@ -11,6 +11,7 @@ import java.util.List;
  * generická služba pro AbstractSchemaEntity
  */
 public abstract class GenericSchemaService<T extends AbstractSchemaEntity, R extends GenericSchemaRepository<T>> extends GenericService<T, R> {
+
     public GenericSchemaService(R hlavniRepositar) {
         super(hlavniRepositar);
     }
@@ -22,4 +23,5 @@ public abstract class GenericSchemaService<T extends AbstractSchemaEntity, R ext
     public long count(Schema schema) {
         return hlavniRepositar.countBySchemaEquals(schema);
     }
+
 }

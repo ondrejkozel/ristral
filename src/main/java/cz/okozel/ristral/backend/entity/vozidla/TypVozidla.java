@@ -46,4 +46,5 @@ public class TypVozidla extends AbstractSchemaEntity implements NavazujeObousmer
     public void rozvazSpojeniS(Vozidlo objekt) {
         vozidla.remove(objekt);
     }
+
 }

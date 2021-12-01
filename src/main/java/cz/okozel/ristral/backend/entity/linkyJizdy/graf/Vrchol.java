@@ -81,4 +81,5 @@ public class Vrchol<O, H> {
         }
 
     }
+
 }

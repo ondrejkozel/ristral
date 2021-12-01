@@ -111,4 +111,5 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     public String toString() {
         return String.format("%s %s – %s (schema %s)", getRole(), jmeno, email, getSchema());
     }
+
 }

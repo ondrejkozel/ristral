@@ -132,4 +132,5 @@ public class Graf<O, H> implements Iterable<Vrchol<O, H>> {
         }
         return stringBuilder.toString();
     }
+
 }

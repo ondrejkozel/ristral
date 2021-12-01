@@ -45,4 +45,5 @@ public class Schema extends AbstractEntity {
     public String toString() {
         return nazev;
     }
+
 }

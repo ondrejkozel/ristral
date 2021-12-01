@@ -90,4 +90,5 @@ public class UzivatelService extends GenericSchemaService<Uzivatel, UzivatelRepo
             ));
         }
     }
+
 }

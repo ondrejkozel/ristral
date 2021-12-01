@@ -72,4 +72,5 @@ public class Vozidlo extends AbstractSchemaEntity implements NavazujeObousmernyV
     public void rozvazSpojeniS(TypVozidla objekt) {
         typ = null;
     }
+
 }

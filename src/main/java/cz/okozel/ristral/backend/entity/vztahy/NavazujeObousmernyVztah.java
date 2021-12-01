@@ -32,4 +32,5 @@ public interface NavazujeObousmernyVztah<T extends NavazujeObousmernyVztah> {
     boolean overSpojeniS(T objekt);
     void navazSpojeniS(T objekt);
     void rozvazSpojeniS(T objekt);
+
 }

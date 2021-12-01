@@ -52,4 +52,5 @@ public class Zastavka extends AbstractSchemaEntity {
     public void setRezimObsluhy(RezimObsluhy rezimObsluhy) {
         this.rezimObsluhy = rezimObsluhy;
     }
+
 }

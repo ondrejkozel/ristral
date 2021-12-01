@@ -92,4 +92,5 @@ public class Aktivita extends AbstractSchemaEntity implements NavazujeObousmerny
     public void rozvazSpojeniS(Uzivatel objekt) {
         akter = null;
     }
+
 }

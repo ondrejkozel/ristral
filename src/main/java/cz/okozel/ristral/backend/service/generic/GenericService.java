@@ -10,6 +10,7 @@ import java.util.Optional;
  * generická služba pro AbstractEntity
  */
 public abstract class GenericService<T extends AbstractEntity, R extends GenericRepository<T>> {
+
     protected final R hlavniRepositar;
 
     public GenericService(R hlavniRepositar) {
@@ -35,4 +36,5 @@ public abstract class GenericService<T extends AbstractEntity, R extends Generic
     public long count() {
         return hlavniRepositar.count();
     }
+
 }

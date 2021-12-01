@@ -1,6 +1,7 @@
 package cz.okozel.ristral.backend.entity.vztahy;
 
 public class EntitaNeobsahujeTentoVztahException extends RuntimeException {
+
     public EntitaNeobsahujeTentoVztahException() {
     }
 
@@ -19,4 +20,5 @@ public class EntitaNeobsahujeTentoVztahException extends RuntimeException {
     protected EntitaNeobsahujeTentoVztahException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }

@@ -27,6 +27,4 @@ public class Linka extends AbstractSchemaEntity {
     @JoinColumn
     TypVozidla prefTypVozidla;
 
-
-
 }
