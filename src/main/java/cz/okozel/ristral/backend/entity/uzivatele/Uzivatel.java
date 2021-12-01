@@ -2,15 +2,10 @@ package cz.okozel.ristral.backend.entity.uzivatele;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
-import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.schema.Schema;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Třída reprezentující jakéhokoliv registrovaného uživatele.
@@ -19,7 +14,7 @@ import java.util.List;
 @Table(name = "uzivatele")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
-public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeObousmernyVztah<Aktivita> {
+public abstract class Uzivatel extends AbstractSchemaEntity {
 
     /**
      * jméno uživatele
@@ -50,9 +45,6 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     @JsonIgnore
     private String heslo;
 
-    @OneToMany(mappedBy = "akter", cascade = CascadeType.ALL)
-    private List<Aktivita> aktivity;
-
     /**
      * Vytvoří novou instanci čistého uživatele.
      */
@@ -60,7 +52,7 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
 
     /**
      * Vytvoří novou instanci uživatele.
-     * @param uzivatelskeJmeno
+     * @param uzivatelskeJmeno uživatelské jméno
      * @param jmeno křestní a příjmení
      * @param email emailová adresa
      * @param heslo zahashované heslo
@@ -72,7 +64,6 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         this.jmeno = jmeno;
         this.email = email;
         this.heslo = heslo;
-        this.aktivity = new ArrayList<>();
     }
 
     public String getJmeno() {
@@ -100,10 +91,6 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
         return role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG;
     }
 
-    public List<Aktivita> getAktivity() {
-        return Collections.unmodifiableList(aktivity);
-    }
-
     public String getUzivatelskeJmeno() {
         return uzivatelskeJmeno;
     }
@@ -121,22 +108,8 @@ public abstract class Uzivatel extends AbstractSchemaEntity implements NavazujeO
     }
 
     @Override
-    public boolean overSpojeniS(Aktivita objekt) {
-        return aktivity.contains(objekt);
-    }
-
-    @Override
-    public void navazSpojeniS(Aktivita objekt) {
-        aktivity.add(objekt);
-    }
-
-    @Override
-    public void rozvazSpojeniS(Aktivita objekt) {
-        aktivity.remove(objekt);
-    }
-
-    @Override
     public String toString() {
         return String.format("%s %s – %s (schema %s)", getRole(), jmeno, email, getSchema());
     }
+
 }
