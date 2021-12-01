@@ -2,7 +2,6 @@ package cz.okozel.ristral.backend.entity.zastavky;
 
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
-import cz.okozel.ristral.backend.entity.vztahy.NavazujeObousmernyVztah;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -70,6 +69,10 @@ public class RezimObsluhy extends AbstractSchemaEntity {
     @Table(name = "periody_na_znameni")
     public static class PeriodaNaZnameni extends AbstractSchemaEntity {
 
+        public static PeriodaNaZnameni vytvorVychoziPerioduNaZnameni(Schema schema, RezimObsluhy rezimObsluhy) {
+            return new PeriodaNaZnameni(LocalTime.MIDNIGHT, LocalTime.NOON, new HashSet<>(), schema, rezimObsluhy);
+        }
+
         @ManyToOne
         @JoinColumn
         private RezimObsluhy rezimObsluhy;
@@ -87,11 +90,12 @@ public class RezimObsluhy extends AbstractSchemaEntity {
 
         public PeriodaNaZnameni() {}
 
-        public PeriodaNaZnameni(LocalTime naZnameniOd, LocalTime naZnameniDo, Set<DayOfWeek> dnyNaZnameni, Schema schema) {
+        public PeriodaNaZnameni(LocalTime naZnameniOd, LocalTime naZnameniDo, Set<DayOfWeek> dnyNaZnameni, Schema schema, RezimObsluhy rezimObsluhy) {
             super(schema);
             this.naZnameniOd = naZnameniOd;
             this.naZnameniDo = naZnameniDo;
             this.dnyNaZnameni = dnyNaZnameni;
+            this.rezimObsluhy = rezimObsluhy;
         }
 
         public RezimObsluhy getRezimObsluhy() {

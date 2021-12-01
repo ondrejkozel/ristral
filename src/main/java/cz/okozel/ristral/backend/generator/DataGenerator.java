@@ -64,8 +64,7 @@ public class DataGenerator {
                 Set<DayOfWeek> dny = new HashSet<>();
                 dny.add(DayOfWeek.SATURDAY);
                 dny.add(DayOfWeek.SUNDAY);
-                RezimObsluhy.PeriodaNaZnameni periodaNaZnameni = new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6, 0), dny, uzivatel1.getSchema());
-                periodaNaZnameni.setRezimObsluhy(naZnameniOVikendu);
+                RezimObsluhy.PeriodaNaZnameni periodaNaZnameni = new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6, 0), dny, uzivatel1.getSchema(), naZnameniOVikendu);
                 //
                 zastavkaRepository.saveAll(List.of(
                         new Zastavka("Ríšova", "", naZnameniOVikendu, uzivatel1.getSchema())
