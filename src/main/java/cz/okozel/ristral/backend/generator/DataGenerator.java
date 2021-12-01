@@ -25,7 +25,7 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(TypVozidlaRepository typVozidlaRepository, VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, RezimObsluhyService rezimObsluhyService, PeriodaNaZnameniRepository periodaNaZnameniRepository) {
+    public CommandLineRunner generateDemonstrativeData(TypVozidlaRepository typVozidlaRepository, VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, PeriodaNaZnameniRepository periodaNaZnameniRepository, RezimObsluhyService rezimObsluhyService) {
         return args -> {
             final UzivatelOrg uzivatel1 = new UzivatelOrg("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistruj(uzivatel1);
@@ -59,15 +59,19 @@ public class DataGenerator {
             }
             if (zastavkaRepository.count() == 0) {
                 final RezimObsluhy naZnameniOVikendu = new RezimObsluhy("na znamení o víkendu", "", uzivatel1.getSchema());
+                rezimObsluhyService.save(naZnameniOVikendu);
                 Set<DayOfWeek> dny = new HashSet<>();
                 dny.add(DayOfWeek.SATURDAY);
                 dny.add(DayOfWeek.SUNDAY);
                 RezimObsluhy.PeriodaNaZnameni periodaNaZnameni = new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6, 0), dny, uzivatel1.getSchema(), naZnameniOVikendu);
                 //
+                RezimObsluhy vychoziRezim = rezimObsluhyService.findVychoziRezim(naZnameniOVikendu.getSchema());
                 zastavkaRepository.saveAll(List.of(
-                        new Zastavka("Ríšova", "", naZnameniOVikendu, uzivatel1.getSchema())
-                        // TODO: 24.11.2021 tady to háže výjimku detached entity passed to persist
-//                        new Zastavka("Bartolomějská", "", rezimObsluhyService.findVychoziRezim(uzivatel1.getSchema()), uzivatel1.getSchema())
+                        new Zastavka("Ríšova", "Točna, na které se nevytočí kloubové autobusy.", naZnameniOVikendu, uzivatel1.getSchema()),
+                        new Zastavka("Helenčina", "Zastávka přesunuta o 50 metrů vpřed.", naZnameniOVikendu, uzivatel1.getSchema()),
+                        new Zastavka("Bartolomějská", "", vychoziRezim, uzivatel1.getSchema()),
+                        new Zastavka("Žebětín hřbitov", "", naZnameniOVikendu, uzivatel1.getSchema()),
+                        new Zastavka("Křivánkovo náměstí", "", vychoziRezim, uzivatel1.getSchema())
                 ));
                 periodaNaZnameniRepository.save(periodaNaZnameni);
             }

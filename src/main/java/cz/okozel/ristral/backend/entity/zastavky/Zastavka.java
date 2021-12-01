@@ -20,7 +20,7 @@ public class Zastavka extends AbstractSchemaEntity {
     @NotNull
     private String popis;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn
     @NotNull
     private RezimObsluhy rezimObsluhy;
@@ -31,11 +31,7 @@ public class Zastavka extends AbstractSchemaEntity {
         super(schema);
         this.nazev = nazev;
         this.popis = popis;
-        setRezimObsluhy(rezimObsluhy);
-    }
-
-    public Zastavka(String nazev, Schema schema) {
-        this(nazev, "", null, schema);
+        this.rezimObsluhy = rezimObsluhy;
     }
 
     public String getNazev() {
