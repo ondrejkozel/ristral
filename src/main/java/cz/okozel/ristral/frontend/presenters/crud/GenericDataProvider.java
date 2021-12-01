@@ -1,7 +1,6 @@
 package cz.okozel.ristral.frontend.presenters.crud;
 
 import com.vaadin.flow.component.crud.CrudFilter;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;

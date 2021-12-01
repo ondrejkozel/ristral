@@ -19,4 +19,5 @@ public enum Ikona {
         span.addClassNames(lineAwesome);
         return span;
     }
+
 }
