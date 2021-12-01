@@ -82,10 +82,10 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         });
     }
 
-    TextField nazev;
-    TextArea popis;
+    private TextField nazev;
+    private TextArea popis;
 
-    Button pridatPerioduNaZnameniButton;
+    private Button pridatPerioduNaZnameniButton;
 
     @Override
     protected CrudEditor<RezimObsluhy> vytvorEditor() {

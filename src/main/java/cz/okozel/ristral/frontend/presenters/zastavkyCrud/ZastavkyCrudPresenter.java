@@ -1,6 +1,5 @@
 package cz.okozel.ristral.frontend.presenters.zastavkyCrud;
 
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -29,10 +28,6 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, ZastavkyCrudView> {
 
-    TextField nazev;
-    Select<RezimObsluhy> rezimObsluhy;
-    TextArea popis;
-
     private final Schema schema;
     private final RezimObsluhyService rezimObsluhyService;
 
@@ -42,6 +37,12 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
         schema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
         this.rezimObsluhyService = rezimObsluhyService;
     }
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private TextField nazev;
+    private Select<RezimObsluhy> rezimObsluhy;
+    @SuppressWarnings("FieldCanBeLocal")
+    private TextArea popis;
 
     @Override
     protected CrudEditor<Zastavka> vytvorEditor() {
@@ -60,7 +61,7 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
     }
 
     @PostConstruct
-    public void naplnSelect() {
+    private void naplnSelect() {
         rezimObsluhy.setItems(rezimObsluhyService.findAll(schema));
     }
 
