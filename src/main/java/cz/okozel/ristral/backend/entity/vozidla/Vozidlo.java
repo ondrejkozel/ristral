@@ -3,7 +3,10 @@ package cz.okozel.ristral.backend.entity.vozidla;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,10 +28,10 @@ public class Vozidlo extends AbstractSchemaEntity {
      * maximální počet pasažérů
      */
     @Min(0)
-    private int obsaditelnost;
+    private Integer obsaditelnost;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn()
+    @ManyToOne
+    @JoinColumn
     @NotNull
     private TypVozidla typ;
 
@@ -50,12 +53,28 @@ public class Vozidlo extends AbstractSchemaEntity {
         return popis;
     }
 
-    public int getObsaditelnost() {
+    public Integer getObsaditelnost() {
         return obsaditelnost;
     }
 
     public TypVozidla getTyp() {
         return typ;
+    }
+
+    public void setNazev(String nazev) {
+        this.nazev = nazev;
+    }
+
+    public void setPopis(String popis) {
+        this.popis = popis;
+    }
+
+    public void setObsaditelnost(Integer obsaditelnost) {
+        this.obsaditelnost = obsaditelnost;
+    }
+
+    public void setTyp(TypVozidla typ) {
+        this.typ = typ;
     }
 
 }

@@ -8,10 +8,7 @@ import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
 import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
-import cz.okozel.ristral.backend.repository.AktivitaRepository;
-import cz.okozel.ristral.backend.repository.PeriodaNaZnameniRepository;
-import cz.okozel.ristral.backend.repository.VozidloRepository;
-import cz.okozel.ristral.backend.repository.ZastavkaRepository;
+import cz.okozel.ristral.backend.repository.*;
 import cz.okozel.ristral.backend.service.RegistratorService;
 import cz.okozel.ristral.backend.service.entity.RezimObsluhyService;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +25,7 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, RezimObsluhyService rezimObsluhyService, PeriodaNaZnameniRepository periodaNaZnameniRepository) {
+    public CommandLineRunner generateDemonstrativeData(TypVozidlaRepository typVozidlaRepository, VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, RezimObsluhyService rezimObsluhyService, PeriodaNaZnameniRepository periodaNaZnameniRepository) {
         return args -> {
             final UzivatelOrg uzivatel1 = new UzivatelOrg("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistruj(uzivatel1);
@@ -41,6 +38,7 @@ public class DataGenerator {
             if (vozidloRepository.count() == 0) {
                 TypVozidla tramvaj = new TypVozidla("tramvaj", uzivatel1.getSchema());
                 TypVozidla autobus = new TypVozidla("autobus", uzivatel1.getSchema());
+                typVozidlaRepository.saveAll(List.of(tramvaj, autobus));
                 vozidloRepository.saveAll(List.of(
                         new Vozidlo("Tatra T3", "Délka: 15104 [mm]\n" +
                                 "Šířka: 2500 [mm]\n" +
