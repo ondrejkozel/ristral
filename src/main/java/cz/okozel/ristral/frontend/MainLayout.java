@@ -12,6 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+import cz.okozel.ristral.backend.entity.schema.TypSchematu;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
@@ -60,6 +61,11 @@ public class MainLayout extends AppLayout {
     private Component createDrawerContent() {
         H2 nazevAplikace = new H2("Ristral");
         nazevAplikace.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
+        //
+        //noinspection OptionalGetWithoutIsPresent
+        if (prihlasenyUzivatel.jePrihlaseny() && prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema().getTypSchematu() == TypSchematu.ORGANIZACE) {
+            nazevAplikace.setText(prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema().getNazev());
+        }
         //
         com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(nazevAplikace, createNavigation(), createFooter());
         section.addClassNames("flex", "flex-col", "items-stretch", "max-h-full", "min-h-full");
