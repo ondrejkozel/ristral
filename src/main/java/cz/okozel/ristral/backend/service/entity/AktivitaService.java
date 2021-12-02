@@ -5,6 +5,7 @@ import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.repository.AktivitaRepository;
 import cz.okozel.ristral.backend.service.entity.generic.GenericSchemaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,11 @@ public class AktivitaService extends GenericSchemaService<Aktivita, AktivitaRepo
 
     public List<Aktivita> findAll(Uzivatel uzivatel) {
         return hlavniRepositar.findAllByAkterEquals(uzivatel);
+    }
+
+    @Transactional
+    public void deleteAll(Uzivatel akter) {
+        hlavniRepositar.deleteAktivitaByAkterEquals(akter);
     }
 
 }

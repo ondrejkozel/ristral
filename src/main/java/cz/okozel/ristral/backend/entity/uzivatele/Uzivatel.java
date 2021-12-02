@@ -107,6 +107,22 @@ public abstract class Uzivatel extends AbstractSchemaEntity {
         this.heslo = heslo;
     }
 
+    protected UzivatelOrg getUzivatelOrg() {
+        return new UzivatelOrg(uzivatelskeJmeno, jmeno, email, heslo, getSchema());
+    }
+
+    protected AdminOrg getAdminOrg() {
+        return new AdminOrg(uzivatelskeJmeno, jmeno, email, heslo, getSchema());
+    }
+
+    protected OsobniUzivatel getOsobniUzivatel() {
+        return new OsobniUzivatel(uzivatelskeJmeno, jmeno, email, heslo, getSchema());
+    }
+
+    protected SuperadminOrg getSuperadminOrg() {
+        return new SuperadminOrg(uzivatelskeJmeno, jmeno, email, heslo, getSchema());
+    }
+
     @Override
     public String toString() {
         return String.format("%s %s – %s (schema %s)", getRole(), jmeno, email, getSchema());

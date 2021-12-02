@@ -10,4 +10,6 @@ public interface AktivitaRepository extends GenericSchemaRepository<Aktivita> {
 
     List<Aktivita> findAllByAkterEquals(Uzivatel akter);
 
+    void deleteAktivitaByAkterEquals(Uzivatel akter);
+
 }
