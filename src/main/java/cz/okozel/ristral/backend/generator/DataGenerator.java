@@ -3,6 +3,7 @@ package cz.okozel.ristral.backend.generator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.aktivity.TypAktivity;
+import cz.okozel.ristral.backend.entity.uzivatele.AdminOrg;
 import cz.okozel.ristral.backend.entity.uzivatele.OsobniUzivatel;
 import cz.okozel.ristral.backend.entity.uzivatele.SuperadminOrg;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
@@ -28,9 +29,10 @@ public class DataGenerator {
     public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService) {
         return args -> {
             final OsobniUzivatel osobniUzivatel = new OsobniUzivatel("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
-            registratorService.zaregistruj(osobniUzivatel);
-            osobniUzivatel.prevedNaUcetOrganizace(aktivitaService, schemaService, uzivatelService);
+            registratorService.zaregistrujOsobniUcetAVytvorMuNoveSchema(osobniUzivatel);
+            osobniUzivatel.prevedNaUcetOrganizace(schemaService, uzivatelService);
             SuperadminOrg superAdmin = (SuperadminOrg) uzivatelService.findByUzivatelskeJmeno("ondrejkozel");
+            superAdmin.zaregistrujAPridejUcet(new AdminOrg("radovyuzivatel", "Řadový Uživatel", "radovy.uzivatel@spolecnost.cz", "11111111", null), registratorService);
             if (aktivitaService.count() == 0) {
                 aktivitaService.saveAll(List.of(
                         new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), superAdmin),

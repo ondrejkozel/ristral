@@ -25,16 +25,27 @@ public class RegistratorService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean zaregistruj(Uzivatel uzivatel) {
+    public boolean zaregistrujOsobniUcetAVytvorMuNoveSchema(Uzivatel uzivatel) {
         if (uzivatelService.jeTotoUzivateskeJmenoObsazene(uzivatel.getUzivatelskeJmeno())) return false;
         Schema schema = new Schema(TypSchematu.OSOBNI, uzivatel.getUzivatelskeJmeno());
-        uzivatel.setSchema(schema);
-        uzivatel.setHeslo(passwordEncoder.encode(uzivatel.getHeslo()));
         schemaService.save(schema);
-        uzivatelService.save(uzivatel);
         //
         rezimObsluhyService.save(RezimObsluhy.vytvorVychoziRezimBezZnameni(schema));
+        //
+        uzivatel.setSchema(schema);
+        nastavHesloAUloz(uzivatel);
         return true;
+    }
+
+    public boolean zaregistrujPodrizenyUcet(Uzivatel uzivatel) {
+        if (uzivatelService.jeTotoUzivateskeJmenoObsazene(uzivatel.getUzivatelskeJmeno())) return false;
+        nastavHesloAUloz(uzivatel);
+        return true;
+    }
+
+    private void nastavHesloAUloz(Uzivatel uzivatel) {
+        uzivatel.setHeslo(passwordEncoder.encode(uzivatel.getHeslo()));
+        uzivatelService.save(uzivatel);
     }
 
 }
