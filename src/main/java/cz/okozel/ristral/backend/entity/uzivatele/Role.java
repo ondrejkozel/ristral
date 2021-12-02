@@ -22,6 +22,10 @@ public enum Role {
         return nazev;
     }
 
+    public String getKratkyNazev() {
+        return kratkyNazev;
+    }
+
     @Override
     public String toString() {
         return nazev;
@@ -36,12 +40,7 @@ public enum Role {
     }
 
     public static Role getRole(Class<? extends Uzivatel> trida) {
-        for (Role role : values()) if (role.trida.equals(trida)) return role;
-        return null;
-    }
-
-    public String getKratkyNazev() {
-        return kratkyNazev;
+        return ROLE.get(trida);
     }
 
 }
