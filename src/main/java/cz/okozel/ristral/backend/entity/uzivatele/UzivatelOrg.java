@@ -17,8 +17,4 @@ public class UzivatelOrg extends Uzivatel {
         super(uzivatelskeJmeno, jmeno, email, heslo, schema);
     }
 
-    public SuperadminOrg vytvorSuperadminOrg() {
-        return getSuperadminOrg();
-    }
-
 }

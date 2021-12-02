@@ -9,9 +9,8 @@ import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
 import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
-import cz.okozel.ristral.backend.repository.*;
 import cz.okozel.ristral.backend.service.RegistratorService;
-import cz.okozel.ristral.backend.service.entity.RezimObsluhyService;
+import cz.okozel.ristral.backend.service.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
@@ -26,23 +25,23 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(TypVozidlaRepository typVozidlaRepository, VozidloRepository vozidloRepository, RegistratorService registratorService, AktivitaRepository aktivitaRepository, ZastavkaRepository zastavkaRepository, PeriodaNaZnameniRepository periodaNaZnameniRepository, RezimObsluhyService rezimObsluhyService, UzivatelRepository uzivatelRepository) {
+    public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService) {
         return args -> {
             final OsobniUzivatel osobniUzivatel = new OsobniUzivatel("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistruj(osobniUzivatel);
-            registratorService.prevedNaUcetOrganizace(osobniUzivatel);
-            SuperadminOrg superAdmin = (SuperadminOrg) uzivatelRepository.findByUzivatelskeJmenoEquals("ondrejkozel");
-            if (aktivitaRepository.count() == 0) {
-                aktivitaRepository.saveAll(List.of(
+            osobniUzivatel.prevedNaUcetOrganizace(aktivitaService, schemaService, uzivatelService);
+            SuperadminOrg superAdmin = (SuperadminOrg) uzivatelService.findByUzivatelskeJmeno("ondrejkozel");
+            if (aktivitaService.count() == 0) {
+                aktivitaService.saveAll(List.of(
                         new Aktivita(TypAktivity.VYTVORENI, "Vytvoření nového uživatele", "Byl vytvořen nový uživatel Bla bla.", LocalDateTime.now().minusHours(1), superAdmin),
                         new Aktivita(TypAktivity.JINE, "Odeslání zprávy", "Byla odeslána zpráva administrátorovi.", LocalDateTime.now(), superAdmin)
                 ));
             }
-            if (vozidloRepository.count() == 0) {
+            if (vozidloService.count() == 0) {
                 TypVozidla tramvaj = new TypVozidla("tramvaj", superAdmin.getSchema());
                 TypVozidla autobus = new TypVozidla("autobus", superAdmin.getSchema());
-                typVozidlaRepository.saveAll(List.of(tramvaj, autobus));
-                vozidloRepository.saveAll(List.of(
+                typVozidlaService.saveAll(List.of(tramvaj, autobus));
+                vozidloService.saveAll(List.of(
                         new Vozidlo("Tatra T3", "Délka: 15104 [mm]\n" +
                                 "Šířka: 2500 [mm]\n" +
                                 "Hmotnost: 16000 [kg]\n" +
@@ -60,7 +59,7 @@ public class DataGenerator {
                                 "Rychlost: 70 [km/hod]", 204, tramvaj, superAdmin.getSchema())
                 ));
             }
-            if (zastavkaRepository.count() == 0) {
+            if (zastavkaService.count() == 0) {
                 final RezimObsluhy naZnameniOVikendu = new RezimObsluhy("na znamení o víkendu", "", superAdmin.getSchema());
                 rezimObsluhyService.save(naZnameniOVikendu);
                 Set<DayOfWeek> dny = new HashSet<>();
@@ -69,14 +68,14 @@ public class DataGenerator {
                 RezimObsluhy.PeriodaNaZnameni periodaNaZnameni = new RezimObsluhy.PeriodaNaZnameni(LocalTime.of(18, 0), LocalTime.of(6, 0), dny, superAdmin.getSchema(), naZnameniOVikendu);
                 //
                 RezimObsluhy vychoziRezim = rezimObsluhyService.findVychoziRezim(naZnameniOVikendu.getSchema());
-                zastavkaRepository.saveAll(List.of(
+                zastavkaService.saveAll(List.of(
                         new Zastavka("Ríšova", "Točna, na které se nevytočí kloubové autobusy.", naZnameniOVikendu, superAdmin.getSchema()),
                         new Zastavka("Helenčina", "Zastávka přesunuta o 50 metrů vpřed.", naZnameniOVikendu, superAdmin.getSchema()),
                         new Zastavka("Bartolomějská", "", vychoziRezim, superAdmin.getSchema()),
                         new Zastavka("Žebětín hřbitov", "", naZnameniOVikendu, superAdmin.getSchema()),
                         new Zastavka("Křivánkovo náměstí", "", vychoziRezim, superAdmin.getSchema())
                 ));
-                periodaNaZnameniRepository.save(periodaNaZnameni);
+                periodaNaZnameniService.save(periodaNaZnameni);
             }
         };
     }
