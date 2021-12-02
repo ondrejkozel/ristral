@@ -17,6 +17,7 @@ import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
+import cz.okozel.ristral.frontend.presenters.uzivateleCrud.UzivateleCrudPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 import cz.okozel.ristral.frontend.presenters.vozidlaCrud.VozidlaCrudPresenter;
 import cz.okozel.ristral.frontend.presenters.zastavkyCrud.ZastavkyCrudPresenter;
@@ -100,6 +101,7 @@ public class MainLayout extends AppLayout {
                 new PolozkaMenu("Přehled", Ikona.GRAF, PrehledPresenter.class),
                 new PolozkaMenu("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
                 new PolozkaMenu("Vozidla", Ikona.BUS, VozidlaCrudPresenter.class),
+                new PolozkaMenu("Uživatelé", Ikona.UZIVATELE, UzivateleCrudPresenter.class),
                 new PolozkaMenu("O Ristralu", Ikona.INFO, ORistraluView.class)
         };
         //
