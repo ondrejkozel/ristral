@@ -25,6 +25,7 @@ import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import cz.okozel.ristral.backend.entity.AbstractEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
@@ -156,10 +157,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     }
 
     private void vymazKeSmazani(PeriodaNaZnameniService periodaNaZnameniService) {
-        keSmazani.forEach(objekt -> {
-            if (!objekt.isPersisted()) keSmazani.remove(objekt);
-        });
-        periodaNaZnameniService.deleteAll(keSmazani);
+        periodaNaZnameniService.deleteAll(keSmazani.stream().filter(AbstractEntity::isPersisted).collect(Collectors.toList()));
         vyprazdniKeSmazani();
     }
 
