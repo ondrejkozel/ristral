@@ -13,6 +13,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import cz.okozel.ristral.backend.entity.schema.TypSchematu;
+import cz.okozel.ristral.backend.entity.uzivatele.Role;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
@@ -151,7 +152,10 @@ public class MainLayout extends AppLayout {
             uzivatelMenu.setOpenOnClick(true);
             uzivatelMenu.addItem("Odhlásit se", e -> this.prihlasenyUzivatel.odhlasSe());
             //
-            Span jmeno = new Span(uzivatel.getJmeno());
+            Span jmeno = new Span();
+            Role role = prihlasenyUzivatel.get().getRole();
+            if (role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG) jmeno.setText(role.getNazev() + " " + uzivatel.getJmeno());
+            else jmeno.setText(uzivatel.getJmeno());
             jmeno.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
             //
             footer.add(avatar, jmeno, triTeckyButton);
