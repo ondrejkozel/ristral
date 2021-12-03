@@ -91,8 +91,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         //
         popis = new TextArea("Popis");
         //
-        buildPridatPerioduButton();
-        VerticalLayout periodyLayout = new VerticalLayout(buildPeriodyNaZnameniGrid(), pridatPerioduNaZnameniButton);
+        VerticalLayout periodyLayout = new VerticalLayout(buildPeriodyNaZnameniGrid(), buildPridatPerioduButton());
         periodyLayout.setPadding(false);
         //
         FormLayout form = new FormLayout(nazev, popis);
@@ -165,7 +164,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         keSmazani.clear();
     }
 
-    private void buildPridatPerioduButton() {
+    private Button buildPridatPerioduButton() {
         pridatPerioduNaZnameniButton = new Button("Přidat periodu na znamení", VaadinIcon.PLUS.create());
         pridatPerioduNaZnameniButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         pridatPerioduNaZnameniButton.addClickListener(event -> {
@@ -174,6 +173,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
             periodaNaZnameniGridPro.setItems(polozkyGridPro);
             getContent().getCrud().setDirty(true);
         });
+        return pridatPerioduNaZnameniButton;
     }
 
     private ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> pokudJeValidniTakProved(ItemUpdater<RezimObsluhy.PeriodaNaZnameni, LocalTime> neco) {
