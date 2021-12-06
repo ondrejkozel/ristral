@@ -24,6 +24,7 @@ import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
 import cz.okozel.ristral.frontend.views.uzivateleCrud.UzivateleCrudView;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.stream.Stream;
 
 @PageTitle("Uživatelé")
 @Route(value = "uzivatele", layout = MainLayout.class)
@@ -42,15 +43,23 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
         getContent().getCrud().addNewListener(event -> hesloBinding.setValidatorsDisabled(false));
         getContent().getCrud().addNewListener(event -> roleSelect.setVisible(false));
         getContent().getCrud().addNewListener(event -> roleSelect.setValue(Role.UZIVATEL_ORG));
+        getContent().getCrud().addNewListener(event -> nastavNeupravitelnostFieldu(false));
         //
         getContent().getCrud().addEditListener(event -> hesloField.setVisible(false));
         getContent().getCrud().addEditListener(event -> hesloBinding.setValidatorsDisabled(true));
         getContent().getCrud().addEditListener(event -> roleSelect.setVisible(true));
         getContent().getCrud().addEditListener(event -> roleSelect.setValue(event.getItem().getRole()));
-        getContent().getCrud().addEditListener(event -> roleSelect.setReadOnly(event.getItem().getRole() == Role.SUPERADMIN_ORG));
-        getContent().getCrud().addEditListener(event -> roleSelect.setHelperText(roleSelect.isReadOnly() ? "Superadministrátor si může změnit roli pouze sám." : ""));
+        getContent().getCrud().addEditListener(event -> nastavNeupravitelnostFieldu(event.getItem().getRole() == Role.SUPERADMIN_ORG));
         //
         getContent().getCrud().addSaveListener(event -> pokudPotrebaZmenRoli(uzivatelService, event.getItem()));
+    }
+
+    private void nastavNeupravitelnostFieldu(boolean neupravitelny) {
+        Stream
+                .of(jmeno, uzivatelskeJmeno, email)
+                .forEach(field -> field.setReadOnly(neupravitelny));
+        roleSelect.setReadOnly(neupravitelny);
+        roleSelect.setHelperText(neupravitelny ? "Protože je tento uživatel superadministrátor, osobní údaje si spravuje sám." : "");
     }
 
     private void pokudPotrebaZmenRoli(UzivatelService uzivatelService, Uzivatel uzivatelKeZmene) {
@@ -59,11 +68,8 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
                 Notification.show(String.format("Uživatel %s je nyní %s.", uzivatelKeZmene.getJmeno(), roleSelect.getValue().getNazev()));
     }
 
-    @SuppressWarnings("FieldCanBeLocal")
     private TextField jmeno;
-    @SuppressWarnings("FieldCanBeLocal")
     private TextField uzivatelskeJmeno;
-    @SuppressWarnings("FieldCanBeLocal")
     private TextField email;
     private PasswordField hesloField;
 
