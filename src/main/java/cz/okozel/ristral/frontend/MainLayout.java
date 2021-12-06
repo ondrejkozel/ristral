@@ -98,12 +98,12 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         PolozkaMenu[] menuItems = new PolozkaMenu[]{
-                new PolozkaMenu("Vítejte", Ikona.BUS, VitejtePresenter.class),
-                new PolozkaMenu("Přehled", Ikona.GRAF, PrehledPresenter.class),
-                new PolozkaMenu("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
-                new PolozkaMenu("Vozidla", Ikona.BUS, VozidlaCrudPresenter.class),
-                new PolozkaMenu("Uživatelé", Ikona.UZIVATELE, UzivateleCrudPresenter.class),
-                new PolozkaMenu("O Ristralu", Ikona.INFO, ORistraluView.class)
+                new PolozkaMenu("Vítejte", LineAwesomeIcon.BUS, VitejtePresenter.class),
+                new PolozkaMenu("Přehled", LineAwesomeIcon.GRAF, PrehledPresenter.class),
+                new PolozkaMenu("Zastávky", LineAwesomeIcon.ZASTAVKA, ZastavkyCrudPresenter.class),
+                new PolozkaMenu("Vozidla", LineAwesomeIcon.BUS, VozidlaCrudPresenter.class),
+                new PolozkaMenu("Uživatelé", LineAwesomeIcon.UZIVATELE, UzivateleCrudPresenter.class),
+                new PolozkaMenu("O Ristralu", LineAwesomeIcon.INFO, ORistraluView.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
@@ -178,10 +178,10 @@ public class MainLayout extends AppLayout {
     public static class PolozkaMenu {
 
         private final String text;
-        private final Ikona ikona;
+        private final LineAwesomeIcon ikona;
         private final Class<? extends Component> view;
 
-        public PolozkaMenu(String text, Ikona ikona, Class<? extends Component> view) {
+        public PolozkaMenu(String text, LineAwesomeIcon ikona, Class<? extends Component> view) {
             this.text = text;
             this.ikona = ikona;
             this.view = view;
@@ -191,7 +191,7 @@ public class MainLayout extends AppLayout {
             return text;
         }
 
-        public Ikona getIkona() {
+        public LineAwesomeIcon getIkona() {
             return ikona;
         }
 

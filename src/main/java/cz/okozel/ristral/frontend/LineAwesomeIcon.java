@@ -2,7 +2,7 @@ package cz.okozel.ristral.frontend;
 
 import com.vaadin.flow.component.html.Span;
 
-public enum Ikona {
+public enum LineAwesomeIcon {
     BUS("la la-bus"),
     GRAF("la la-chart-area"),
     ZASTAVKA("las la-map-pin"),
@@ -14,7 +14,7 @@ public enum Ikona {
 
     private final String nazevTridy;
 
-    Ikona(String nazevTridy) {
+    LineAwesomeIcon(String nazevTridy) {
         this.nazevTridy = nazevTridy;
     }
 
