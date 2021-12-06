@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public enum Role {
     UZIVATEL_ORG("řadový uživatel", "uzivatelOrg", LineAwesomeIcon.UZIVATEL, UzivatelOrg.class),
-    ADMIN_ORG("administrátor ", "adminOrg", LineAwesomeIcon.ADMINISTRATOR, AdminOrg.class),
+    ADMIN_ORG("administrátor", "adminOrg", LineAwesomeIcon.ADMINISTRATOR, AdminOrg.class),
     OSOBNI_UZIVATEL("uživatel osobního účtu", "osobni", LineAwesomeIcon.UZIVATEL, OsobniUzivatel.class),
     SUPERADMIN_ORG("superadministrátor", "superadminOrg", LineAwesomeIcon.SUPERADMINISTRATOR, SuperadminOrg.class);
 

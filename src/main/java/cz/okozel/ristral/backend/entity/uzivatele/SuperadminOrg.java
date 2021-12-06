@@ -58,6 +58,7 @@ public class SuperadminOrg extends OsobniUzivatel {
             case SUPERADMIN_ORG:
                 uzivatelService.delete(ucetKUprave);
                 uzivatelService.save(ucetKUprave.getSuperadminOrg());
+                break;
             default:
                 return false;
         }
