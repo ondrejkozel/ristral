@@ -14,14 +14,14 @@ import java.util.List;
 public class UzivateleCrudView extends GenericCrudView<UzivatelOrg> {
 
     public UzivateleCrudView() {
-        setCrudTexty("Nový uživatel", "Upravit uživatele", "Odstranit uživatele");
+        setCrudTexts("Nový uživatel", "Upravit uživatele", "Odstranit uživatele");
     }
 
     @Override
-    public void poInicializaci() {
-        odstranSloupceAzNa("email", "jmeno", "uzivatelskeJmeno");
-        prejmenujSloupec("jmeno", "Jméno");
-        prejmenujSloupec("uzivatelskeJmeno", "Uživatelské jméno");
+    public void postInicialization() {
+        deleteAllColumnsExcept("email", "jmeno", "uzivatelskeJmeno");
+        renameColumn("jmeno", "Jméno");
+        renameColumn("uzivatelskeJmeno", "Uživatelské jméno");
         //
         Grid.Column<UzivatelOrg> role = getCrud().getGrid().addColumn(new ComponentRenderer<>(Span::new, roleComponentUpdater));
         role.setHeader("Role");
@@ -29,10 +29,10 @@ public class UzivateleCrudView extends GenericCrudView<UzivatelOrg> {
         role.setFlexGrow(0);
         role.setTextAlign(ColumnTextAlign.END);
         //
-        List<Grid.Column<UzivatelOrg>> sloupce = new ArrayList<>(getSloupce());
+        List<Grid.Column<UzivatelOrg>> sloupce = new ArrayList<>(getColumns());
         sloupce.add(2, sloupce.remove(0));
         sloupce.add(0, sloupce.remove(4));
-        nastavNovePoradiSloupcu(sloupce);
+        setColumnOrder(sloupce);
     }
 
     private final SerializableBiConsumer<Span, UzivatelOrg> roleComponentUpdater = (span, uzivatel) -> {

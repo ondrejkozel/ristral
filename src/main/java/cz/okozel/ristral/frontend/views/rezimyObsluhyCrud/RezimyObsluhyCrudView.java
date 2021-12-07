@@ -6,14 +6,14 @@ import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 public class RezimyObsluhyCrudView extends GenericCrudView<RezimObsluhy> {
 
     public RezimyObsluhyCrudView() {
-        setCrudTexty("Nový režim obsluhy", "Upravit režim obsluhy", "Odstranit režim obsluhy");
+        setCrudTexts("Nový režim obsluhy", "Upravit režim obsluhy", "Odstranit režim obsluhy");
     }
 
     @Override
-    public void poInicializaci() {
-        odstranSloupceAzNa("nazev", "popis");
-        prejmenujSloupec("nazev", "Název");
-        setExpandRatioSloupce("popis", 2);
+    public void postInicialization() {
+        deleteAllColumnsExcept("nazev", "popis");
+        renameColumn("nazev", "Název");
+        setColumnExpandRatio("popis", 2);
     }
 
 }

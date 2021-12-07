@@ -37,9 +37,9 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
     private final SuperadminOrg prihlasenyUzivatel;
 
     public UzivateleCrudPresenter(UzivatelOrgService uzivatelOrgService, PrihlasenyUzivatel prihlasenyUzivatel, RegistratorService registratorService, UzivatelService uzivatelService) {
-        //noinspection OptionalGetWithoutIsPresent
-        super(UzivatelOrg.class, new UzivateleCrudDataProvider(uzivatelOrgService, UzivatelOrg.class, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema(), prihlasenyUzivatel.getPrihlasenyUzivatel().get(), registratorService));
+        super(UzivatelOrg.class, new UzivateleCrudDataProvider(uzivatelOrgService, UzivatelOrg.class, prihlasenyUzivatel, registratorService));
         //přihlášený uživatel je vždy superadministrátor
+        //noinspection OptionalGetWithoutIsPresent
         this.prihlasenyUzivatel = (SuperadminOrg) prihlasenyUzivatel.getPrihlasenyUzivatel().get();
         //
         getContent().getCrud().addNewListener(event -> hesloField.setVisible(true));
@@ -81,7 +81,7 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
     Binder.Binding<UzivatelOrg, String> hesloBinding;
 
     @Override
-    protected CrudEditor<UzivatelOrg> vytvorEditor() {
+    protected CrudEditor<UzivatelOrg> createEditor() {
         jmeno = new TextField("Jméno");
         jmeno.setRequired(true);
         //

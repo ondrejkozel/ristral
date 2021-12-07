@@ -52,7 +52,7 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
     private TextArea popis;
 
     @Override
-    protected CrudEditor<Zastavka> vytvorEditor() {
+    protected CrudEditor<Zastavka> createEditor() {
         nazev = new TextField("Název");
         nazev.setRequired(true);
         //

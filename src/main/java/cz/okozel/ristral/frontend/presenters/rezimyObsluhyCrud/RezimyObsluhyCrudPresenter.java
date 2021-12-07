@@ -85,7 +85,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     private Button pridatPerioduNaZnameniButton;
 
     @Override
-    protected CrudEditor<RezimObsluhy> vytvorEditor() {
+    protected CrudEditor<RezimObsluhy> createEditor() {
         nazev = new TextField("Název");
         nazev.setRequired(true);
         //

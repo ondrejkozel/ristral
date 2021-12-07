@@ -74,7 +74,7 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
     private TypVozidla novyTypVozidla;
 
     @Override
-    protected CrudEditor<Vozidlo> vytvorEditor() {
+    protected CrudEditor<Vozidlo> createEditor() {
         nazev = new TextField("Název");
         nazev.setRequired(true);
         //

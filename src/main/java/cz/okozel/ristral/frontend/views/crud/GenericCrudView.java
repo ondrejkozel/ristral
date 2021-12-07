@@ -18,16 +18,16 @@ import java.util.Optional;
 
 public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
 
-    private String novy, upravit, odstranit;
+    private String newString, edit, delete;
     protected Crud<T> crud;
 
     public GenericCrudView() {
-        novy = "Nový";
-        upravit = "Upravit";
-        odstranit = "Odstranit";
+        newString = "Nový";
+        edit = "Upravit";
+        delete = "Odstranit";
         crud = new Crud<>();
         add(
-                vytvorMenuBar(),
+                createMenuBar(),
                 crud
         );
         setSizeFull();
@@ -36,18 +36,18 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
     /**
      * tato metoda se volá až po inicializaci gridu
      */
-    public void nastavI18n() {
+    public void prepareI18n() {
         CrudI18n crudI18n = new CrudI18n();
         crudI18n.setCancel("Zrušit");
         crudI18n.setDeleteItem("Odstranit...");
-        crudI18n.setEditItem(upravit);
-        crudI18n.setNewItem(novy);
+        crudI18n.setEditItem(edit);
+        crudI18n.setNewItem(newString);
         crudI18n.setSaveItem("Uložit");
-        crudI18n.setConfirm(buildPotvrzeni());
+        crudI18n.setConfirm(buildConfirmations());
         crud.setI18n(crudI18n);
     }
 
-    private CrudI18n.Confirmations buildPotvrzeni() {
+    private CrudI18n.Confirmations buildConfirmations() {
         CrudI18n.Confirmations.Confirmation cancel = new CrudI18n.Confirmations.Confirmation();
         cancel.setTitle("Zahodit změny");
         cancel.setContent("Máte neuložené změny. Opravdu si je přejete zahodit?");
@@ -57,7 +57,7 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         cancel.setButton(tlacidlaZahodit);
         //
         CrudI18n.Confirmations.Confirmation delete = new CrudI18n.Confirmations.Confirmation();
-        delete.setTitle(odstranit);
+        delete.setTitle(this.delete);
         delete.setContent("Opravdu si přejete smazat tento objekt? Tato akce je nevratná.");
         CrudI18n.Confirmations.Confirmation.Button tlacidlaSmazat = new CrudI18n.Confirmations.Confirmation.Button();
         tlacidlaSmazat.setConfirm("Smazat");
@@ -70,10 +70,10 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         return confirmations;
     }
 
-    public void setCrudTexty(String novyObjekt, String titulekEditoru, String odstranitObjekt) {
-        novy = novyObjekt;
-        upravit = titulekEditoru;
-        odstranit = odstranitObjekt;
+    public void setCrudTexts(String novyObjekt, String titulekEditoru, String odstranitObjekt) {
+        newString = novyObjekt;
+        edit = titulekEditoru;
+        delete = odstranitObjekt;
     }
 
     public Crud<T> getCrud() {
@@ -83,10 +83,10 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
     /**
      * pro práci s inicializovaným gridem
      */
-    public void poInicializaci() {
+    public void postInicialization() {
     }
 
-    public void odstranSloupceAzNa(String... kliceVyjimek) {
+    public void deleteAllColumnsExcept(String... kliceVyjimek) {
         List<String> kliceVyjimekKopie = new ArrayList<>(List.of(kliceVyjimek));
         kliceVyjimekKopie.add("vaadin-crud-edit-column");
         crud.getGrid().getColumns().forEach(sloupec -> {
@@ -94,33 +94,33 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         });
     }
 
-    public void setExpandRatioSloupce(String klic, int expandRatio) {
+    public void setColumnExpandRatio(String klic, int expandRatio) {
         Optional<Grid.Column<T>> keZmene = crud.getGrid().getColumns().stream().filter(sloupec -> sloupec.getKey().equals(klic)).findAny();
         keZmene.ifPresent(sloupec -> sloupec.setFlexGrow(expandRatio));
     }
 
-    public void prejmenujSloupec(String klic, String novaHlavicka) {
+    public void renameColumn(String klic, String novaHlavicka) {
         List<Grid.Column<T>> sloupce = crud.getGrid().getColumns();
         Optional<Grid.Column<T>> kPrejmenovani = sloupce.stream().filter(sloupec -> sloupec.getKey().equals(klic)).findAny();
         kPrejmenovani.ifPresent(sloupec -> sloupec.setHeader(novaHlavicka));
     }
 
-    public List<Grid.Column<T>> getSloupce() {
+    public List<Grid.Column<T>> getColumns() {
         return crud.getGrid().getColumns();
     }
 
-    public void nastavNovePoradiSloupcu(List<Grid.Column<T>> sloupce) {
+    public void setColumnOrder(List<Grid.Column<T>> sloupce) {
         crud.getGrid().setColumnOrder(sloupce);
     }
 
-    public void setRoztahovatelneSloupce() {
-        crud.getGrid().getColumns().forEach(sloupec -> sloupec.setResizable(true));
+    public void setColumnsResizable(boolean resizable) {
+        crud.getGrid().getColumns().forEach(sloupec -> sloupec.setResizable(resizable));
     }
 
     private MenuItem soubor;
     private MenuItem obnovit, multiVyber;
 
-    private MenuBar vytvorMenuBar() {
+    private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
         soubor = menuBar.addItem("Soubor");
         //
