@@ -36,7 +36,7 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
 
     public VozidlaCrudPresenter(VozidloService vozidloService, PrihlasenyUzivatel prihlasenyUzivatel, TypVozidlaService typVozidlaService) {
         //noinspection OptionalGetWithoutIsPresent
-        super(Vozidlo.class, new VozidlaCrudDataProvider(vozidloService, Vozidlo.class, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()));
+        super(Vozidlo.class, new VozidlaCrudDataProvider(vozidloService, Vozidlo.class, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()), prihlasenyUzivatel);
         aktSchema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
         this.typVozidlaService = typVozidlaService;
         //
@@ -74,7 +74,7 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
     private TypVozidla novyTypVozidla;
 
     @Override
-    protected CrudEditor<Vozidlo> vytvorEditor() {
+    protected CrudEditor<Vozidlo> createEditor() {
         nazev = new TextField("Název");
         nazev.setRequired(true);
         //
@@ -90,6 +90,9 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
         typ.setRequired(true);
         typ.setAllowCustomValue(true);
         typ.addCustomValueSetListener(this::typComboBoxMaNovouCustomHodnotu);
+        typ.addValueChangeListener(event -> {
+            if (event.getValue() != null) overValidituTypComboBoxu(event.getValue().getNazev());
+        });
         typ.setHelperText("Pro vytvoření nového typu vozidla napište jeho název.");
         //
         popis = new TextArea("Popis");
@@ -102,12 +105,24 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
 
     private void typComboBoxMaNovouCustomHodnotu(GeneratedVaadinComboBox.CustomValueSetEvent<ComboBox<TypVozidla>> event) {
         if (novyTypVozidla == null) novyTypVozidla = new TypVozidla("", aktSchema);
+        if (!overValidituTypComboBoxu(event.getDetail())) return;
         novyTypVozidla.setNazev(event.getDetail());
         typVozidlaService.save(novyTypVozidla);
         naplnComboBox();
         typ.setValue(novyTypVozidla);
     }
-    
+
+    private boolean overValidituTypComboBoxu(String novaHondota) {
+        boolean invalid = novaHondota.length() > 50;
+        typ.setInvalid(invalid);
+        getContent().getCrud().getSaveButton().setEnabled(!invalid);
+        if (invalid) {
+            typ.setErrorMessage("název typu vozidla nesmí být delší než 50 znaků");
+            return false;
+        }
+        return true;
+    }
+
     private void vynulujNovyTypVozidla() {
         novyTypVozidla = null;
     }

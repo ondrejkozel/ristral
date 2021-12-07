@@ -33,6 +33,10 @@ public class Schema extends AbstractEntity {
         return typSchematu;
     }
 
+    public void setTypSchematu(TypSchematu typSchematu) {
+        this.typSchematu = typSchematu;
+    }
+
     public String getNazev() {
         return nazev;
     }

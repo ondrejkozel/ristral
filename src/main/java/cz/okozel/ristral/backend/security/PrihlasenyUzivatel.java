@@ -31,7 +31,7 @@ public class PrihlasenyUzivatel {
     public Optional<Uzivatel> getPrihlasenyUzivatel() {
         UserDetails details = getPrihlasenyUzivatell();
         if (details == null) return Optional.empty();
-        return Optional.of(uzivatelService.findByUzivatelskeJmeno(details.getUsername()));
+        return Optional.ofNullable(uzivatelService.findByUzivatelskeJmeno(details.getUsername()));
     }
 
     public void odhlasSe() {

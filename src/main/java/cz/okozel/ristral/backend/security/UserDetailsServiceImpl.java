@@ -2,8 +2,6 @@ package cz.okozel.ristral.backend.security;
 
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.service.entity.UzivatelService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uzivatelskeJmeno) throws UsernameNotFoundException {
-        Logger logger = LoggerFactory.getLogger(getClass());
         Uzivatel uzivatel = uzivatelService.findByUzivatelskeJmeno(uzivatelskeJmeno);
         if (uzivatel == null) {
             throw new UsernameNotFoundException("Žádný uživatel s tímto uživatelským jménem: " + uzivatelskeJmeno);
@@ -35,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private static List<GrantedAuthority> getAuthorities(Uzivatel uzivatel) {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + uzivatel.getRole().getNazev()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + uzivatel.getRole().getKratkyNazev()));
     }
 
 }

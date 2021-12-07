@@ -12,10 +12,13 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+import cz.okozel.ristral.backend.entity.schema.TypSchematu;
+import cz.okozel.ristral.backend.entity.uzivatele.Role;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.frontend.customComponents.PrihlasitSeButton;
 import cz.okozel.ristral.frontend.presenters.prehled.PrehledPresenter;
+import cz.okozel.ristral.frontend.presenters.uzivateleCrud.UzivateleCrudPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 import cz.okozel.ristral.frontend.presenters.vozidlaCrud.VozidlaCrudPresenter;
 import cz.okozel.ristral.frontend.presenters.zastavkyCrud.ZastavkyCrudPresenter;
@@ -61,6 +64,11 @@ public class MainLayout extends AppLayout {
         H2 nazevAplikace = new H2("Ristral");
         nazevAplikace.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
         //
+        //noinspection OptionalGetWithoutIsPresent
+        if (prihlasenyUzivatel.jePrihlaseny() && prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema().getTypSchematu() == TypSchematu.ORGANIZACE) {
+            nazevAplikace.setText(prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema().getNazev());
+        }
+        //
         com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(nazevAplikace, createNavigation(), createFooter());
         section.addClassNames("flex", "flex-col", "items-stretch", "max-h-full", "min-h-full");
         return section;
@@ -90,11 +98,12 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         PolozkaMenu[] menuItems = new PolozkaMenu[]{
-                new PolozkaMenu("Vítejte", Ikona.BUS, VitejtePresenter.class),
-                new PolozkaMenu("Přehled", Ikona.GRAF, PrehledPresenter.class),
-                new PolozkaMenu("Zastávky", Ikona.ZASTAVKA, ZastavkyCrudPresenter.class),
-                new PolozkaMenu("Vozidla", Ikona.BUS, VozidlaCrudPresenter.class),
-                new PolozkaMenu("O Ristralu", Ikona.INFO, ORistraluView.class)
+                new PolozkaMenu("Vítejte", LineAwesomeIcon.BUS, VitejtePresenter.class),
+                new PolozkaMenu("Přehled", LineAwesomeIcon.GRAF, PrehledPresenter.class),
+                new PolozkaMenu("Zastávky", LineAwesomeIcon.ZASTAVKA, ZastavkyCrudPresenter.class),
+                new PolozkaMenu("Vozidla", LineAwesomeIcon.BUS, VozidlaCrudPresenter.class),
+                new PolozkaMenu("Uživatelé", LineAwesomeIcon.UZIVATELE, UzivateleCrudPresenter.class),
+                new PolozkaMenu("O Ristralu", LineAwesomeIcon.INFO, ORistraluView.class)
         };
         //
         Set<Integer> ignorovaneIndexy = new HashSet<>();
@@ -143,7 +152,10 @@ public class MainLayout extends AppLayout {
             uzivatelMenu.setOpenOnClick(true);
             uzivatelMenu.addItem("Odhlásit se", e -> this.prihlasenyUzivatel.odhlasSe());
             //
-            Span jmeno = new Span(uzivatel.getJmeno());
+            Span jmeno = new Span();
+            Role role = prihlasenyUzivatel.get().getRole();
+            if (role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG) jmeno.setText(role.getNazev() + " " + uzivatel.getJmeno());
+            else jmeno.setText(uzivatel.getJmeno());
             jmeno.addClassNames("font-medium", "text-s", "text-secondary", "flex-auto");
             //
             footer.add(avatar, jmeno, triTeckyButton);
@@ -166,10 +178,10 @@ public class MainLayout extends AppLayout {
     public static class PolozkaMenu {
 
         private final String text;
-        private final Ikona ikona;
+        private final LineAwesomeIcon ikona;
         private final Class<? extends Component> view;
 
-        public PolozkaMenu(String text, Ikona ikona, Class<? extends Component> view) {
+        public PolozkaMenu(String text, LineAwesomeIcon ikona, Class<? extends Component> view) {
             this.text = text;
             this.ikona = ikona;
             this.view = view;
@@ -179,7 +191,7 @@ public class MainLayout extends AppLayout {
             return text;
         }
 
-        public Ikona getIkona() {
+        public LineAwesomeIcon getIkona() {
             return ikona;
         }
 

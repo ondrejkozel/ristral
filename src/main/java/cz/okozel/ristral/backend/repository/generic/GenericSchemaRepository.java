@@ -16,4 +16,7 @@ public interface GenericSchemaRepository<T extends AbstractSchemaEntity> extends
     @Query("select count(u) from #{#entityName} u where u.schema = ?1")
     long countBySchemaEquals(Schema schema);
 
+    @Query("delete from #{#entityName} u where u.schema = ?1")
+    void deleteAllBySchemaEquals(Schema schema);
+
 }

@@ -24,7 +24,7 @@ public class RegisterPresenter extends Presenter<RegisterView> {
 
     private void ulozUzivatele(RegisterView.RegisterEvent.UlozEvent event) {
         Uzivatel uzivatel = event.getUzivatel();
-        if (registratorService.zaregistruj(uzivatel)) {
+        if (registratorService.zaregistrujOsobniUcetAVytvorMuNoveSchema(uzivatel)) {
             getContent().ukazUspesneZaregistrovano();
             UI.getCurrent().navigate(LoginView.class);
         }

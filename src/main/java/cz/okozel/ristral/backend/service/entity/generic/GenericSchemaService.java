@@ -24,4 +24,8 @@ public abstract class GenericSchemaService<T extends AbstractSchemaEntity, R ext
         return hlavniRepositar.countBySchemaEquals(schema);
     }
 
+    public void deleteAll(Schema schema) {
+        hlavniRepositar.deleteAllBySchemaEquals(schema);
+    }
+
 }

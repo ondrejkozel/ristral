@@ -7,15 +7,11 @@ import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.service.entity.RezimObsluhyService;
 import cz.okozel.ristral.backend.service.entity.SchemaService;
 import cz.okozel.ristral.backend.service.entity.UzivatelService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegistratorService {
-
-    Logger logger = LoggerFactory.getLogger(RegistratorService.class);
 
     private final UzivatelService uzivatelService;
     private final SchemaService schemaService;
@@ -29,18 +25,27 @@ public class RegistratorService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean zaregistruj(Uzivatel uzivatel) {
+    public boolean zaregistrujOsobniUcetAVytvorMuNoveSchema(Uzivatel uzivatel) {
         if (uzivatelService.jeTotoUzivateskeJmenoObsazene(uzivatel.getUzivatelskeJmeno())) return false;
         Schema schema = new Schema(TypSchematu.OSOBNI, uzivatel.getUzivatelskeJmeno());
-        uzivatel.setSchema(schema);
-        uzivatel.setHeslo(passwordEncoder.encode(uzivatel.getHeslo()));
         schemaService.save(schema);
-        uzivatelService.save(uzivatel);
         //
         rezimObsluhyService.save(RezimObsluhy.vytvorVychoziRezimBezZnameni(schema));
         //
-        logger.info("Byl vytvořen nový uživatel " + uzivatel.getUzivatelskeJmeno());
+        uzivatel.setSchema(schema);
+        nastavHesloAUloz(uzivatel);
         return true;
+    }
+
+    public boolean zaregistrujPodrizenyUcet(Uzivatel uzivatel) {
+        if (uzivatelService.jeTotoUzivateskeJmenoObsazene(uzivatel.getUzivatelskeJmeno())) return false;
+        nastavHesloAUloz(uzivatel);
+        return true;
+    }
+
+    private void nastavHesloAUloz(Uzivatel uzivatel) {
+        uzivatel.setHeslo(passwordEncoder.encode(uzivatel.getHeslo()));
+        uzivatelService.save(uzivatel);
     }
 
 }

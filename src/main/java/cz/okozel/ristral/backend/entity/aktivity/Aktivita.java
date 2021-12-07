@@ -4,7 +4,10 @@ import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,24 +35,18 @@ public class Aktivita extends AbstractSchemaEntity {
     @NotNull
     private LocalDateTime casUskutecneni;
 
-    @ManyToOne
-    @JoinColumn
-    @NotNull
-    private Uzivatel akter;
-
     public Aktivita() {}
 
-    public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter, Schema schema) {
+    public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Schema schema) {
         super(schema);
         this.typ = typ;
         this.titulek = titulek;
         this.popis = popis;
         this.casUskutecneni = casUskutecneni;
-        this.akter = akter;
     }
 
     public Aktivita(TypAktivity typ, String titulek, String popis, LocalDateTime casUskutecneni, Uzivatel akter) {
-        this(typ, titulek, popis, casUskutecneni, akter, akter != null ? akter.getSchema() : null);
+        this(typ, titulek, popis, casUskutecneni, akter != null ? akter.getSchema() : null);
     }
 
     public TypAktivity getTyp() {
@@ -66,10 +63,6 @@ public class Aktivita extends AbstractSchemaEntity {
 
     public LocalDateTime getCasUskutecneni() {
         return casUskutecneni;
-    }
-
-    public Uzivatel getAkter() {
-        return akter;
     }
 
     @Override

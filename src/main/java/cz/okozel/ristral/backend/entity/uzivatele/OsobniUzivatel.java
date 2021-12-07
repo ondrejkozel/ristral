@@ -1,6 +1,9 @@
 package cz.okozel.ristral.backend.entity.uzivatele;
 
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.schema.TypSchematu;
+import cz.okozel.ristral.backend.service.entity.SchemaService;
+import cz.okozel.ristral.backend.service.entity.UzivatelService;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -15,6 +18,19 @@ public class OsobniUzivatel extends AdminOrg {
 
     public OsobniUzivatel(String uzivatelskeJmeno, String jmeno, String email, String heslo, Schema schema) {
         super(uzivatelskeJmeno, jmeno, email, heslo, schema);
+    }
+
+    public static void prevedNaUcetOrganizace(OsobniUzivatel uzivatel, SchemaService schemaService, UzivatelService uzivatelService) {
+        uzivatel.getSchema().setNazev(String.format("Organizace %s", uzivatel.getJmeno()));
+        uzivatel.getSchema().setTypSchematu(TypSchematu.ORGANIZACE);
+        schemaService.save(uzivatel.getSchema());
+        //
+        uzivatelService.delete(uzivatel);
+        uzivatelService.save(uzivatel.getSuperadminOrg());
+    }
+
+    public void prevedNaUcetOrganizace(SchemaService schemaService, UzivatelService uzivatelService) {
+        prevedNaUcetOrganizace(this, schemaService, uzivatelService);
     }
 
 }
