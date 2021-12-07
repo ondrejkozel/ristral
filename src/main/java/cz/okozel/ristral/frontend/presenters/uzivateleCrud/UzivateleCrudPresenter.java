@@ -46,23 +46,24 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
         getContent().getCrud().addNewListener(event -> hesloBinding.setValidatorsDisabled(false));
         getContent().getCrud().addNewListener(event -> roleSelect.setVisible(false));
         getContent().getCrud().addNewListener(event -> roleSelect.setValue(Role.UZIVATEL_ORG));
-        getContent().getCrud().addNewListener(event -> nastavNeupravitelnostFieldu(false));
+        getContent().getCrud().addNewListener(event -> nastavNeupravitelnostEditovanehoUzivatele(false));
         //
         getContent().getCrud().addEditListener(event -> hesloField.setVisible(false));
         getContent().getCrud().addEditListener(event -> hesloBinding.setValidatorsDisabled(true));
         getContent().getCrud().addEditListener(event -> roleSelect.setVisible(true));
         getContent().getCrud().addEditListener(event -> roleSelect.setValue(event.getItem().getRole()));
-        getContent().getCrud().addEditListener(event -> nastavNeupravitelnostFieldu(event.getItem().getRole() == Role.SUPERADMIN_ORG));
+        getContent().getCrud().addEditListener(event -> nastavNeupravitelnostEditovanehoUzivatele(event.getItem().getRole() == Role.SUPERADMIN_ORG));
         //
         getContent().getCrud().addSaveListener(event -> pokudPotrebaZmenRoli(uzivatelService, event.getItem()));
     }
 
-    private void nastavNeupravitelnostFieldu(boolean neupravitelny) {
+    private void nastavNeupravitelnostEditovanehoUzivatele(boolean neupravitelny) {
         Stream
                 .of(jmeno, uzivatelskeJmeno, email)
                 .forEach(field -> field.setReadOnly(neupravitelny));
         roleSelect.setReadOnly(neupravitelny);
         roleSelect.setHelperText(neupravitelny ? "Protože je tento uživatel superadministrátor, osobní údaje si spravuje sám." : "");
+        getContent().getCrud().getDeleteButton().setEnabled(!neupravitelny);
     }
 
     private void pokudPotrebaZmenRoli(UzivatelService uzivatelService, Uzivatel uzivatelKeZmene) {
