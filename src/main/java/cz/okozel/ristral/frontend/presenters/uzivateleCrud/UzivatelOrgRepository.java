@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.repository;
+package cz.okozel.ristral.frontend.presenters.uzivateleCrud;
 
 import cz.okozel.ristral.backend.entity.uzivatele.UzivatelOrg;
 import cz.okozel.ristral.backend.repository.generic.GenericSchemaRepository;

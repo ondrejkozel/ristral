@@ -6,7 +6,6 @@ import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.entity.uzivatele.UzivatelOrg;
 import cz.okozel.ristral.backend.service.RegistratorService;
-import cz.okozel.ristral.backend.service.entity.UzivatelOrgService;
 import cz.okozel.ristral.frontend.presenters.crud.GenericDataProvider;
 
 import java.util.stream.Stream;

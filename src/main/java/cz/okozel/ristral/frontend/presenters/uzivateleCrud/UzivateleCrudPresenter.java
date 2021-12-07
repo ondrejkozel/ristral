@@ -17,7 +17,6 @@ import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.entity.uzivatele.UzivatelOrg;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.RegistratorService;
-import cz.okozel.ristral.backend.service.entity.UzivatelOrgService;
 import cz.okozel.ristral.backend.service.entity.UzivatelService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
@@ -26,6 +25,10 @@ import cz.okozel.ristral.frontend.views.uzivateleCrud.UzivateleCrudView;
 import javax.annotation.security.RolesAllowed;
 import java.util.stream.Stream;
 
+/**
+ * Vytvořit nový repositář a novou službu bylo nejjednodušší řešení toho, že crud nemůže mít abstraktní třídu jako
+ * generický typ.
+ */
 @PageTitle("Uživatelé")
 @Route(value = "uzivatele", layout = MainLayout.class)
 @RolesAllowed("superadminOrg")
