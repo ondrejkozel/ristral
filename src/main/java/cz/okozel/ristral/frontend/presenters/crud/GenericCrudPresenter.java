@@ -5,6 +5,7 @@ import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.grid.Grid;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.repository.generic.GenericRepository;
+import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.entity.generic.GenericSchemaService;
 import cz.okozel.ristral.frontend.presenters.Presenter;
 import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
@@ -13,11 +14,14 @@ public abstract class GenericCrudPresenter<T extends AbstractSchemaEntity, V ext
 
     private boolean multiselect = false;
 
-    public GenericCrudPresenter(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericSchemaService<T, ? extends GenericRepository<T>>> dataProvider) {
+    public GenericCrudPresenter(Class<T> tridaObjektu, GenericDataProvider<T, ? extends GenericSchemaService<T, ? extends GenericRepository<T>>> dataProvider, PrihlasenyUzivatel prihlasenyUzivatel) {
         setCrud(tridaObjektu, dataProvider, createEditor());
         getContent().postInicialization();
         getContent().addObnovitClickListener(event -> dataProvider.refreshAll());
         getContent().addVicenasobnyVyberClickListener(event -> toggleMultipleSelection());
+        //
+        //noinspection OptionalGetWithoutIsPresent uživatel je vždy přihlášený
+        getContent().setReadOnly(!prihlasenyUzivatel.getPrihlasenyUzivatel().get().isAtLeastAdmin());
     }
 
     private void toggleMultipleSelection() {

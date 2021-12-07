@@ -165,4 +165,9 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         multiVyber.setChecked(vybrano);
     }
 
+    public void setReadOnly(boolean readOnly) {
+        if (readOnly) Crud.removeEditColumn(crud.getGrid());
+        crud.setToolbarVisible(!readOnly);
+    }
+
 }

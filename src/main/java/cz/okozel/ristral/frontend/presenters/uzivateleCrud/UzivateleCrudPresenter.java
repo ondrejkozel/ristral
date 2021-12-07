@@ -37,7 +37,7 @@ public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, Uz
     private final SuperadminOrg prihlasenyUzivatel;
 
     public UzivateleCrudPresenter(UzivatelOrgService uzivatelOrgService, PrihlasenyUzivatel prihlasenyUzivatel, RegistratorService registratorService, UzivatelService uzivatelService) {
-        super(UzivatelOrg.class, new UzivateleCrudDataProvider(uzivatelOrgService, UzivatelOrg.class, prihlasenyUzivatel, registratorService));
+        super(UzivatelOrg.class, new UzivateleCrudDataProvider(uzivatelOrgService, UzivatelOrg.class, prihlasenyUzivatel, registratorService), prihlasenyUzivatel);
         //přihlášený uživatel je vždy superadministrátor
         //noinspection OptionalGetWithoutIsPresent
         this.prihlasenyUzivatel = (SuperadminOrg) prihlasenyUzivatel.getPrihlasenyUzivatel().get();

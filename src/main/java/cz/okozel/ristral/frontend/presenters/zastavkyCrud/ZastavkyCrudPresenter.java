@@ -40,7 +40,7 @@ public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, Zastav
 
     public ZastavkyCrudPresenter(ZastavkaService zastavkaService, PrihlasenyUzivatel prihlasenyUzivatel, RezimObsluhyService rezimObsluhyService) {
         //noinspection OptionalGetWithoutIsPresent
-        super(Zastavka.class, new ZastavkyCrudDataProvider(zastavkaService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()));
+        super(Zastavka.class, new ZastavkyCrudDataProvider(zastavkaService, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()), prihlasenyUzivatel);
         schema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
         this.rezimObsluhyService = rezimObsluhyService;
     }
