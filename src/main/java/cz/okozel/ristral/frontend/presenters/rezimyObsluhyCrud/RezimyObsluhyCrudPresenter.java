@@ -207,7 +207,9 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
     }
 
     private void ulozGridPro(PeriodaNaZnameniService periodaNaZnameniService) {
-        periodaNaZnameniService.saveAll(getPolozkyGridPro());
+        List<RezimObsluhy.PeriodaNaZnameni> periodyNaZnameni = getPolozkyGridPro();
+        periodyNaZnameni.removeIf(periodaNaZnameni -> periodaNaZnameni.getDnyNaZnameni().isEmpty());
+        periodaNaZnameniService.saveAll(periodyNaZnameni);
     }
 
     private List<RezimObsluhy.PeriodaNaZnameni> getPolozkyGridPro() {
