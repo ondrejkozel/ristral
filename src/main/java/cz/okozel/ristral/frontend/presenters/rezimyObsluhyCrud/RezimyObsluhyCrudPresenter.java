@@ -39,8 +39,7 @@ import cz.okozel.ristral.frontend.views.rezimyObsluhyCrud.RezimyObsluhyCrudView;
 import javax.annotation.security.PermitAll;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @PageTitle("Režimy obsluhy")
@@ -122,7 +121,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
                 .custom(doTimePicker, pokudJeValidniTakProved(RezimObsluhy.PeriodaNaZnameni::setNaZnameniDo))
                 .setHeader("Do").setAutoWidth(true);
         //
-        Renderer<RezimObsluhy.PeriodaNaZnameni> dnyNaZnameniRenderer = new TextRenderer<>(item -> item.getDnyNaZnameni().toString());
+        Renderer<RezimObsluhy.PeriodaNaZnameni> dnyNaZnameniRenderer = new TextRenderer<>(this::generateDnyNaZnameniText);
         MultiSelectListBox<DayOfWeek> dnyVTydnuListBox = new MultiSelectListBox<>();
         dnyVTydnuListBox.setItems(DayOfWeek.values());
         dnyVTydnuListBox.addSelectionListener(event -> getContent().getCrud().setDirty(true));
@@ -135,6 +134,22 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
                 .setFlexGrow(0);
         //
         return periodaNaZnameniGridPro;
+    }
+
+    private String generateDnyNaZnameniText(RezimObsluhy.PeriodaNaZnameni periodaNaZnameni) {
+        if (periodaNaZnameni.getDnyNaZnameni().isEmpty()) return "poklepáním nastavte";
+        if (periodaNaZnameni.getDnyNaZnameni().containsAll(List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)) && periodaNaZnameni.getDnyNaZnameni().size() == 2) return "o víkendu";
+        if (periodaNaZnameni.getDnyNaZnameni().size() == 7) return "každý den";
+        //
+        SortedSet<DayOfWeek> sortedSet = new TreeSet<>(Comparator.comparingInt(o -> Arrays.binarySearch(DayOfWeek.values(), o)));
+        sortedSet.addAll(periodaNaZnameni.getDnyNaZnameni());
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Iterator<DayOfWeek> iterator = sortedSet.iterator(); iterator.hasNext(); ) {
+            DayOfWeek day = iterator.next();
+            stringBuilder.append(DayOfWeekWrapper.getShortTranslation(day));
+            if (iterator.hasNext()) stringBuilder.append(", ");
+        }
+        return stringBuilder.toString();
     }
 
     private Button vytvorOdstranitPerioduNaZnameniButton(RezimObsluhy.PeriodaNaZnameni periodaNaZnameni) {
