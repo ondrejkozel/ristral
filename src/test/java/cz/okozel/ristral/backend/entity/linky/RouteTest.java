@@ -1,3 +1,5 @@
+package cz.okozel.ristral.backend.entity.linky;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -20,8 +22,8 @@ class RouteTest {
         StringBuilder stringBuilder = new StringBuilder();
         for (Iterator<Route.Link<V, E>> iterator = links.iterator(); iterator.hasNext(); ) {
             Route.Link<V, E> link = iterator.next();
-            stringBuilder.append("[").append(link.previous()).append("] - ").append(link.data()).append(" - ");
-            if (!iterator.hasNext()) stringBuilder.append("[").append(link.next()).append("]");
+            stringBuilder.append("[").append(link.previous).append("] - ").append(link.data).append(" - ");
+            if (!iterator.hasNext()) stringBuilder.append("[").append(link.next).append("]");
         }
         return stringBuilder.toString();
     }
