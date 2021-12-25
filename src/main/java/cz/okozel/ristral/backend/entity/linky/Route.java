@@ -25,7 +25,7 @@ public class Route<V, E> {
     }
 
     public Route<V, E> add(int index, V vertex, E data) {
-        if (index < 0 || index > vertexes()) return this;
+        if (index < 0 || index > vertexes()) throw new IndexOutOfBoundsException(index);
         List<Link<V, E>> newLinks = new ArrayList<>(links);
         if (index == 0) newLinks.add(0, new Link<>(vertex, data, getFirstVertex()));
         else if (index == vertexes()) newLinks.add(new Link<>(getLastVertex(), data, vertex));
@@ -38,7 +38,7 @@ public class Route<V, E> {
     }
 
     public Route<V, E> remove(int index) {
-        if (index < 0 || index >= vertexes()) return this;
+        if (index < 0 || index >= vertexes()) throw new IndexOutOfBoundsException(index);
         List<Link<V, E>> newLinks = new ArrayList<>(links);
         if (index == 0) newLinks.remove(0);
         else if (index == links.size()) newLinks.remove(index - 1);
