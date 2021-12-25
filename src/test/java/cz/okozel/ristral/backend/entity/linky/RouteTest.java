@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RouteTest {
 
@@ -76,4 +77,9 @@ class RouteTest {
         assertThat(linksToString(route.getLinks()), equalTo("[one] - 0 - [two] - 0 - [four] - 0 - [five]"));
     }
 
+    @Test
+    void addOutsideOfBounds() {
+        Route<String, Integer> route = generateShortStringIntegerRoute();
+        assertThrows(IndexOutOfBoundsException.class, () -> route.add(3, "out", 26));
+    }
 }
