@@ -67,9 +67,9 @@ public class Route<V, E> {
 
     public static class Link<V, E> {
 
-        private final V previous;
-        private final E data;
-        private final V next;
+        public final V previous;
+        public final E data;
+        public final V next;
 
         public Link(V previous, E data, V next) {
             this.previous = previous;
