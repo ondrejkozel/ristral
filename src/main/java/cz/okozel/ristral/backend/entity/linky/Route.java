@@ -9,12 +9,11 @@ public class Route<V, E> {
     private final List<Link<V, E>> links;
 
     public Route(V first, E data, V second) {
-        links = new ArrayList<>();
-        links.add(new Link<>(first, data, second));
+        links = List.of(new Link<>(first, data, second));
     }
 
     private Route(List<Link<V, E>> links) {
-        this.links = links;
+        this.links = Collections.unmodifiableList(links);
     }
 
     public Route<V, E> addToEnd(V vertex, E data) {
@@ -63,7 +62,7 @@ public class Route<V, E> {
     }
 
     public List<Link<V, E>> getLinks() {
-        return Collections.unmodifiableList(links);
+        return links;
     }
 
     public static class Link<V, E> {
