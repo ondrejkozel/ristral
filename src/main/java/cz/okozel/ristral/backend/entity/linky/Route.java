@@ -17,7 +17,7 @@ public class Route<V, E> {
     }
 
     public Route<V, E> addToEnd(V vertex, E data) {
-        return add(vertexes(), vertex, data);
+        return add(length(), vertex, data);
     }
 
     public Route<V, E> addToBeginning(V vertex, E data) {
@@ -25,10 +25,10 @@ public class Route<V, E> {
     }
 
     public Route<V, E> add(int index, V vertex, E data) {
-        if (index < 0 || index > vertexes()) throw new IndexOutOfBoundsException(index);
+        if (index < 0 || index > length()) throw new IndexOutOfBoundsException(index);
         List<Link<V, E>> newLinks = new ArrayList<>(links);
-        if (index == 0) newLinks.add(0, new Link<>(vertex, data, getFirstVertex()));
-        else if (index == vertexes()) newLinks.add(new Link<>(getLastVertex(), data, vertex));
+        if (index == 0) newLinks.add(0, new Link<>(vertex, data, from()));
+        else if (index == length()) newLinks.add(new Link<>(to(), data, vertex));
         else  {
             Link<V, E> former = newLinks.get(index - 1);
             newLinks.set(index - 1, new Link<>(former.previous, former.data, vertex));
@@ -38,7 +38,7 @@ public class Route<V, E> {
     }
 
     public Route<V, E> remove(int index) {
-        if (index < 0 || index >= vertexes()) throw new IndexOutOfBoundsException(index);
+        if (index < 0 || index >= length()) throw new IndexOutOfBoundsException(index);
         List<Link<V, E>> newLinks = new ArrayList<>(links);
         if (index == 0) newLinks.remove(0);
         else if (index == links.size()) newLinks.remove(index - 1);
@@ -49,15 +49,15 @@ public class Route<V, E> {
         return new Route<>(newLinks);
     }
 
-    public int vertexes() {
+    public int length() {
         return links.size() + 1;
     }
 
-    public V getFirstVertex() {
+    public V from() {
         return links.get(0).previous;
     }
 
-    public V getLastVertex() {
+    public V to() {
         return links.get(links.size() - 1).next;
     }
 
