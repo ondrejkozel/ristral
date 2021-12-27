@@ -17,7 +17,7 @@ import java.util.Set;
 public class RezimObsluhy extends AbstractSchemaEntity {
 
     public static RezimObsluhy vytvorVychoziRezimBezZnameni(Schema schema) {
-        RezimObsluhy rezimObsluhy = new RezimObsluhy("není na znamení", "Zastávka není na znamení všechny dny v týdnu.", schema);
+        RezimObsluhy rezimObsluhy = new RezimObsluhy("není na znamení", "Zastávka není na znamení po celou dobu.", schema);
         rezimObsluhy.upravitelny = false;
         return rezimObsluhy;
     }
