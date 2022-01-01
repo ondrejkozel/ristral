@@ -132,6 +132,13 @@ public interface Route<V, E> extends Direction<V> {
     }
 
     /**
+     * Returns a new route with verticies in opposite direction.
+     *
+     * @return the reverse of this route
+     */
+    Route<V, E> reverse();
+
+    /**
      * Returns a list of links that form this route. The list contains at least
      * one element, because a route must consist of one or more links and it is
      * immutable.

@@ -96,6 +96,22 @@ class RouteTest {
         assertEquals(suffix, route.slice(prefix.length(), route.length()));
     }
 
+    @Test
+    void reverse() {
+        final var original = Route
+                .start("A")
+                .through(1)
+                .to("B")
+                .through(2)
+                .to("C")
+                .through(3)
+                .to("D")
+                .finish();
+        final var reversed = original.reverse();
+
+        assertEquals(reversed.links(), List.of(Link.build("D", "C", 3), Link.build("C", "B", 2), Link.build("B", "A", 1)));
+    }
+
     private static <V, E> Route<V, E> copyOf(Route<? extends V, ? extends E> route) {
         // How to compose a Route from a stream
         final var result = Route.<V, E> empty();

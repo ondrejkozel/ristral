@@ -1,9 +1,6 @@
 package cz.okozel.ristral.backend.entity.linky;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The default implementation of {@link Route}.
@@ -141,6 +138,20 @@ final class DefaultRoute<V, E> implements Route<V, E> {
         }
 
         return new DefaultRoute<>(links.subList(fromIndex, toIndex));
+    }
+
+    /**
+     * @see Route#reverse()
+     */
+    @Override
+    public Route<V, E> reverse() {
+        List<Link<V, E>> newLinks = new ArrayList<>(links);
+        Collections.reverse(newLinks);
+        for (int i = 0; i < newLinks.size(); i++) {
+            Link<V, E> old = newLinks.get(i);
+            newLinks.set(i, Link.build(old.to(), old.from(), old.edge()));
+        }
+        return new DefaultRoute<>(newLinks);
     }
 
     /**
