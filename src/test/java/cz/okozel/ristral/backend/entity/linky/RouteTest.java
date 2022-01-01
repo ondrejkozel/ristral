@@ -2,84 +2,104 @@ package cz.okozel.ristral.backend.entity.linky;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class RouteTest {
 
-    private static Route<String, Integer> generateShortStringIntegerRoute() {
-        return new Route<>("one", 0, "two");
-    }
-
-    private static Route<String, Integer> generateLongStringIntegerRoute() {
-        return new Route<>("one", 0, "two").addToEnd("three", 0).addToEnd("four", 0).addToEnd("five", 0);
-    }
-
-    private static <V, E> String linksToString(List<Route.Link<V, E>> links) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Iterator<Route.Link<V, E>> iterator = links.iterator(); iterator.hasNext(); ) {
-            Route.Link<V, E> link = iterator.next();
-            stringBuilder.append("[").append(link.previous).append("] - ").append(link.data).append(" - ");
-            if (!iterator.hasNext()) stringBuilder.append("[").append(link.next).append("]");
-        }
-        return stringBuilder.toString();
+    @Test
+    void empty_finish() {
+        assertFalse(Route.empty().finishOptionally().isPresent());
     }
 
     @Test
-    void routeCreationTest() {
-        assertThat(linksToString(generateShortStringIntegerRoute().getLinks()), equalTo("[one] - 0 - [two]"));
+    void empty_tip() {
+        assertFalse(Route.empty().tip().isPresent());
     }
 
     @Test
-    void addToEndTest() {
-        Route<String, Integer> route = generateShortStringIntegerRoute();
-        route = route.addToEnd("three", 1);
-        assertThat(linksToString(route.getLinks()), equalTo("[one] - 0 - [two] - 1 - [three]"));
+    void single_link() {
+        final var route = Route.extend(Link.build("A", "B", 1)).finish();
+
+        assertEquals(1, route.length());
+        assertEquals(List.of(Link.build("A", "B", 1)), route.links());
+        assertEquals("A", route.from());
+        assertEquals("B", route.to());
+        assertEquals(route.links().hashCode(), route.hashCode());
+
+        final var copy = copyOf(route);
+        assertEquals(copy.hashCode(), route.hashCode());
+        assertEquals(copy, route);
     }
 
     @Test
-    void addToBegginingTest() {
-        Route<String, Integer> route = generateShortStringIntegerRoute();
-        route = route.addToBeginning("zero", -1);
-        assertThat(linksToString(route.getLinks()), equalTo("[zero] - -1 - [one] - 0 - [two]"));
+    void multiple_links() {
+        final var route = Route
+            .start("A")
+            .through(1)
+            .to("B")
+            .through(2)
+            .to("C")
+            .finish();
+
+        assertEquals(2, route.length());
+        assertEquals(List.of(Link.build("A", "B", 1), Link.build("B", "C", 2)), route.links());
+        assertEquals("A", route.from());
+        assertEquals("C", route.to());
+        assertEquals(route.links().hashCode(), route.hashCode());
+
+        final var copy = copyOf(route);
+        assertEquals(copy.hashCode(), route.hashCode());
+        assertEquals(copy, route);
     }
 
     @Test
-    void addMultipleTest() {
-        Route<String, Integer> route = generateShortStringIntegerRoute();
-        route = route.addToEnd("three", 1);
-        route = route.add(2, "two and half", 2);
-        assertThat(linksToString(route.getLinks()), equalTo("[one] - 0 - [two] - 1 - [two and half] - 2 - [three]"));
+    void prefix() {
+        final var prefix = Route.start("A").through(1).to("B").finish();
+        final var suffix = Route.start("B").through(2).to("C").finish();
+        final var route = Route.extend(prefix).join(suffix).finish();
+
+        assertEquals(prefix, route.prefix(prefix.length()));
+        assertEquals(route, route.prefix(route.length()));
     }
 
     @Test
-    void removeFirstTest() {
-        Route<String, Integer> route = generateLongStringIntegerRoute();
-        route = route.remove(0);
-        assertThat(linksToString(route.getLinks()), equalTo("[two] - 0 - [three] - 0 - [four] - 0 - [five]"));
+    void suffix() {
+        final var prefix = Route.start("A").through(1).to("B").finish();
+        final var suffix = Route.start("B").through(2).to("C").finish();
+        final var route = Route.extend(prefix).join(suffix).finish();
+
+        assertEquals(suffix, route.suffix(suffix.length()));
+        assertEquals(route, route.suffix(route.length()));
     }
 
     @Test
-    void removeLastTest() {
-        Route<String, Integer> route = generateLongStringIntegerRoute();
-        route = route.remove(route.getLinks().size());
-        assertThat(linksToString(route.getLinks()), equalTo("[one] - 0 - [two] - 0 - [three] - 0 - [four]"));
+    void postfix() {
+        final var prefix = Route.start("A").through(1).to("B").finish();
+        final var suffix = Route.start("B").through(2).to("C").finish();
+        final var route = Route.extend(prefix).join(suffix).finish();
+
+        assertEquals(suffix, route.postfix(route.length() - suffix.length()));
+        assertEquals(route, route.postfix(0));
     }
 
     @Test
-    void removeTest() {
-        Route<String, Integer> route = generateLongStringIntegerRoute();
-        route = route.remove(2);
-        assertThat(linksToString(route.getLinks()), equalTo("[one] - 0 - [two] - 0 - [four] - 0 - [five]"));
+    void slice() {
+        final var prefix = Route.start("A").through(1).to("B").finish();
+        final var suffix = Route.start("B").through(2).to("C").finish();
+        final var route = Route.extend(prefix).join(suffix).finish();
+
+        assertEquals(route, route.slice(0, route.length()));
+        assertEquals(prefix, route.slice(0, prefix.length()));
+        assertEquals(suffix, route.slice(prefix.length(), route.length()));
     }
 
-    @Test
-    void addOutsideOfBounds() {
-        Route<String, Integer> route = generateShortStringIntegerRoute();
-        assertThrows(IndexOutOfBoundsException.class, () -> route.add(3, "out", 26));
+    private static <V, E> Route<V, E> copyOf(Route<? extends V, ? extends E> route) {
+        // How to compose a Route from a stream
+        final var result = Route.<V, E> empty();
+        route.links().forEach(result::join);
+        return result.finishOptionally().orElseThrow();
     }
 }
