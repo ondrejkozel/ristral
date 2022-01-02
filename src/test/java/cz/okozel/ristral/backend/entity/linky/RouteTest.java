@@ -24,6 +24,7 @@ class RouteTest {
         final var route = Route.extend(Link.build("A", "B", 1)).finish();
 
         assertEquals(1, route.length());
+        assertEquals(2, route.stops());
         assertEquals(List.of(Link.build("A", "B", 1)), route.links());
         assertEquals("A", route.from());
         assertEquals("B", route.to());
@@ -45,6 +46,7 @@ class RouteTest {
             .finish();
 
         assertEquals(2, route.length());
+        assertEquals(3, route.stops());
         assertEquals(List.of(Link.build("A", "B", 1), Link.build("B", "C", 2)), route.links());
         assertEquals("A", route.from());
         assertEquals("C", route.to());

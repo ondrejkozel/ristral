@@ -132,7 +132,7 @@ public interface Route<V, E> extends Direction<V> {
     }
 
     /**
-     * Returns a new route with verticies in opposite direction.
+     * Returns a new route with vertices in the opposite direction.
      *
      * @return the reverse of this route
      */
@@ -158,6 +158,19 @@ public interface Route<V, E> extends Direction<V> {
      */
     default int length() {
         return links().size();
+    }
+
+    /**
+     * Returns the number of stops that this route contains.
+     *
+     * <p>
+     * This method is a shortcut for {@code length() + 1}, which is the
+     * default implementation. It returns always a positive value.
+     *
+     * @return the number of stops this route contains
+     */
+    default int stops() {
+        return length() + 1;
     }
 
     /**
