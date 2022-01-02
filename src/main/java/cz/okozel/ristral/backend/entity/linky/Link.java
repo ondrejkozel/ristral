@@ -40,6 +40,12 @@ public interface Link<V, E> extends Direction<V> {
     @Override
     int hashCode();
 
+    default Link<V, E> reverse() {
+        return Link.build(this.to(), this.from(), invertEdge(this.edge()));
+    }
+
+    E invertEdge(E edge);
+
     /**
      * Creates an instance.
      *

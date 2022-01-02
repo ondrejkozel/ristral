@@ -145,13 +145,13 @@ final class DefaultRoute<V, E> implements Route<V, E> {
      */
     @Override
     public Route<V, E> reverse() {
-        List<Link<V, E>> newLinks = new ArrayList<>(links);
-        Collections.reverse(newLinks);
-        for (int i = 0; i < newLinks.size(); i++) {
-            Link<V, E> old = newLinks.get(i);
-            newLinks.set(i, Link.build(old.to(), old.from(), old.edge()));
+        final var length = links.size();
+        final List<Link<V, E>> reversed = new ArrayList<>(length);
+        for (var iterator = links.listIterator(length); iterator.hasPrevious();) {
+            reversed.add(iterator.previous().reverse());
         }
-        return new DefaultRoute<>(newLinks);
+        assert (length == reversed.size());
+        return new DefaultRoute<>(reversed);
     }
 
     /**

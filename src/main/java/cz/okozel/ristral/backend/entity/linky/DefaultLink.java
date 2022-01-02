@@ -30,6 +30,11 @@ final class DefaultLink<V, E> implements Link<V, E> {
         return Objects.hash(from, to, edge);
     }
 
+    @Override
+    public E invertEdge(E edge) {
+        return edge;
+    }
+
     public V from() {
         return from;
     }
