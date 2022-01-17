@@ -146,7 +146,7 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
         StringBuilder stringBuilder = new StringBuilder();
         for (Iterator<DayOfWeek> iterator = sortedSet.iterator(); iterator.hasNext(); ) {
             DayOfWeek day = iterator.next();
-            stringBuilder.append(DayOfWeekWrapper.getShortTranslation(day));
+            stringBuilder.append(DayOfWeekWrap.getShortTranslation(day));
             if (iterator.hasNext()) stringBuilder.append(", ");
         }
         return stringBuilder.toString();

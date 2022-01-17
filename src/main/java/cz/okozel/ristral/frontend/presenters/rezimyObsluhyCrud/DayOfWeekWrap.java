@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * český překlad {@link java.time.DayOfWeek}
  */
-public enum DayOfWeekWrapper {
+public enum DayOfWeekWrap {
     PONDELI(DayOfWeek.MONDAY, "pondělí", "po"),
     UTERY(DayOfWeek.TUESDAY, "úterý", "út"),
     STREDA(DayOfWeek.WEDNESDAY, "středa", "st"),
@@ -19,16 +19,16 @@ public enum DayOfWeekWrapper {
     private final String longText;
     private final String shortText;
 
-    DayOfWeekWrapper(DayOfWeek dayOfWeek, String longText, String shortText) {
+    DayOfWeekWrap(DayOfWeek dayOfWeek, String longText, String shortText) {
         this.dayOfWeek = dayOfWeek;
         this.longText = longText;
         this.shortText = shortText;
     }
 
-    private static final HashMap<DayOfWeek, DayOfWeekWrapper> DAYS_OF_WEEK = new HashMap<>();
+    private static final HashMap<DayOfWeek, DayOfWeekWrap> DAYS_OF_WEEK = new HashMap<>();
 
     static {
-        for (DayOfWeekWrapper day : values()) {
+        for (DayOfWeekWrap day : values()) {
             DAYS_OF_WEEK.put(day.dayOfWeek, day);
         }
     }
@@ -39,6 +39,10 @@ public enum DayOfWeekWrapper {
 
     public static String getShortTranslation(DayOfWeek day) {
         return DAYS_OF_WEEK.get(day).shortText;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
     @Override
