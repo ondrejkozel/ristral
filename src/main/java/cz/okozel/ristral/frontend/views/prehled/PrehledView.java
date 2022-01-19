@@ -96,7 +96,7 @@ public class PrehledView extends Main {
     private Chart vehicleTypeDistributionChart;
 
     private Component createVehicleTypeDistributionCell() {
-        CellHeader header = new CellHeader("Rozložení typů vozidel");
+        CellHeader header = new CellHeader("Rozložení typů vozidel", "Množství vozidel daného typu");
         //
         vehicleTypeDistributionChart = new Chart(ChartType.PIE);
         configureChart(vehicleTypeDistributionChart);
