@@ -121,11 +121,11 @@ public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluh
                 .custom(doTimePicker, pokudJeValidniTakProved(RezimObsluhy.PeriodaNaZnameni::setNaZnameniDo))
                 .setHeader("Do").setAutoWidth(true);
         //
-        Renderer<RezimObsluhy.PeriodaNaZnameni> dnyNaZnameniRenderer = new TextRenderer<>(this::generateDnyNaZnameniText);
         MultiSelectListBox<DayOfWeek> dnyVTydnuListBox = new MultiSelectListBox<>();
         dnyVTydnuListBox.setItems(DayOfWeek.values());
         dnyVTydnuListBox.addSelectionListener(event -> getContent().getCrud().setDirty(true));
-        periodaNaZnameniGridPro.addEditColumn(RezimObsluhy.PeriodaNaZnameni::getDnyNaZnameni, dnyNaZnameniRenderer)
+        dnyVTydnuListBox.setRenderer(new TextRenderer<>(DayOfWeekWrap::getFullTranslation));
+        periodaNaZnameniGridPro.addEditColumn(RezimObsluhy.PeriodaNaZnameni::getDnyNaZnameni, new TextRenderer<>(this::generateDnyNaZnameniText))
                 .custom(dnyVTydnuListBox, RezimObsluhy.PeriodaNaZnameni::setDnyNaZnameni)
                 .setHeader("Dny").setFlexGrow(4);
         //
