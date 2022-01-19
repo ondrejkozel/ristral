@@ -43,6 +43,9 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
         getContent().getCrud().addSaveListener(event -> smazNepouzivaneTypyVozidel());
         getContent().getCrud().addSaveListener(event -> vynulujNovyTypVozidla());
         //
+        getContent().getCrud().addDeleteListener(event -> smazNepouzivaneTypyVozidel());
+        getContent().getCrud().addDeleteListener(event -> vynulujNovyTypVozidla());
+        //
         getContent().getCrud().addCancelListener(event -> smazNepouzivaneTypyVozidel());
         getContent().getCrud().addCancelListener(event -> vynulujNovyTypVozidla());
         //
