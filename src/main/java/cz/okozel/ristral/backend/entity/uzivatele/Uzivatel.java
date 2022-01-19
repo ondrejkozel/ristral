@@ -87,8 +87,7 @@ public abstract class Uzivatel extends AbstractSchemaEntity {
     }
 
     public boolean isAtLeastAdmin() {
-        Role role = getRole();
-        return role == Role.ADMIN_ORG || role == Role.SUPERADMIN_ORG;
+        return getRole() != Role.UZIVATEL_ORG;
     }
 
     public String getUzivatelskeJmeno() {
