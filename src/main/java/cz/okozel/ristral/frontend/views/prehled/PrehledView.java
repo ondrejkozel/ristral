@@ -47,6 +47,10 @@ public class PrehledView extends Main {
         add(board);
     }
 
+    public void setHiglightVisible(DashboardHighlight highlight, boolean visible) {
+        highlights.get(highlight).setVisible(visible);
+    }
+
     public void setHighlightText(DashboardHighlight highlight, String value) {
         highlights.get(highlight).setText(value);
     }

@@ -9,6 +9,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.uzivatele.Role;
+import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
 import cz.okozel.ristral.backend.entity.zastavky.RezimObsluhy;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
@@ -25,6 +26,7 @@ import java.util.List;
 @PermitAll
 public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEnterObserver {
 
+    private final Uzivatel loggedOnUser;
     private final Schema aktSchema;
     private final ZastavkaService zastavkaService;
     private final VozidloService vozidloService;
@@ -36,7 +38,8 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
 
     public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService, TypVozidlaService typVozidlaService, UzivatelService uzivatelService, RezimObsluhyService rezimObsluhyService) {
         //noinspection OptionalGetWithoutIsPresent
-        this.aktSchema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
+        this.loggedOnUser = prihlasenyUzivatel.getPrihlasenyUzivatel().get();
+        this.aktSchema = loggedOnUser.getSchema();
         this.zastavkaService = zastavkaService;
         this.vozidloService = vozidloService;
         this.typVozidlaService = typVozidlaService;
@@ -59,8 +62,11 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private void configureHighlights(PrehledView content) {
         content.setHighlightText(PrehledView.DashboardHighlight.STOPS, String.valueOf(stopCount));
         content.setHighlightText(PrehledView.DashboardHighlight.VEHICLES, String.valueOf(vehicleCount));
-        content.setHighlightText(PrehledView.DashboardHighlight.USERS, String.valueOf(userCount));
-        content.setHighlightBadgeText(PrehledView.DashboardHighlight.USERS, computeRegularUserPercentage() + " % řadových účtů");
+        if (loggedOnUser.getRole() == Role.ADMIN_ORG || loggedOnUser.getRole() == Role.SUPERADMIN_ORG) {
+            content.setHighlightText(PrehledView.DashboardHighlight.USERS, String.valueOf(userCount));
+            content.setHighlightBadgeText(PrehledView.DashboardHighlight.USERS, computeRegularUserPercentage() + " % řadových účtů");
+        }
+        else content.setHiglightVisible(PrehledView.DashboardHighlight.USERS, false);
     }
 
     /**
