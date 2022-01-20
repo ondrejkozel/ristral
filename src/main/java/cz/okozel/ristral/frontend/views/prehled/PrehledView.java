@@ -115,7 +115,7 @@ public class PrehledView extends Main {
     private Chart serviceModeDistributionChart;
 
     private Component createServiceModeDistributionCell() {
-        CellHeader header = new CellHeader("Rozložení režimů obsluhy", "Množství zastávek s daným režimem obsluhy");
+        CellHeader header = new CellHeader("Rozložení režimů obsluhy zastávek", "Množství zastávek s daným režimem obsluhy");
         //
         serviceModeDistributionChart = new Chart(ChartType.PIE);
         configureChart(serviceModeDistributionChart);
