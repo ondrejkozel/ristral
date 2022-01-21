@@ -93,6 +93,10 @@ public class PrehledView extends Main {
         //
         PlotOptionsPie plotOptionsPie = new PlotOptionsPie();
         plotOptionsPie.setInnerSize("60%");
+        plotOptionsPie.setShowInLegend(true);
+        plotOptionsPie.setAllowPointSelect(true);
+        //
+        configuration.getTooltip().setValueDecimals(1);
         //
         configuration.setPlotOptions(plotOptionsPie);
     }

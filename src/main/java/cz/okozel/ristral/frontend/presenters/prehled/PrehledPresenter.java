@@ -82,21 +82,21 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private void configureVehicleDistributionChart(Configuration configuration) {
         DataSeries series = new DataSeries();
         List<TypVozidla> vehicleTypes = typVozidlaService.findAll(aktSchema);
-        vehicleTypes.forEach(typVozidla -> {
-            long count = vozidloService.count(typVozidla);
-            series.add(new DataSeriesItem(String.format("%s: %.1f%%", typVozidla, count / (float) vehicleCount * 100), count));
-        });
+        vehicleTypes.forEach(typVozidla -> series.add(getPercentageDataItem(typVozidla.getNazev(), vozidloService.count(typVozidla), vehicleCount)));
+        series.setName("%");
         configuration.addSeries(series);
     }
 
     private void configureServiceModeDistributionChart(Configuration configuration) {
         DataSeries series = new DataSeries();
         List<RezimObsluhy> serviceModes = rezimObsluhyService.findAll(aktSchema);
-        serviceModes.forEach(rezimObsluhy -> {
-            long count = zastavkaService.count(rezimObsluhy);
-            series.add(new DataSeriesItem(String.format("%s: %.1f%%", rezimObsluhy, count / (float) stopCount * 100), count));
-        });
+        serviceModes.forEach(rezimObsluhy -> series.add(getPercentageDataItem(rezimObsluhy.getNazev(), zastavkaService.count(rezimObsluhy), stopCount)));
+        series.setName("%");
         configuration.addSeries(series);
+    }
+
+    private DataSeriesItem getPercentageDataItem(String title, long count, long whole) {
+        return new DataSeriesItem(title, count / (float) whole * 100);
     }
 
 }
