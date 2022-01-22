@@ -24,6 +24,10 @@ public abstract class AbstractSchemaEntity extends AbstractEntity {
         this.schema = schema;
     }
 
+    public AbstractSchemaEntity(Long id) {
+        super(id);
+    }
+
     public Schema getSchema() {
         return schema;
     }
