@@ -3,6 +3,10 @@ package cz.okozel.ristral.backend.generator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import cz.okozel.ristral.backend.entity.aktivity.Aktivita;
 import cz.okozel.ristral.backend.entity.aktivity.TypAktivity;
+import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
+import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
+import cz.okozel.ristral.backend.entity.routes.NamedView;
+import cz.okozel.ristral.backend.entity.routes.Route;
 import cz.okozel.ristral.backend.entity.uzivatele.AdminOrg;
 import cz.okozel.ristral.backend.entity.uzivatele.OsobniUzivatel;
 import cz.okozel.ristral.backend.entity.uzivatele.SuperadminOrg;
@@ -16,6 +20,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -26,7 +31,7 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService) {
+    public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService, LineRouteService lineRouteService) {
         return args -> {
             final OsobniUzivatel osobniUzivatel = new OsobniUzivatel("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistrujOsobniUcetAVytvorMuNoveSchema(osobniUzivatel);
@@ -79,6 +84,17 @@ public class DataGenerator {
                 ));
                 periodaNaZnameniService.save(periodaNaZnameni);
             }
+            //
+            List<Zastavka> stops = zastavkaService.findAll(superAdmin.getSchema());
+            Route<Zastavka, LineRouteLinkData> route = Route
+                    .start(stops.get(0))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(10)))
+                    .to(stops.get(1))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(5)))
+                    .to(stops.get(2))
+                    .finish();
+            NamedView<Route<Zastavka, LineRouteLinkData>> routeNamedView = new NamedView<>(route, "linka 52", true);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView, superAdmin.getSchema()));
         };
     }
 
