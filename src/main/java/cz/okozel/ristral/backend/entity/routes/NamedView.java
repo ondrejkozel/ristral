@@ -36,4 +36,12 @@ public class NamedView<T> {
         return new NamedView<>(data, name, visible);
     }
 
+    @Override
+    public String toString() {
+        return "NamedView{" +
+                "data=" + data +
+                ", name='" + name + '\'' +
+                ", visible=" + visible +
+                '}';
+    }
 }
