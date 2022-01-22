@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.entity.linky;
+package cz.okozel.ristral.backend.entity.routes;
 
 public class NamedView<T> {
 

@@ -1,5 +1,7 @@
 package cz.okozel.ristral.backend.entity.linky;
 
+import cz.okozel.ristral.backend.entity.routes.Link;
+import cz.okozel.ristral.backend.entity.routes.Route;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

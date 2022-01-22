@@ -1,4 +1,4 @@
-package cz.okozel.ristral.backend.entity.linky;
+package cz.okozel.ristral.backend.entity.routes;
 
 /**
  * Represents an elementary link which connects two graph vertices through an
