@@ -51,7 +51,7 @@ final class DefaultLink<V, E> implements Link<V, E> {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (DefaultLink) obj;
+        @SuppressWarnings("rawtypes") var that = (DefaultLink) obj;
         return Objects.equals(this.from, that.from) &&
                 Objects.equals(this.to, that.to) &&
                 Objects.equals(this.edge, that.edge);
