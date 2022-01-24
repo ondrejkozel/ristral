@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "lines_")
+@Table(name = "lines_") //due to confusion with lines of a database table, this table must be named lines_
 public class Line extends AbstractSchemaEntity {
 
     @NotBlank
@@ -32,5 +32,17 @@ public class Line extends AbstractSchemaEntity {
         this.label = label;
         this.description = description;
         this.prefVehicleType = prefVehicleType;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public TypVozidla getPrefVehicleType() {
+        return prefVehicleType;
     }
 }
