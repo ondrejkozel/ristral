@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "lines_") //due to confusion with lines of a database table, this table must be named lines_
+@Table(name = "lines_") //lines is a reserved word, so this table must be named lines_
 public class Line extends AbstractSchemaEntity {
 
     @NotBlank
