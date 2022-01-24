@@ -6,10 +6,7 @@ import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -26,7 +23,7 @@ public class LineRouteLinkCarrier extends AbstractEntity {
     @NotNull
     private final Zastavka to;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn
     @NotNull
     @Cascade(CascadeType.ALL)

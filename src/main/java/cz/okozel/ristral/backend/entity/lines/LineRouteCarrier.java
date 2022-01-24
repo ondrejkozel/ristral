@@ -3,12 +3,12 @@ package cz.okozel.ristral.backend.entity.lines;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.routes.Route;
-import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,9 +21,10 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
     @JoinColumn(name="line_route_id")
     @OrderColumn(name="order_")
     @Cascade(CascadeType.ALL)
+    @NotNull
     private List<LineRouteLinkCarrier> linkCarriers;
 
-    @NotNull
+    @NotBlank
     private String name;
 
     @NotNull
@@ -31,6 +32,7 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
 
     @ManyToOne
     @JoinColumn
+    @NotNull
     private Line associatedLine;
 
     public LineRouteCarrier() {}

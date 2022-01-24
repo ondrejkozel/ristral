@@ -4,6 +4,7 @@ import cz.okozel.ristral.backend.entity.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.Duration;
 
 @Entity
@@ -13,6 +14,7 @@ public class LineRouteLinkData extends AbstractEntity {
     /**
      * Duration to the next stop.
      */
+    @NotNull
     private final Duration duration;
 
     public LineRouteLinkData() {
