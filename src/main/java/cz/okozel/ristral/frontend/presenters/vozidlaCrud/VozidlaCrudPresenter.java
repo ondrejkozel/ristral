@@ -17,6 +17,7 @@ import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
 import cz.okozel.ristral.backend.entity.vozidla.Vozidlo;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
+import cz.okozel.ristral.backend.service.entity.LineService;
 import cz.okozel.ristral.backend.service.entity.TypVozidlaService;
 import cz.okozel.ristral.backend.service.entity.VozidloService;
 import cz.okozel.ristral.frontend.MainLayout;
@@ -34,7 +35,7 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
     private final TypVozidlaService typVozidlaService;
     private final Schema aktSchema;
 
-    public VozidlaCrudPresenter(VozidloService vozidloService, PrihlasenyUzivatel prihlasenyUzivatel, TypVozidlaService typVozidlaService) {
+    public VozidlaCrudPresenter(VozidloService vozidloService, PrihlasenyUzivatel prihlasenyUzivatel, TypVozidlaService typVozidlaService, LineService lineService) {
         //noinspection OptionalGetWithoutIsPresent
         super(Vozidlo.class, new VozidlaCrudDataProvider(vozidloService, Vozidlo.class, prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema()), prihlasenyUzivatel);
         aktSchema = prihlasenyUzivatel.getPrihlasenyUzivatel().get().getSchema();
@@ -50,11 +51,11 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
     }
 
     private void smazNepouzivaneTypyVozidel() {
-        List<TypVozidla> smazaneTypyVozidel = typVozidlaService.smazNepouzivaneTypyVozidel(aktSchema);
-        if (!smazaneTypyVozidel.isEmpty()) {
+        List<TypVozidla> unusedVehicleTypes = typVozidlaService.deleteUnusedVehicleTypes(aktSchema);
+        if (!unusedVehicleTypes.isEmpty()) {
             StringBuilder zprava = new StringBuilder();
-            zprava.append("Typ vozidla ").append(smazaneTypyVozidel.get(0).getNazev());
-            if (smazaneTypyVozidel.size() > 1) zprava.append(" a ").append(smazaneTypyVozidel.size() - 1).append(" dalších");
+            zprava.append("Typ vozidla ").append(unusedVehicleTypes.get(0).getNazev());
+            if (unusedVehicleTypes.size() > 1) zprava.append(" a ").append(unusedVehicleTypes.size() - 1).append(" dalších");
             zprava.append(" byl vymazán, protože nebyl nastaven žádnému vozidlu.");
             //
             naplnComboBox();
