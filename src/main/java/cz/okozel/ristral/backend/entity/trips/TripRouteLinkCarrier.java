@@ -12,16 +12,19 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * from and to are reserved words
- */
 @Entity
 @Table(name = "trip_route_links")
 public class TripRouteLinkCarrier extends AbstractEntity {
 
+    /**
+     * from is a reserved word
+     */
     @NotBlank
     private final String from_;
 
+    /**
+     * to is a reserved word
+     */
     @NotBlank
     private final String to_;
 

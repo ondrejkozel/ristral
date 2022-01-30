@@ -3,6 +3,7 @@ package cz.okozel.ristral.backend.entity.trips;
 import cz.okozel.ristral.backend.entity.AbstractSchemaEntity;
 import cz.okozel.ristral.backend.entity.routes.Route;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class TripRouteCarrier extends AbstractSchemaEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name="trip_route_id")
     @OrderColumn(name="order_")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(CascadeType.ALL)
     @NotNull
     private List<TripRouteLinkCarrier> linkCarriers;
 
