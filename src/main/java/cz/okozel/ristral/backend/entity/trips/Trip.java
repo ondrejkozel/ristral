@@ -77,4 +77,19 @@ public class Trip extends AbstractSchemaEntity {
     public String getDescription() {
         return description;
     }
+
+    public void unbindLine() {
+        deletedLineLabel = line.getLabel();
+        line = null;
+    }
+
+    public void unbindVehicle() {
+        deletedVehicleName = vehicle.getNazev();
+        vehicle = null;
+    }
+
+    public void unbindUser() {
+        deletedUserName = user.getJmeno();
+        user = null;
+    }
 }
