@@ -8,6 +8,9 @@ import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
 import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.routes.Route;
+import cz.okozel.ristral.backend.entity.trips.Trip;
+import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
+import cz.okozel.ristral.backend.entity.trips.TripRouteLinkData;
 import cz.okozel.ristral.backend.entity.uzivatele.AdminOrg;
 import cz.okozel.ristral.backend.entity.uzivatele.OsobniUzivatel;
 import cz.okozel.ristral.backend.entity.uzivatele.SuperadminOrg;
@@ -32,7 +35,7 @@ import java.util.Set;
 public class DataGenerator {
 
     @Bean
-    public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService, LineRouteService lineRouteService, LineService lineService) {
+    public CommandLineRunner generateDemonstrativeData(TypVozidlaService typVozidlaService, VozidloService vozidloService, RegistratorService registratorService, AktivitaService aktivitaService, ZastavkaService zastavkaService, PeriodaNaZnameniService periodaNaZnameniService, RezimObsluhyService rezimObsluhyService, UzivatelService uzivatelService, SchemaService schemaService, LineRouteService lineRouteService, LineService lineService, TripService tripService, TripRouteService tripRouteService) {
         return args -> {
             final OsobniUzivatel osobniUzivatel = new OsobniUzivatel("ondrejkozel", "Ondřej Kozel", "ondrakozel@outlook.com", "11111111", null);
             registratorService.zaregistrujOsobniUcetAVytvorMuNoveSchema(osobniUzivatel);
@@ -87,17 +90,26 @@ public class DataGenerator {
             }
             //
             List<Zastavka> stops = zastavkaService.findAll(superAdmin.getSchema());
-            Route<Zastavka, LineRouteLinkData> route = Route
+            Route<Zastavka, LineRouteLinkData> lineRoute = Route
                     .start(stops.get(0))
-                    .through(new LineRouteLinkData(Duration.ofMinutes(10)))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(1)))
                     .to(stops.get(1))
-                    .through(new LineRouteLinkData(Duration.ofMinutes(5)))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(2)))
                     .to(stops.get(2))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(3)))
+                    .to(stops.get(3))
+                    .through(new LineRouteLinkData(Duration.ofMinutes(4)))
+                    .to(stops.get(4))
                     .finish();
-            NamedView<Route<Zastavka, LineRouteLinkData>> routeNamedView = new NamedView<>(route, "výchozí", true);
+            NamedView<Route<Zastavka, LineRouteLinkData>> routeNamedView = new NamedView<>(lineRoute, "výchozí", true);
             Line line = new Line("52", "první linka", autobus, superAdmin.getSchema());
             lineService.save(line);
             lineRouteService.save(new LineRouteCarrier(routeNamedView, line));
+            //
+            Route<String, TripRouteLinkData> tripRoute = LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now());
+            Trip trip = new Trip(line, vozidloService.findAll().get(0), uzivatelService.findByUzivatelskeJmeno("ondrejkozel"), "popis");
+            tripService.save(trip);
+            tripRouteService.save(new TripRouteCarrier(tripRoute, trip));
         };
     }
 
