@@ -31,14 +31,16 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private final ZastavkaService zastavkaService;
     private final VozidloService vozidloService;
     private final TypVozidlaService typVozidlaService;
+    private final LineService lineService;
     private final UzivatelService uzivatelService;
     private final RezimObsluhyService rezimObsluhyService;
 
     private long stopCount, vehicleCount, lineCount, userCount;
 
-    public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService, TypVozidlaService typVozidlaService, UzivatelService uzivatelService, RezimObsluhyService rezimObsluhyService) {
+    public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService, TypVozidlaService typVozidlaService, LineService lineService, UzivatelService uzivatelService, RezimObsluhyService rezimObsluhyService) {
         //noinspection OptionalGetWithoutIsPresent
         this.loggedOnUser = prihlasenyUzivatel.getPrihlasenyUzivatel().get();
+        this.lineService = lineService;
         this.aktSchema = loggedOnUser.getSchema();
         this.zastavkaService = zastavkaService;
         this.vozidloService = vozidloService;
@@ -51,6 +53,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     public void beforeEnter(BeforeEnterEvent event) {
         stopCount = zastavkaService.count(aktSchema);
         vehicleCount = vozidloService.count(aktSchema);
+        lineCount = lineService.count(aktSchema);
         userCount = uzivatelService.count(aktSchema);
         //
         PrehledView content = getContent();
@@ -62,6 +65,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private void configureHighlights(PrehledView content) {
         content.setHighlightText(PrehledView.DashboardHighlight.STOPS, String.valueOf(stopCount));
         content.setHighlightText(PrehledView.DashboardHighlight.VEHICLES, String.valueOf(vehicleCount));
+        content.setHighlightText(PrehledView.DashboardHighlight.LINES, String.valueOf(lineCount));
         if (loggedOnUser.getRole() == Role.ADMIN_ORG || loggedOnUser.getRole() == Role.SUPERADMIN_ORG) {
             content.setHighlightText(PrehledView.DashboardHighlight.USERS, String.valueOf(userCount));
             content.setHighlightBadgeText(PrehledView.DashboardHighlight.USERS, computeRegularUserPercentage() + " % řadových účtů");
