@@ -39,6 +39,17 @@ public class Trip extends AbstractSchemaEntity {
     @NotNull
     private String description;
 
+    public Trip() {
+    }
+
+    public Trip(Line line, Vozidlo vehicle, Uzivatel user, String description) {
+        super(line.getSchema());
+        this.line = line;
+        this.vehicle = vehicle;
+        this.user = user;
+        this.description = description;
+    }
+
     public Optional<Line> getLine() {
         return Optional.ofNullable(line);
     }
