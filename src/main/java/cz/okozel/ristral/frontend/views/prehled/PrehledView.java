@@ -4,8 +4,9 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.charts.model.*;
-import com.vaadin.flow.component.grid.ColumnTextAlign;
+import com.vaadin.flow.component.charts.model.ChartType;
+import com.vaadin.flow.component.charts.model.Configuration;
+import com.vaadin.flow.component.charts.model.PlotOptionsPie;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
@@ -14,10 +15,13 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.renderer.ComponentRenderer;
+import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -43,7 +47,7 @@ public class PrehledView extends Main {
         Board board = new Board();
         Row highlightsRow = board.addRow();
         for (DashboardHighlight highlight : DashboardHighlight.values()) highlightsRow.add(highlights.get(highlight));
-        board.addRow(createServiceHealth(), createServiceModeDistributionCell(), createVehicleTypeDistributionCell());
+        board.addRow(createSoonestTripsCell(), createServiceModeDistributionCell(), createVehicleTypeDistributionCell());
         add(board);
     }
 
@@ -59,32 +63,24 @@ public class PrehledView extends Main {
         highlights.get(highlight).setBadgeText(value);
     }
 
-    private Component createServiceHealth() {
-        CellHeader header = new CellHeader("Service health", "Input / output");
+    private Grid<TripRouteCarrier> soonestTripsGrid;
 
-        // Grid
-        Grid<ServiceHealth> grid = new Grid();
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setAllRowsVisible(true);
+    private Component createSoonestTripsCell() {
+        CellHeader header = new CellHeader("Nejbližší jízdy");
+        //
+        soonestTripsGrid = new Grid<>();
+        soonestTripsGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        soonestTripsGrid.setAllRowsVisible(true);
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getTimeOfDeparture().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))).setHeader("Odjezd");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getTimeOfArrival().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))).setHeader("Příjezd");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getLineLabel()).setHeader("Linka");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getVehicleName()).setHeader("Vozidlo");
+        soonestTripsGrid.getColumns().forEach(tripRouteCarrierColumn -> tripRouteCarrierColumn.setAutoWidth(true));
+        return new StandartCell(header, soonestTripsGrid);
+    }
 
-        grid.addColumn(new ComponentRenderer<>(serviceHealth -> {
-            Span status = new Span();
-            String statusText = getStatusDisplayName(serviceHealth);
-            status.getElement().setAttribute("aria-label", "Status: " + statusText);
-            status.getElement().setAttribute("title", "Status: " + statusText);
-            status.getElement().getThemeList().add(getStatusTheme(serviceHealth));
-            return status;
-        })).setHeader("").setFlexGrow(0).setAutoWidth(true);
-        grid.addColumn(ServiceHealth::getCity).setHeader("City").setFlexGrow(1);
-        grid.addColumn(ServiceHealth::getInput).setHeader("Input").setAutoWidth(true).setTextAlign(ColumnTextAlign.END);
-        grid.addColumn(ServiceHealth::getOutput).setHeader("Output").setAutoWidth(true)
-                .setTextAlign(ColumnTextAlign.END);
-
-        grid.setItems(new ServiceHealth(Status.EXCELLENT, "Münster", 324, 1540),
-                new ServiceHealth(Status.OK, "Cluj-Napoca", 311, 1320),
-                new ServiceHealth(Status.FAILING, "Ciudad Victoria", 300, 1219));
-
-        return new StandartCell(header, grid);
+    public void setSoonestTripsGridItems(List<TripRouteCarrier> list) {
+        soonestTripsGrid.setItems(list);
     }
 
     private void configureChart(Chart chart) {

@@ -8,6 +8,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.schema.Schema;
+import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
 import cz.okozel.ristral.backend.entity.uzivatele.Role;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
@@ -32,15 +33,17 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
     private final VozidloService vozidloService;
     private final TypVozidlaService typVozidlaService;
     private final LineService lineService;
+    private final TripRouteService tripRouteService;
     private final UzivatelService uzivatelService;
     private final RezimObsluhyService rezimObsluhyService;
 
     private long stopCount, vehicleCount, lineCount, userCount;
 
-    public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService, TypVozidlaService typVozidlaService, LineService lineService, UzivatelService uzivatelService, RezimObsluhyService rezimObsluhyService) {
+    public PrehledPresenter(PrihlasenyUzivatel prihlasenyUzivatel, ZastavkaService zastavkaService, VozidloService vozidloService, TypVozidlaService typVozidlaService, LineService lineService, UzivatelService uzivatelService, RezimObsluhyService rezimObsluhyService, TripRouteService tripRouteService) {
         //noinspection OptionalGetWithoutIsPresent
         this.loggedOnUser = prihlasenyUzivatel.getPrihlasenyUzivatel().get();
         this.lineService = lineService;
+        this.tripRouteService = tripRouteService;
         this.aktSchema = loggedOnUser.getSchema();
         this.zastavkaService = zastavkaService;
         this.vozidloService = vozidloService;
@@ -58,6 +61,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
         //
         PrehledView content = getContent();
         configureHighlights(content);
+        content.setSoonestTripsGridItems(getSoonestTrips());
         content.configureVehicleDistributionChart(this::configureVehicleDistributionChart);
         content.configureServiceModeDistributionChart(this::configureServiceModeDistributionChart);
     }
@@ -81,6 +85,12 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
                 .filter(uzivatel -> uzivatel.getRole() == Role.UZIVATEL_ORG)
                 .count();
         return (int) (regularUserCount * 100 / userCount);
+    }
+
+    private List<TripRouteCarrier> getSoonestTrips() {
+        List<TripRouteCarrier> list = tripRouteService.getSoonestTripsFor(loggedOnUser);
+        if (list.size() > 10) return list.subList(0, 10);
+        return list;
     }
 
     private void configureVehicleDistributionChart(Configuration configuration) {
