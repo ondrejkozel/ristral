@@ -64,9 +64,10 @@ public class PrehledView extends Main {
     }
 
     private Grid<TripRouteCarrier> soonestTripsGrid;
+    private CellHeader soonestTripsHeader;
 
     private Component createSoonestTripsCell() {
-        CellHeader header = new CellHeader("Nejbližší jízdy");
+        soonestTripsHeader = new CellHeader("Nejbližší jízdy");
         //
         soonestTripsGrid = new Grid<>();
         soonestTripsGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -76,11 +77,15 @@ public class PrehledView extends Main {
         soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getLineLabel()).setHeader("Linka");
         soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getVehicleName()).setHeader("Vozidlo");
         soonestTripsGrid.getColumns().forEach(tripRouteCarrierColumn -> tripRouteCarrierColumn.setAutoWidth(true));
-        return new StandartCell(header, soonestTripsGrid);
+        return new StandartCell(soonestTripsHeader, soonestTripsGrid);
     }
 
     public void setSoonestTripsGridItems(List<TripRouteCarrier> list) {
         soonestTripsGrid.setItems(list);
+    }
+
+    public void setSoonestTripsHeaderSubtitle(String subtitle) {
+        soonestTripsHeader.setSubtitle(subtitle);
     }
 
     private void configureChart(Chart chart) {

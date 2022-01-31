@@ -1,5 +1,6 @@
 package cz.okozel.ristral.backend.service.entity;
 
+import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.repository.TripRouteCarrierRepository;
@@ -17,5 +18,9 @@ public class TripRouteService extends GenericSchemaService<TripRouteCarrier, Tri
 
     public List<TripRouteCarrier> getSoonestTripsFor(Uzivatel user) {
         return hlavniRepositar.findAllByAssociatedTrip_UserEqualsAndTimeOfArrivalGreaterThanOrderByTimeOfDeparture(user, LocalDateTime.now());
+    }
+
+    public List<TripRouteCarrier> getSoonestTripsFor(Schema schema) {
+        return hlavniRepositar.findAllBySchemaEqualsAndTimeOfArrivalGreaterThanOrderByTimeOfDeparture(schema, LocalDateTime.now());
     }
 }

@@ -61,7 +61,7 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
         //
         PrehledView content = getContent();
         configureHighlights(content);
-        content.setSoonestTripsGridItems(getSoonestTrips());
+        content.setSoonestTripsGridItems(getSoonestTripsAndConfigureSoonestTripsCell());
         content.configureVehicleDistributionChart(this::configureVehicleDistributionChart);
         content.configureServiceModeDistributionChart(this::configureServiceModeDistributionChart);
     }
@@ -87,8 +87,16 @@ public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEn
         return (int) (regularUserCount * 100 / userCount);
     }
 
-    private List<TripRouteCarrier> getSoonestTrips() {
-        List<TripRouteCarrier> list = tripRouteService.getSoonestTripsFor(loggedOnUser);
+    private List<TripRouteCarrier> getSoonestTripsAndConfigureSoonestTripsCell() {
+        List<TripRouteCarrier> list;
+        if (loggedOnUser.getRole() == Role.OSOBNI_UZIVATEL || loggedOnUser.getRole() == Role.UZIVATEL_ORG) {
+            list = tripRouteService.getSoonestTripsFor(loggedOnUser);
+            getContent().setSoonestTripsHeaderSubtitle("Vaše nejbližší jízdy");
+        }
+        else {
+            getContent().setSoonestTripsHeaderSubtitle("Nejbližší jízdy v celé organizaci");
+            list = tripRouteService.getSoonestTripsFor(aktSchema);
+        }
         if (list.size() > 10) return list.subList(0, 10);
         return list;
     }
