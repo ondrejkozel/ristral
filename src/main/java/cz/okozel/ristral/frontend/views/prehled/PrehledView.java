@@ -15,9 +15,12 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.function.ValueProvider;
 import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
@@ -72,7 +75,11 @@ public class PrehledView extends Main {
         soonestTripsGrid = new Grid<>();
         soonestTripsGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         soonestTripsGrid.setAllRowsVisible(true);
-        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getTimeOfDeparture().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))).setHeader("Odjezd");
+        soonestTripsGrid.addColumn((ValueProvider<TripRouteCarrier, Object>) tripRouteCarrier -> {
+            LocalDateTime timeOfDeparture = tripRouteCarrier.getTimeOfDeparture();
+            if (timeOfDeparture.isAfter(LocalDate.now().plusDays(1).atStartOfDay())) return timeOfDeparture.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+            return timeOfDeparture.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+        }).setHeader("Odjezd");
         soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getTimeOfArrival().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))).setHeader("Příjezd");
         soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getLineLabel()).setHeader("Linka");
         soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getVehicleName()).setHeader("Vozidlo");

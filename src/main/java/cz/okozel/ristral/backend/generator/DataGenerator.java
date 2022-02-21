@@ -112,7 +112,7 @@ public class DataGenerator {
             tripService.save(trip);
             tripService.save(trip2);
             tripRouteService.save(new TripRouteCarrier(tripRoute, trip));
-            tripRouteService.save(new TripRouteCarrier(LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now().plusHours(1)), trip2));
+            tripRouteService.save(new TripRouteCarrier(LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now().plusHours(1).plusDays(1)), trip2));
         };
     }
 
