@@ -1,5 +1,7 @@
 package cz.okozel.ristral.frontend.presenters.linkyCrud;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -7,7 +9,10 @@ import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -47,18 +52,20 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         getContent().getCrud().addEditListener(event -> editRoutesButtonEnabled(true));
         getContent().getCrud().addEditListener(this::updateRoutesButtonOnClick);
         //
+        getContent().getCrud().addSaveListener(this::remindUserToEdit);
+        //
         fillComboBox();
     }
 
     @SuppressWarnings("FieldCanBeLocal")
     private TextField label;
+
     @SuppressWarnings("FieldCanBeLocal")
     private TextArea description;
     private ComboBox<TypVozidla> prefVehicleType;
-
     private Button editRoutesButton;
-    private Registration editRoutesButtonActionRegistration;
 
+    private Registration editRoutesButtonActionRegistration;
     @Override
     protected CrudEditor<Line> createEditor() {
         label = new TextField("Číslo");
@@ -68,7 +75,7 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         //
         description = new TextArea("Popis");
         //
-        HorizontalLayout buttonLayout = new HorizontalLayout(buildEditRoutesButton());
+        HorizontalLayout buttonLayout = new HorizontalLayout(prepareEditRoutesButton());
         //
         FormLayout formLayout = new FormLayout(label, prefVehicleType, description);
         formLayout.add(buttonLayout);
@@ -85,15 +92,37 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
 
     private void updateRoutesButtonOnClick(Crud.EditEvent<Line> event) {
         if (editRoutesButtonActionRegistration != null) editRoutesButtonActionRegistration.remove();
-        editRoutesButtonActionRegistration = editRoutesButton.addClickListener(clickEvent -> UI.getCurrent().navigate(LineEditPresenter.class, event.getItem().getId().toString()));
+        editRoutesButtonActionRegistration = editRoutesButton.addClickListener(getUpdateRoutesClickEventListener(event.getItem()));
     }
 
-    private Button buildEditRoutesButton() {
-        editRoutesButton = new Button("Správa tras", VaadinIcon.ROAD.create());
+    private ComponentEventListener<ClickEvent<Button>> getUpdateRoutesClickEventListener(Line line) {
+        return clickEvent -> UI.getCurrent().navigate(LineEditPresenter.class, line.getId().toString());
+    }
+
+    private Button prepareEditRoutesButton() {
+        editRoutesButton = newEditRoutesButton();
         return editRoutesButton;
+    }
+
+    private Button newEditRoutesButton() {
+        return new Button("Správa tras", VaadinIcon.ROAD.create());
     }
 
     private void fillComboBox() {
         prefVehicleType.setItems(typVozidlaService.findAll(aktSchema));
+    }
+
+    private void remindUserToEdit(Crud.SaveEvent<Line> lineSaveEvent) {
+        Button editRoutesButton = newEditRoutesButton();
+        editRoutesButton.addClickListener(getUpdateRoutesClickEventListener(lineSaveEvent.getItem()));
+        //
+        HorizontalLayout notificationLayout = new HorizontalLayout(new Label(String.format("Nyní můžete lince %s vytvořit trasu.", lineSaveEvent.getItem().getLabel())), editRoutesButton);
+        notificationLayout.setSpacing(true);
+        notificationLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        Notification notification = new Notification(notificationLayout);
+        notification.setDuration(5000);
+        notification.open();
+        //
+        editRoutesButton.addClickListener(event -> notification.close());
     }
 }
