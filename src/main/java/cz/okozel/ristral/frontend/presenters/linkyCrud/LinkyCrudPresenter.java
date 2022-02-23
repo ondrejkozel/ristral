@@ -16,7 +16,7 @@ import cz.okozel.ristral.frontend.views.linkyCrud.LinkyCrudView;
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Linky")
-@Route(value = "linky", layout = MainLayout.class)
+@Route(value = "lines", layout = MainLayout.class)
 @PermitAll
 public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView> {
 
