@@ -1,8 +1,10 @@
 package cz.okozel.ristral.frontend.presenters.linkyCrud;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -13,6 +15,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.shared.Registration;
 import cz.okozel.ristral.backend.entity.lines.Line;
 import cz.okozel.ristral.backend.entity.schema.Schema;
 import cz.okozel.ristral.backend.entity.vozidla.TypVozidla;
@@ -21,6 +24,7 @@ import cz.okozel.ristral.backend.service.entity.LineService;
 import cz.okozel.ristral.backend.service.entity.TypVozidlaService;
 import cz.okozel.ristral.frontend.MainLayout;
 import cz.okozel.ristral.frontend.presenters.crud.GenericCrudPresenter;
+import cz.okozel.ristral.frontend.presenters.lineEdit.LineEditPresenter;
 import cz.okozel.ristral.frontend.views.linkyCrud.LinkyCrudView;
 
 import javax.annotation.security.PermitAll;
@@ -41,6 +45,7 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         getContent().getCrud().addNewListener(event -> editRoutesButtonEnabled(false));
         //
         getContent().getCrud().addEditListener(event -> editRoutesButtonEnabled(true));
+        getContent().getCrud().addEditListener(this::updateRoutesButtonOnClick);
         //
         fillComboBox();
     }
@@ -52,6 +57,7 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
     private ComboBox<TypVozidla> prefVehicleType;
 
     private Button editRoutesButton;
+    private Registration editRoutesButtonActionRegistration;
 
     @Override
     protected CrudEditor<Line> createEditor() {
@@ -75,6 +81,11 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
 
     private void editRoutesButtonEnabled(boolean enabled) {
         editRoutesButton.setEnabled(enabled);
+    }
+
+    private void updateRoutesButtonOnClick(Crud.EditEvent<Line> event) {
+        if (editRoutesButtonActionRegistration != null) editRoutesButtonActionRegistration.remove();
+        editRoutesButtonActionRegistration = editRoutesButton.addClickListener(clickEvent -> UI.getCurrent().navigate(LineEditPresenter.class, event.getItem().getId().toString()));
     }
 
     private Button buildEditRoutesButton() {
