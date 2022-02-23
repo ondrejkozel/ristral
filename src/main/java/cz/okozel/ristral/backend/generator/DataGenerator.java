@@ -106,10 +106,13 @@ public class DataGenerator {
             lineService.save(line);
             lineRouteService.save(new LineRouteCarrier(routeNamedView, line));
             //
-            Route<String, TripRouteLinkData> tripRoute = LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now());
+            Route<String, TripRouteLinkData> tripRoute = LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now().plusHours(2));
             Trip trip = new Trip(line, vozidloService.findAll().get(0), uzivatelService.findByUzivatelskeJmeno("ondrejkozel"), "popis");
+            Trip trip2 = new Trip(line, vozidloService.findAll().get(1), uzivatelService.findByUzivatelskeJmeno("ondrejkozel"), "druhá jízda");
             tripService.save(trip);
+            tripService.save(trip2);
             tripRouteService.save(new TripRouteCarrier(tripRoute, trip));
+            tripRouteService.save(new TripRouteCarrier(LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now().plusHours(1).plusDays(1)), trip2));
         };
     }
 

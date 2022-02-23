@@ -20,4 +20,8 @@ public class ZastavkaService extends GenericSchemaService<Zastavka, ZastavkaRepo
         return hlavniRepositar.findBySchemaEqualsAndRezimObsluhyEquals(schema, rezimObsluhy);
     }
 
+    public long count(RezimObsluhy rezimObsluhy) {
+        return hlavniRepositar.countZastavkaByRezimObsluhyEquals(rezimObsluhy);
+    }
+
 }

@@ -2,9 +2,11 @@ package cz.okozel.ristral.frontend.views.prehled;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.board.Board;
+import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.charts.model.*;
-import com.vaadin.flow.component.grid.ColumnTextAlign;
+import com.vaadin.flow.component.charts.model.ChartType;
+import com.vaadin.flow.component.charts.model.Configuration;
+import com.vaadin.flow.component.charts.model.PlotOptionsPie;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H2;
@@ -13,144 +15,174 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.function.ValueProvider;
+import cz.okozel.ristral.backend.entity.trips.TripRouteCarrier;
 import cz.okozel.ristral.frontend.views.prehled.ServiceHealth.Status;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class PrehledView extends Main {
 
-    private HashMap<String, Highlight> highlighty;
+    private final Map<DashboardHighlight, HighlightCell> highlights;
+
+    public enum DashboardHighlight {
+        STOPS,
+        VEHICLES,
+        LINES,
+        USERS
+    }
 
     public PrehledView() {
-        highlighty = new HashMap<>();
-        highlighty.put("pocetZastavek", new Highlight("Počet zastávek", false));
-        highlighty.put("pocetVozidel", new Highlight("Počet vozidel", false));
-        highlighty.put("pocetLinek", new Highlight("Počet linek", false));
+        highlights = new HashMap<>();
+        highlights.put(DashboardHighlight.STOPS, new HighlightCell("Počet zastávek"));
+        highlights.put(DashboardHighlight.VEHICLES, new HighlightCell("Počet vozidel"));
+        highlights.put(DashboardHighlight.LINES, new HighlightCell("Počet linek"));
+        highlights.put(DashboardHighlight.USERS, new HighlightCell("Počet uživatelů", "", "badge"));
         //
         addClassName("prehled-view");
         Board board = new Board();
-        board.addRow(highlighty.get("pocetZastavek"), highlighty.get("pocetVozidel"), highlighty.get("pocetLinek"));
-        board.addRow(createViewEvents());
-        board.addRow(createServiceHealth(), createResponseTimes());
+        Row highlightsRow = board.addRow();
+        for (DashboardHighlight highlight : DashboardHighlight.values()) highlightsRow.add(highlights.get(highlight));
+        board.addRow(createSoonestTripsCell(), createServiceModeDistributionCell(), createVehicleTypeDistributionCell());
         add(board);
     }
 
-    private Component createViewEvents() {
-        // Header
-        Select year = new Select();
-        year.setItems("2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021");
-        year.setValue("2021");
-        year.setWidth("100px");
-
-        HorizontalLayout header = createHeader("View events", "Cumulative (city/month)");
-        header.add(year);
-
-        // Chart
-        Chart chart = new Chart(ChartType.AREA);
-        Configuration conf = chart.getConfiguration();
-
-        XAxis xAxis = new XAxis();
-        xAxis.setCategories("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-        conf.addxAxis(xAxis);
-
-        conf.getyAxis().setTitle("Values");
-
-        PlotOptionsArea plotOptions = new PlotOptionsArea();
-        plotOptions.setPointPlacement(PointPlacement.ON);
-        conf.addPlotOptions(plotOptions);
-
-        conf.addSeries(new ListSeries("Berlin", 189, 191, 191, 196, 201, 203, 209, 212, 229, 242, 244, 247));
-        conf.addSeries(new ListSeries("London", 138, 146, 148, 148, 152, 153, 163, 173, 178, 179, 185, 187));
-        conf.addSeries(new ListSeries("New York", 65, 65, 66, 71, 93, 102, 108, 117, 127, 129, 135, 136));
-        conf.addSeries(new ListSeries("Tokyo", 0, 11, 17, 23, 30, 42, 48, 49, 52, 54, 58, 62));
-
-        // Add it all together
-        VerticalLayout viewEvents = new VerticalLayout(header, chart);
-        viewEvents.addClassName("p-l");
-        viewEvents.setPadding(false);
-        viewEvents.setSpacing(false);
-        viewEvents.getElement().getThemeList().add("spacing-l");
-        return viewEvents;
+    public void setHiglightVisible(DashboardHighlight highlight, boolean visible) {
+        highlights.get(highlight).setVisible(visible);
     }
 
-    private Component createServiceHealth() {
-        // Header
-        HorizontalLayout header = createHeader("Service health", "Input / output");
-
-        // Grid
-        Grid<ServiceHealth> grid = new Grid();
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-        grid.setAllRowsVisible(true);
-
-        grid.addColumn(new ComponentRenderer<>(serviceHealth -> {
-            Span status = new Span();
-            String statusText = getStatusDisplayName(serviceHealth);
-            status.getElement().setAttribute("aria-label", "Status: " + statusText);
-            status.getElement().setAttribute("title", "Status: " + statusText);
-            status.getElement().getThemeList().add(getStatusTheme(serviceHealth));
-            return status;
-        })).setHeader("").setFlexGrow(0).setAutoWidth(true);
-        grid.addColumn(ServiceHealth::getCity).setHeader("City").setFlexGrow(1);
-        grid.addColumn(ServiceHealth::getInput).setHeader("Input").setAutoWidth(true).setTextAlign(ColumnTextAlign.END);
-        grid.addColumn(ServiceHealth::getOutput).setHeader("Output").setAutoWidth(true)
-                .setTextAlign(ColumnTextAlign.END);
-
-        grid.setItems(new ServiceHealth(Status.EXCELLENT, "Münster", 324, 1540),
-                new ServiceHealth(Status.OK, "Cluj-Napoca", 311, 1320),
-                new ServiceHealth(Status.FAILING, "Ciudad Victoria", 300, 1219));
-
-        // Add it all together
-        VerticalLayout serviceHealth = new VerticalLayout(header, grid);
-        serviceHealth.addClassName("p-l");
-        serviceHealth.setPadding(false);
-        serviceHealth.setSpacing(false);
-        serviceHealth.getElement().getThemeList().add("spacing-l");
-        return serviceHealth;
+    public void setHighlightText(DashboardHighlight highlight, String value) {
+        highlights.get(highlight).setText(value);
     }
 
-    private Component createResponseTimes() {
-        HorizontalLayout header = createHeader("Response times", "Average across all systems");
-
-        // Chart
-        Chart chart = new Chart(ChartType.PIE);
-        Configuration conf = chart.getConfiguration();
-
-        DataSeries series = new DataSeries();
-        series.add(new DataSeriesItem("System 1", 12.5));
-        series.add(new DataSeriesItem("System 2", 12.5));
-        series.add(new DataSeriesItem("System 3", 12.5));
-        series.add(new DataSeriesItem("System 4", 12.5));
-        series.add(new DataSeriesItem("System 5", 12.5));
-        series.add(new DataSeriesItem("System 6", 12.5));
-        conf.addSeries(series);
-
-        // Add it all together
-        VerticalLayout serviceHealth = new VerticalLayout(header, chart);
-        serviceHealth.addClassName("p-l");
-        serviceHealth.setPadding(false);
-        serviceHealth.setSpacing(false);
-        serviceHealth.getElement().getThemeList().add("spacing-l");
-        return serviceHealth;
+    public void setHighlightBadgeText(DashboardHighlight highlight, String value) {
+        highlights.get(highlight).setBadgeText(value);
     }
 
-    private HorizontalLayout createHeader(String title, String subtitle) {
-        H2 h2 = new H2(title);
-        h2.addClassNames("text-xl", "m-0");
+    private Grid<TripRouteCarrier> soonestTripsGrid;
+    private CellHeader soonestTripsHeader;
 
-        Span span = new Span(subtitle);
-        span.addClassNames("text-secondary", "text-xs");
+    private Component createSoonestTripsCell() {
+        soonestTripsHeader = new CellHeader("Nejbližší jízdy");
+        //
+        soonestTripsGrid = new Grid<>();
+        soonestTripsGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+        soonestTripsGrid.setAllRowsVisible(true);
+        soonestTripsGrid.addColumn((ValueProvider<TripRouteCarrier, Object>) tripRouteCarrier -> {
+            LocalDateTime timeOfDeparture = tripRouteCarrier.getTimeOfDeparture();
+            if (timeOfDeparture.isAfter(LocalDate.now().plusDays(1).atStartOfDay())) return timeOfDeparture.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+            return timeOfDeparture.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+        }).setHeader("Odjezd");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getTimeOfArrival().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))).setHeader("Příjezd");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getLineLabel()).setHeader("Linka");
+        soonestTripsGrid.addColumn(tripRouteCarrier -> tripRouteCarrier.getAssociatedTrip().getVehicleName()).setHeader("Vozidlo");
+        soonestTripsGrid.getColumns().forEach(tripRouteCarrierColumn -> tripRouteCarrierColumn.setAutoWidth(true));
+        return new StandartCell(soonestTripsHeader, soonestTripsGrid);
+    }
 
-        VerticalLayout column = new VerticalLayout(h2, span);
-        column.setPadding(false);
-        column.setSpacing(false);
+    public void setSoonestTripsGridItems(List<TripRouteCarrier> list) {
+        soonestTripsGrid.setItems(list);
+    }
 
-        HorizontalLayout header = new HorizontalLayout(column);
-        header.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        header.setSpacing(false);
-        header.setWidthFull();
-        return header;
+    public void setSoonestTripsHeaderSubtitle(String subtitle) {
+        soonestTripsHeader.setSubtitle(subtitle);
+    }
+
+    private void configureChart(Chart chart) {
+        Configuration configuration = chart.getConfiguration();
+        configuration.getExporting().setEnabled(true);
+        //
+        PlotOptionsPie plotOptionsPie = new PlotOptionsPie();
+        plotOptionsPie.setInnerSize("60%");
+        plotOptionsPie.setShowInLegend(true);
+        plotOptionsPie.setAllowPointSelect(true);
+        //
+        configuration.getTooltip().setValueDecimals(1);
+        //
+        configuration.setPlotOptions(plotOptionsPie);
+    }
+
+    private Chart vehicleTypeDistributionChart;
+
+    private Component createVehicleTypeDistributionCell() {
+        CellHeader header = new CellHeader("Rozložení typů vozidel", "Množství vozidel daného typu");
+        //
+        vehicleTypeDistributionChart = new Chart(ChartType.PIE);
+        configureChart(vehicleTypeDistributionChart);
+        //
+        return new StandartCell(header, vehicleTypeDistributionChart);
+    }
+
+    public void configureVehicleDistributionChart(Consumer<Configuration> configurationConsumer) {
+        configurationConsumer.accept(vehicleTypeDistributionChart.getConfiguration());
+    }
+
+    private Chart serviceModeDistributionChart;
+
+    private Component createServiceModeDistributionCell() {
+        CellHeader header = new CellHeader("Rozložení režimů obsluhy zastávek", "Množství zastávek s daným režimem obsluhy");
+        //
+        serviceModeDistributionChart = new Chart(ChartType.PIE);
+        configureChart(serviceModeDistributionChart);
+        //
+        return new StandartCell(header, serviceModeDistributionChart);
+    }
+
+    public void configureServiceModeDistributionChart(Consumer<Configuration> configurationConsumer) {
+        configurationConsumer.accept(serviceModeDistributionChart.getConfiguration());
+    }
+
+
+    private static class StandartCell extends VerticalLayout {
+        public StandartCell(CellHeader header, Component body) {
+            add(header, body);
+            addClassName("p-l");
+            setPadding(false);
+            setSpacing(false);
+            getElement().getThemeList().add("spacing-l");
+        }
+    }
+
+    private static class CellHeader extends HorizontalLayout {
+        H2 title;
+        Span subtitle;
+
+        CellHeader(String titleText) {
+            this(titleText, "");
+        }
+
+        CellHeader(String titleText, String subtitleText) {
+            title = new H2(titleText);
+            title.addClassNames("text-xl", "m-0");
+            //
+            subtitle = new Span(subtitleText);
+            subtitle.addClassNames("text-secondary", "text-xs");
+            //
+            VerticalLayout column = new VerticalLayout(title, subtitle);
+            column.setPadding(false);
+            column.setSpacing(false);
+            //
+            add(column);
+            setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+            setSpacing(false);
+            setWidthFull();
+        }
+
+        void setTitle(String titleText) {
+            title.setTitle(titleText);
+        }
+
+        void setSubtitle(String subtitleText) {
+            subtitle.setText(subtitleText);
+        }
+
     }
 
     private String getStatusDisplayName(ServiceHealth serviceHealth) {
@@ -175,20 +207,6 @@ public class PrehledView extends Main {
             theme += " error";
         }
         return theme;
-    }
-
-    public void setHighlightText(String highlight, String text) {
-        highlighty.get(highlight).setHodnota(text);
-    }
-
-    public void setHighlightText(String highlight, long cislo) {
-        highlighty.get(highlight).setHodnota(String.valueOf(cislo));
-    }
-
-    public void setAdminPrihlaseny(boolean prihlaseny) {
-        highlighty.forEach((s, highlight) -> {
-            if (highlight.isPouzeUAdminu()) highlight.setVisible(prihlaseny);
-        });
     }
 
 }

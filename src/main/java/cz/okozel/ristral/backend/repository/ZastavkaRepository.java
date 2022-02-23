@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ZastavkaRepository extends GenericSchemaRepository<Zastavka> {
     List<Zastavka> findBySchemaEqualsAndRezimObsluhyEquals(Schema schema, RezimObsluhy rezimObsluhy);
+    long countZastavkaByRezimObsluhyEquals(RezimObsluhy rezimObsluhy);
 }
