@@ -48,9 +48,11 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         this.typVozidlaService = typVozidlaService;
         //
         getContent().getCrud().addNewListener(event -> editRoutesButtonEnabled(false));
+        getContent().getCrud().addNewListener(event -> fillComboBox());
         //
         getContent().getCrud().addEditListener(event -> editRoutesButtonEnabled(true));
         getContent().getCrud().addEditListener(this::updateRoutesButtonOnClick);
+        getContent().getCrud().addEditListener(event -> fillComboBox());
         //
         getContent().getCrud().addSaveListener(this::remindUserToEdit);
         //
@@ -110,6 +112,8 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
 
     private void fillComboBox() {
         prefVehicleType.setItems(typVozidlaService.findAll(aktSchema));
+        Line currentLine = getContent().getCrud().getEditor().getItem();
+        prefVehicleType.setValue(currentLine == null ? null : currentLine.getPrefVehicleType());
     }
 
     private void remindUserToEdit(Crud.SaveEvent<Line> lineSaveEvent) {
