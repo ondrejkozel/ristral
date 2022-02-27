@@ -49,10 +49,12 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         //
         getContent().getCrud().addNewListener(event -> editRoutesButtonEnabled(false));
         getContent().getCrud().addNewListener(event -> fillComboBox());
+        getContent().getCrud().addNewListener(event -> setCreatingNewLine(true));
         //
         getContent().getCrud().addEditListener(event -> editRoutesButtonEnabled(true));
         getContent().getCrud().addEditListener(this::updateRoutesButtonOnClick);
         getContent().getCrud().addEditListener(event -> fillComboBox());
+        getContent().getCrud().addEditListener(event -> setCreatingNewLine(false));
         //
         getContent().getCrud().addSaveListener(this::remindUserToEdit);
         //
@@ -116,17 +118,25 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
         prefVehicleType.setValue(currentLine == null ? null : currentLine.getPrefVehicleType());
     }
 
+    private void setCreatingNewLine(boolean creatingNewLine) {
+        this.creatingNewLine = creatingNewLine;
+    }
+
+    private boolean creatingNewLine;
+
     private void remindUserToEdit(Crud.SaveEvent<Line> lineSaveEvent) {
-        Button editRoutesButton = newEditRoutesButton();
-        editRoutesButton.addClickListener(getUpdateRoutesClickEventListener(lineSaveEvent.getItem()));
-        //
-        HorizontalLayout notificationLayout = new HorizontalLayout(new Label(String.format("Nyní můžete lince %s vytvořit trasu.", lineSaveEvent.getItem().getLabel())), editRoutesButton);
-        notificationLayout.setSpacing(true);
-        notificationLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        Notification notification = new Notification(notificationLayout);
-        notification.setDuration(5000);
-        notification.open();
-        //
-        editRoutesButton.addClickListener(event -> notification.close());
+        if (creatingNewLine) {
+            Button editRoutesButton = newEditRoutesButton();
+            editRoutesButton.addClickListener(getUpdateRoutesClickEventListener(lineSaveEvent.getItem()));
+            //
+            HorizontalLayout notificationLayout = new HorizontalLayout(new Label(String.format("Nyní můžete lince %s vytvořit trasu.", lineSaveEvent.getItem().getLabel())), editRoutesButton);
+            notificationLayout.setSpacing(true);
+            notificationLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+            Notification notification = new Notification(notificationLayout);
+            notification.setDuration(5000);
+            notification.open();
+            //
+            editRoutesButton.addClickListener(event -> notification.close());
+        }
     }
 }
