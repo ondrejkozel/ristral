@@ -14,10 +14,12 @@ import java.util.stream.StreamSupport;
 public class LineService extends GenericSchemaService<Line, LineRepository> {
 
     private final TripService tripService;
+    private final LineRouteService lineRouteService;
 
-    public LineService(LineRepository hlavniRepositar, TripService tripService) {
+    public LineService(LineRepository hlavniRepositar, TripService tripService, LineRouteService lineRouteService) {
         super(hlavniRepositar);
         this.tripService = tripService;
+        this.lineRouteService = lineRouteService;
     }
 
     public long count(TypVozidla prefVehicleType) {
@@ -27,18 +29,20 @@ public class LineService extends GenericSchemaService<Line, LineRepository> {
     @Override
     public void delete(Line objekt) {
         tripService.unbindLine(objekt);
+        lineRouteService.deleteAll(objekt);
         super.delete(objekt);
     }
 
     @Override
     public void deleteAll(Iterable<Line> objekty) {
-        tripService.unbindLines(StreamSupport.stream(objekty.spliterator(), false).collect(Collectors.toList()));
+        tripService.unbindLines(StreamSupport.stream(objekty.spliterator(), false).peek(lineRouteService::deleteAll).collect(Collectors.toList()));
         super.deleteAll(objekty);
     }
 
     @Override
     public void deleteAll(Schema schema) {
         tripService.unbindAllLines(schema);
+        lineRouteService.deleteAll(schema);
         super.deleteAll(schema);
     }
 }
