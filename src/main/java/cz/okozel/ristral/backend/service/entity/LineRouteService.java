@@ -7,6 +7,7 @@ import cz.okozel.ristral.backend.service.entity.generic.GenericSchemaService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class LineRouteService extends GenericSchemaService<LineRouteCarrier, LineRouteCarrierRepository> {
@@ -20,4 +21,7 @@ public class LineRouteService extends GenericSchemaService<LineRouteCarrier, Lin
         hlavniRepositar.deleteAllByAssociatedLineEquals(line);
     }
 
+    public List<LineRouteCarrier> findAll(Line line) {
+        return hlavniRepositar.findAllByAssociatedLineEquals(line);
+    }
 }

@@ -1,4 +1,5 @@
 @import url('./main-layout.css');
 @import url('./views/prehled-view.css');
+@import url('./views/line-edit-view.css');
 @import url('./views/uzivatele-view.css');
 @import url('line-awesome/dist/line-awesome/css/line-awesome.min.css');

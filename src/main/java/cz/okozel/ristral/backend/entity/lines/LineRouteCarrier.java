@@ -31,7 +31,7 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
     private String name;
 
     @NotNull
-    private boolean isVisible;
+    private boolean visible;
 
     @ManyToOne
     @JoinColumn
@@ -44,12 +44,12 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
         super(associatedLine.getSchema());
         linkCarriers = routeView.getData().links().stream().map(LineRouteLinkCarrier::new).collect(Collectors.toList());
         name = routeView.getName();
-        isVisible = routeView.isVisible();
+        visible = routeView.isVisible();
         this.associatedLine = associatedLine;
     }
 
     public NamedView<Route<Zastavka, LineRouteLinkData>> getLineRoute() {
-        return new NamedView<>(buildRoute(), name, isVisible);
+        return new NamedView<>(buildRoute(), name, visible);
     }
 
     private Route<Zastavka, LineRouteLinkData> buildRoute() {

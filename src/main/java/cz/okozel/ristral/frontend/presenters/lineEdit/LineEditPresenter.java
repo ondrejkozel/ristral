@@ -10,8 +10,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.entity.lines.Line;
+import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
+import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.entity.LineRouteService;
@@ -23,10 +24,13 @@ import cz.okozel.ristral.frontend.presenters.linkyCrud.LinkyCrudPresenter;
 import cz.okozel.ristral.frontend.views.lineEdit.LineEditView;
 
 import javax.annotation.security.PermitAll;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @PageTitle("Správa tras")
-@Route(value = "lines/edit", layout = MainLayout.class)
+@com.vaadin.flow.router.Route(value = "lines/edit", layout = MainLayout.class)
 @PermitAll
 public class LineEditPresenter extends Presenter<LineEditView> implements HasUrlParameter<String> {
 
@@ -48,6 +52,7 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         if (optionalLine.isPresent() && optionalLine.get().getSchema().equals(currentUser.getSchema())) {
             currentLine = optionalLine.get();
             //
+            newLineActive();
         }
         else {
             currentLine = null;
@@ -55,9 +60,26 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         }
     }
 
+    private void newLineActive() {
+        getContent().setCurrentLineLabel(currentLine.getLabel());
+        //
+        var allLineRoutes = new ArrayList<>(lineRouteService.findAll(currentLine).stream().map(LineRouteCarrier::getLineRoute).collect(Collectors.toList()));
+        var visibleLineRoutes = allLineRoutes.stream().filter(NamedView::isVisible).collect(Collectors.toList());
+        allLineRoutes.removeAll(visibleLineRoutes);
+        var invisibleLineRoutes = List.copyOf(allLineRoutes);
+        //
+        getContent().setVisibleRoutesLayoutVisible(!visibleLineRoutes.isEmpty());
+        getContent().setInvisibleRoutesLayoutVisible(!invisibleLineRoutes.isEmpty());
+        //
+        getContent().populateVisibleRoutes(visibleLineRoutes);
+        getContent().populateInvisibleRoutes(invisibleLineRoutes);
+        //
+        getContent().setNoRoutesLabelVisible(visibleLineRoutes.isEmpty() && invisibleLineRoutes.isEmpty());
+    }
+
     private void showUnknownLineDialog() {
         Dialog dialog = new Dialog();
-        H3 headline = new H3("Neznámá linka");
+        H3 headline = new H3("Neznámá linka \uD83D\uDE22");
         //
         Paragraph paragraph = new Paragraph();
         paragraph.setText("Lituji, linka s tímto označením buď neexistuje, nebo k ní nemáte přístup. Je přihlášený správný uživatel?");

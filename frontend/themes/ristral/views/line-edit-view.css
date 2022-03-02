@@ -1,0 +1,21 @@
+.route-profile {
+    background-color: #dde8f7;
+    max-width: 250px;
+    max-height: 400px;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.route-profile .tucne {
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.route-profile label {
+    margin-top: 2px;
+}
+
+.routes-board {
+
+}
