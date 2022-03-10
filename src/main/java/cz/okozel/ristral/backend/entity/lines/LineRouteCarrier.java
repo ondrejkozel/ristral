@@ -48,8 +48,20 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
         this.associatedLine = associatedLine;
     }
 
-    public NamedView<Route<Zastavka, LineRouteLinkData>> getLineRoute() {
+    public NamedView<Route<Zastavka, LineRouteLinkData>> buildLineRoute() {
         return new NamedView<>(buildRoute(), name, visible);
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     private Route<Zastavka, LineRouteLinkData> buildRoute() {

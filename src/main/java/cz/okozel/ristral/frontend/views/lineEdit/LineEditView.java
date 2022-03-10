@@ -1,21 +1,26 @@
 package cz.okozel.ristral.frontend.views.lineEdit;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
-import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.routes.Route;
 import cz.okozel.ristral.backend.entity.routes.RouteUtils;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.frontend.LineAwesomeIcon;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LineEditView extends VerticalLayout {
 
@@ -77,15 +82,16 @@ public class LineEditView extends VerticalLayout {
         return finalLayout;
     }
 
-    public void populateVisibleRoutes(List<NamedView<Route<Zastavka, LineRouteLinkData>>> visibleRoutes) {
+    public void populateVisibleRoutes(List<LineRouteCarrier> visibleRoutes) {
         populateRoutes(visibleRoutes, visibleRoutesBoard);
     }
 
-    public void populateInvisibleRoutes(List<NamedView<Route<Zastavka, LineRouteLinkData>>> invisibleRoutes) {
+    public void populateInvisibleRoutes(List<LineRouteCarrier> invisibleRoutes) {
         populateRoutes(invisibleRoutes, invisibleRoutesBoard);
     }
 
-    private void populateRoutes(List<NamedView<Route<Zastavka, LineRouteLinkData>>> routes, HorizontalLayout board) {
+    private void populateRoutes(List<LineRouteCarrier> routes, HorizontalLayout board) {
+        board.removeAll();
         board.add(routes.stream().map(RouteProfile::new).toArray(RouteProfile[]::new));
     }
 
@@ -100,22 +106,64 @@ public class LineEditView extends VerticalLayout {
         return noRoutesLabel;
     }
 
-    private static class RouteProfile extends VerticalLayout {
+    //
 
+    private Consumer<LineRouteCarrier> setRouteVisible, setRouteInvisible, deleteRoute;
 
-        public RouteProfile(NamedView<Route<Zastavka, LineRouteLinkData>> routeView) {
+    public void setSetRouteVisibleMenuItemAction(Consumer<LineRouteCarrier> setRouteVisible) {
+        this.setRouteVisible = setRouteVisible;
+    }
+
+    public void setSetRouteInvisibleMenuItemAction(Consumer<LineRouteCarrier> setRouteInvisible) {
+        this.setRouteInvisible = setRouteInvisible;
+    }
+
+    public void setDeleteRouteMenuItemAction(Consumer<LineRouteCarrier> deleteRoute) {
+        this.deleteRoute = deleteRoute;
+    }
+
+    private class RouteProfile extends VerticalLayout {
+
+        public RouteProfile(LineRouteCarrier routeCarrier) {
             addClassName("route-profile");
             //
-            if (routeView.isVisible()) addClassName("route-profile-visible");
+            if (routeCarrier.isVisible()) addClassName("route-profile-visible");
             else addClassName("route-profile-invisible");
             //
-            Label header = new Label();
-            header.add(VaadinIcon.ROAD.create());
-            header.add(" " + routeView.getName());
-            header.addClassName("tucne");
-            add(header);
+            buildHeader(routeCarrier);
             //
-            buildInfo(routeView.getData());
+            buildInfo(routeCarrier.buildLineRoute().getData());
+        }
+
+        private void buildHeader(LineRouteCarrier routeView) {
+            Label headerLabel = new Label();
+            headerLabel.add(VaadinIcon.ROAD.create());
+            headerLabel.add(" " + routeView.getName());
+            headerLabel.addClassName("tucne");
+            //
+            Button headerButton = new Button(VaadinIcon.ELLIPSIS_DOTS_V.create());
+            headerButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+            headerButton.addClassName("edit-route-button");
+            //
+            buildContextMenu(headerButton, routeView);
+            //
+            Span span = new Span();
+            //
+            HorizontalLayout header = new HorizontalLayout(headerLabel, span, headerButton);
+            header.addClassName("m-0");
+            header.setFlexGrow(1, span);
+            header.setWidthFull();
+            header.setAlignItems(Alignment.CENTER);
+            add(header);
+        }
+
+        private void buildContextMenu(Button headerButton, LineRouteCarrier routeView) {
+            ContextMenu contextMenu = new ContextMenu(headerButton);
+            contextMenu.setOpenOnClick(true);
+            //
+            if (routeView.isVisible()) contextMenu.addItem("Přepnou na neaktivní", event -> setRouteInvisible.accept(routeView));
+            else contextMenu.addItem("Přepnout na aktivní", event -> setRouteVisible.accept(routeView));
+            contextMenu.addItem("Odstranit", event -> deleteRoute.accept(routeView));
         }
 
         private void buildInfo(Route<Zastavka, LineRouteLinkData> route) {

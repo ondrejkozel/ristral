@@ -12,7 +12,6 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import cz.okozel.ristral.backend.entity.lines.Line;
 import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
-import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.uzivatele.Uzivatel;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
 import cz.okozel.ristral.backend.service.entity.LineRouteService;
@@ -44,6 +43,21 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         currentUser = prihlasenyUzivatel.getPrihlasenyUzivatel().get();
         this.lineService = lineService;
         this.lineRouteService = lineRouteService;
+        //
+        getContent().setSetRouteVisibleMenuItemAction(routeCarrier -> {
+            routeCarrier.setVisible(true);
+            lineRouteService.save(routeCarrier);
+            newLineActive();
+        });
+        getContent().setSetRouteInvisibleMenuItemAction(routeCarrier -> {
+            routeCarrier.setVisible(false);
+            lineRouteService.save(routeCarrier);
+            newLineActive();
+        });
+        getContent().setDeleteRouteMenuItemAction(routeCarrier -> {
+            lineRouteService.delete(routeCarrier);
+            newLineActive();
+        });
     }
 
     @Override
@@ -63,8 +77,8 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
     private void newLineActive() {
         getContent().setCurrentLineLabel(currentLine.getLabel());
         //
-        var allLineRoutes = new ArrayList<>(lineRouteService.findAll(currentLine).stream().map(LineRouteCarrier::getLineRoute).collect(Collectors.toList()));
-        var visibleLineRoutes = allLineRoutes.stream().filter(NamedView::isVisible).collect(Collectors.toList());
+        var allLineRoutes = new ArrayList<>(new ArrayList<>(lineRouteService.findAll(currentLine)));
+        var visibleLineRoutes = allLineRoutes.stream().filter(LineRouteCarrier::isVisible).collect(Collectors.toList());
         allLineRoutes.removeAll(visibleLineRoutes);
         var invisibleLineRoutes = List.copyOf(allLineRoutes);
         //
