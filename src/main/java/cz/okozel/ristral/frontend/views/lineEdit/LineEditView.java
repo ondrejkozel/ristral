@@ -1,12 +1,12 @@
 package cz.okozel.ristral.frontend.views.lineEdit;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
 import cz.okozel.ristral.backend.entity.routes.NamedView;
@@ -56,19 +56,19 @@ public class LineEditView extends VerticalLayout {
         invisibleRoutesLayout.setVisible(visible);
     }
 
-    private Board visibleRoutesBoard;
+    private HorizontalLayout visibleRoutesBoard;
+    private HorizontalLayout invisibleRoutesBoard;
 
-    private Board invisibleRoutesBoard;
     private Component buildRouteBoards() {
         visibleRoutesLayout = new VerticalLayout();
         H2 visibleRoutesHeadline = new H2("Aktivní trasy");
-        visibleRoutesBoard = new Board();
+        visibleRoutesBoard = new HorizontalLayout();
         visibleRoutesBoard.addClassName("routes-board");
         visibleRoutesLayout.add(visibleRoutesHeadline, visibleRoutesBoard);
         //
         invisibleRoutesLayout = new VerticalLayout();
         H2 invisibleRoutesHeadline = new H2("Neaktivní trasy");
-        invisibleRoutesBoard = new Board();
+        invisibleRoutesBoard = new HorizontalLayout();
         invisibleRoutesBoard.addClassName("routes-board");
         invisibleRoutesLayout.add(invisibleRoutesHeadline, invisibleRoutesBoard);
         //
@@ -85,8 +85,8 @@ public class LineEditView extends VerticalLayout {
         populateRoutes(invisibleRoutes, invisibleRoutesBoard);
     }
 
-    private void populateRoutes(List<NamedView<Route<Zastavka, LineRouteLinkData>>> routes, Board board) {
-        board.addRow(routes.stream().map(RouteProfile::new).toArray(RouteProfile[]::new));
+    private void populateRoutes(List<NamedView<Route<Zastavka, LineRouteLinkData>>> routes, HorizontalLayout board) {
+        board.add(routes.stream().map(RouteProfile::new).toArray(RouteProfile[]::new));
     }
 
     private Label noRoutesLabel;
@@ -105,7 +105,6 @@ public class LineEditView extends VerticalLayout {
 
         public RouteProfile(NamedView<Route<Zastavka, LineRouteLinkData>> routeView) {
             addClassName("route-profile");
-            setSizeFull();
             //
             if (routeView.isVisible()) addClassName("route-profile-visible");
             else addClassName("route-profile-invisible");

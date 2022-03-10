@@ -1,7 +1,9 @@
 .route-profile {
-    max-width: fit-content;
+    width: fit-content !important;
+    max-width: 400px;
+    height: fit-content;
     border-radius: 5px;
-    margin: 10px;
+    margin: 0;
 }
 
 .route-profile-visible {
@@ -23,5 +25,10 @@
 }
 
 .routes-board {
-
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 10px;
 }
