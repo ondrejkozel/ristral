@@ -1,5 +1,7 @@
 package cz.okozel.ristral.backend.entity.routes;
 
+import java.util.function.Function;
+
 /**
  * Represents an elementary link which connects two graph vertices through an
  * edge directly without any other intermediate vertices and edges.
@@ -40,11 +42,9 @@ public interface Link<V, E> extends Direction<V> {
     @Override
     int hashCode();
 
-    default Link<V, E> reverse() {
-        return Link.build(this.to(), this.from(), invertEdge(this.edge()));
+    default Link<V, E> reverse(Function<? super Link<? extends V, ? extends E>, ? extends E> edgeFunction) {
+        return Link.build(this.to(), this.from(), edgeFunction.apply(this));
     }
-
-    E invertEdge(E edge);
 
     /**
      * Creates an instance.
