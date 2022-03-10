@@ -3,6 +3,7 @@ package cz.okozel.ristral.frontend.views.lineEdit;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H2;
@@ -163,7 +164,16 @@ public class LineEditView extends VerticalLayout {
             //
             if (routeView.isVisible()) contextMenu.addItem("Přepnou na neaktivní", event -> setRouteInvisible.accept(routeView));
             else contextMenu.addItem("Přepnout na aktivní", event -> setRouteVisible.accept(routeView));
-            contextMenu.addItem("Odstranit", event -> deleteRoute.accept(routeView));
+            contextMenu.addItem("Odstranit", event -> {
+                ConfirmDialog dialog = new ConfirmDialog(
+                        String.format("Odstranit %s", routeView.getName()),
+                        "Opravdu si přejete smazat tuto trasu? Tato akce je nevratná.",
+                        "Odstranit",
+                        event1 -> deleteRoute.accept(routeView));
+                dialog.setCancelText("Zrušit");
+                dialog.setCancelable(true);
+                dialog.open();
+            });
         }
 
         private void buildInfo(Route<Zastavka, LineRouteLinkData> route) {
