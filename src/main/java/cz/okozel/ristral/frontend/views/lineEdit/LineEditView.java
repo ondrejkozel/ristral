@@ -5,6 +5,7 @@ import com.vaadin.flow.component.board.Board;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
@@ -12,6 +13,7 @@ import cz.okozel.ristral.backend.entity.routes.NamedView;
 import cz.okozel.ristral.backend.entity.routes.Route;
 import cz.okozel.ristral.backend.entity.routes.RouteUtils;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
+import cz.okozel.ristral.frontend.LineAwesomeIcon;
 
 import java.util.List;
 
@@ -105,7 +107,12 @@ public class LineEditView extends VerticalLayout {
             addClassName("route-profile");
             setSizeFull();
             //
-            Label header = new Label(routeView.getName());
+            if (routeView.isVisible()) addClassName("route-profile-visible");
+            else addClassName("route-profile-invisible");
+            //
+            Label header = new Label();
+            header.add(VaadinIcon.ROAD.create());
+            header.add(" " + routeView.getName());
             header.addClassName("tucne");
             add(header);
             //
@@ -113,12 +120,21 @@ public class LineEditView extends VerticalLayout {
         }
 
         private void buildInfo(Route<Zastavka, LineRouteLinkData> route) {
-            add(
-                    new Label(String.format("Výchozí: %s", route.from().getNazev())),
-                    new Label(String.format("Konečná: %s", route.to().getNazev())),
-                    new Label(String.format("Počet zastávek: %d", route.length())),
-                    new Label(String.format("Délka: %s", RouteUtils.durationToString(RouteUtils.computeRouteDuration(route))))
-            );
+            Label start = new Label("výchozí ");
+            start.add(LineAwesomeIcon.ZASTAVKA.getSpan());
+            start.add(String.format(": %s", route.from().getNazev()));
+            //
+            Label end = new Label("konečná ");
+            end.add(LineAwesomeIcon.ZASTAVKA.getSpan());
+            end.add(String.format(": %s", route.to().getNazev()));
+            //
+            Label count = new Label("počet ");
+            count.add(LineAwesomeIcon.ZASTAVKA.getSpan());
+            count.add(String.format(": %s", route.length()));
+            //
+            Label duration = new Label(String.format("délka: %s", RouteUtils.durationToString(RouteUtils.computeRouteDuration(route))));
+            //
+            add(start, end, count, duration);
         }
     }
 }

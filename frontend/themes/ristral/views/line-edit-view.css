@@ -1,9 +1,15 @@
 .route-profile {
-    background-color: #dde8f7;
-    max-width: 250px;
-    max-height: 400px;
-    border-radius: 8px;
+    max-width: fit-content;
+    border-radius: 5px;
     margin: 10px;
+}
+
+.route-profile-visible {
+    background-color: var(--lumo-primary-color-10pct);
+}
+
+.route-profile-invisible {
+    background-color: var(--lumo-contrast-20pct);
 }
 
 .route-profile .tucne {
