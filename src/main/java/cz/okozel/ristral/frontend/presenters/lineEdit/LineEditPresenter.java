@@ -47,16 +47,16 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         getContent().setSetRouteVisibleMenuItemAction(routeCarrier -> {
             routeCarrier.setVisible(true);
             lineRouteService.save(routeCarrier);
-            newLineActive();
+            refresh();
         });
         getContent().setSetRouteInvisibleMenuItemAction(routeCarrier -> {
             routeCarrier.setVisible(false);
             lineRouteService.save(routeCarrier);
-            newLineActive();
+            refresh();
         });
-        getContent().setDeleteRouteMenuItemAction(routeCarrier -> {
-            lineRouteService.delete(routeCarrier);
-            newLineActive();
+        getContent().getCrud().addDeleteListener(event -> {
+            lineRouteService.delete(event.getItem());
+            refresh();
         });
     }
 
@@ -66,7 +66,7 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         if (optionalLine.isPresent() && optionalLine.get().getSchema().equals(currentUser.getSchema())) {
             currentLine = optionalLine.get();
             //
-            newLineActive();
+            refresh();
         }
         else {
             currentLine = null;
@@ -74,7 +74,7 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         }
     }
 
-    private void newLineActive() {
+    private void refresh() {
         getContent().setCurrentLineLabel(currentLine.getLabel());
         //
         var allLineRoutes = new ArrayList<>(new ArrayList<>(lineRouteService.findAll(currentLine)));

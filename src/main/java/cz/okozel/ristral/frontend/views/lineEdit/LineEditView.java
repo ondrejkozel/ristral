@@ -6,6 +6,11 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.Crud;
+import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
@@ -13,12 +18,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
 import cz.okozel.ristral.backend.entity.routes.Route;
 import cz.okozel.ristral.backend.entity.routes.RouteUtils;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.frontend.LineAwesomeIcon;
+import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,6 +38,8 @@ public class LineEditView extends VerticalLayout {
         add(buildCurrentLineLabel());
         add(buildRouteBoards());
         add(buildNoRoutesLabel());
+        //
+        buildCrud();
     }
 
     private MenuItem newRoute;
@@ -54,17 +64,17 @@ public class LineEditView extends VerticalLayout {
     private VerticalLayout visibleRoutesLayout;
 
     private VerticalLayout invisibleRoutesLayout;
+
     public void setVisibleRoutesLayoutVisible(boolean visible) {
         visibleRoutesLayout.setVisible(visible);
     }
-
     public void setInvisibleRoutesLayoutVisible(boolean visible) {
         invisibleRoutesLayout.setVisible(visible);
     }
 
     private HorizontalLayout visibleRoutesBoard;
-    private HorizontalLayout invisibleRoutesBoard;
 
+    private HorizontalLayout invisibleRoutesBoard;
     private Component buildRouteBoards() {
         visibleRoutesLayout = new VerticalLayout();
         H2 visibleRoutesHeadline = new H2("Aktivní trasy");
@@ -107,9 +117,7 @@ public class LineEditView extends VerticalLayout {
         return noRoutesLabel;
     }
 
-    //
-
-    private Consumer<LineRouteCarrier> setRouteVisible, setRouteInvisible, deleteRoute;
+    private Consumer<LineRouteCarrier> setRouteVisible, setRouteInvisible;
 
     public void setSetRouteVisibleMenuItemAction(Consumer<LineRouteCarrier> setRouteVisible) {
         this.setRouteVisible = setRouteVisible;
@@ -119,8 +127,23 @@ public class LineEditView extends VerticalLayout {
         this.setRouteInvisible = setRouteInvisible;
     }
 
-    public void setDeleteRouteMenuItemAction(Consumer<LineRouteCarrier> deleteRoute) {
-        this.deleteRoute = deleteRoute;
+    private Crud<LineRouteCarrier> crud;
+
+    public Crud<LineRouteCarrier> getCrud() {
+        return crud;
+    }
+
+    private void buildCrud() {
+        FormLayout formLayout = new FormLayout(new Label("Test"));
+        Binder<LineRouteCarrier> binder = new BeanValidationBinder<>(LineRouteCarrier.class);
+        CrudEditor<LineRouteCarrier> editRouteEditor = new BinderCrudEditor<>(binder, formLayout);
+        //
+        crud = new Crud<>(LineRouteCarrier.class, editRouteEditor);
+        crud.setI18n(GenericCrudView.buildCrudI18n("Nová trasa", "Upravit trasu", "Odstranit trasu"));
+        //
+        Div div = new Div(crud);
+        div.addClassName("display-none");
+        add(div);
     }
 
     private class RouteProfile extends VerticalLayout {
@@ -162,18 +185,9 @@ public class LineEditView extends VerticalLayout {
             ContextMenu contextMenu = new ContextMenu(headerButton);
             contextMenu.setOpenOnClick(true);
             //
+            contextMenu.addItem("Upravit...", event -> crud.edit(routeView, Crud.EditMode.EXISTING_ITEM));
             if (routeView.isVisible()) contextMenu.addItem("Přepnou na neaktivní", event -> setRouteInvisible.accept(routeView));
             else contextMenu.addItem("Přepnout na aktivní", event -> setRouteVisible.accept(routeView));
-            contextMenu.addItem("Odstranit", event -> {
-                ConfirmDialog dialog = new ConfirmDialog(
-                        String.format("Odstranit %s", routeView.getName()),
-                        "Opravdu si přejete smazat tuto trasu? Tato akce je nevratná.",
-                        "Odstranit",
-                        event1 -> deleteRoute.accept(routeView));
-                dialog.setCancelText("Zrušit");
-                dialog.setCancelable(true);
-                dialog.open();
-            });
         }
 
         private void buildInfo(Route<Zastavka, LineRouteLinkData> route) {
