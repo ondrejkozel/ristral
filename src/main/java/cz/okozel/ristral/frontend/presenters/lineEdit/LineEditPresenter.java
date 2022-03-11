@@ -36,7 +36,7 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
     private final LineService lineService;
     private final LineRouteService lineRouteService;
     private Line currentLine;
-    private Uzivatel currentUser;
+    private final Uzivatel currentUser;
 
     public LineEditPresenter(PrihlasenyUzivatel prihlasenyUzivatel, LineService lineService, LineRouteService lineRouteService) {
         //noinspection OptionalGetWithoutIsPresent
@@ -70,8 +70,15 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         }
         else {
             currentLine = null;
+            disableAll();
             showUnknownLineDialog();
         }
+    }
+
+    private void disableAll() {
+        getContent().setVisibleRoutesLayoutVisible(false);
+        getContent().setInvisibleRoutesLayoutVisible(false);
+        getContent().setNoRoutesLabelVisible(false);
     }
 
     private void refresh() {
@@ -100,17 +107,20 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         paragraph.setMaxWidth("400px");
         //
         Button button = new Button("Všechny linky", LineAwesomeIcon.LINKA.getSpan());
-        button.addClickListener(event -> {
-            UI.getCurrent().navigate(LinkyCrudPresenter.class);
-            dialog.close();
-        });
+        button.addClickListener(event -> closeAndRedirect(dialog));
         //
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.add(button);
         buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
         //
         dialog.add(headline, paragraph, buttonLayout);
-        dialog.setModal(false);
+        dialog.setModal(true);
+        dialog.addDialogCloseActionListener(event -> closeAndRedirect(dialog));
         dialog.open();
+    }
+
+    private void closeAndRedirect(Dialog dialog) {
+        UI.getCurrent().navigate(LinkyCrudPresenter.class);
+        dialog.close();
     }
 }
