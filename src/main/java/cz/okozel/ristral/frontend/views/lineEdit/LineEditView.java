@@ -44,6 +44,10 @@ public class LineEditView extends VerticalLayout {
 
     private MenuItem newRoute;
 
+    public void setNewRouteMenuItemVisible(boolean visible) {
+        newRoute.setVisible(visible);
+    }
+
     private MenuBar buildMenuBar() {
         MenuBar menuBar = new MenuBar();
         newRoute = menuBar.addItem("Nová trasa");

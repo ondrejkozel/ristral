@@ -70,6 +70,7 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         getContent().setVisibleRoutesLayoutVisible(false);
         getContent().setInvisibleRoutesLayoutVisible(false);
         getContent().setNoRoutesLabelVisible(false);
+        getContent().setNewRouteMenuItemVisible(false);
     }
 
     private void refresh() {
