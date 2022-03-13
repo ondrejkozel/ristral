@@ -1,21 +1,20 @@
 package cz.okozel.ristral.frontend.views.lineEdit;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -26,6 +25,7 @@ import cz.okozel.ristral.backend.entity.routes.Route;
 import cz.okozel.ristral.backend.entity.routes.RouteUtils;
 import cz.okozel.ristral.backend.entity.zastavky.Zastavka;
 import cz.okozel.ristral.frontend.LineAwesomeIcon;
+import cz.okozel.ristral.frontend.presenters.linkyCrud.LinkyCrudPresenter;
 import cz.okozel.ristral.frontend.views.crud.GenericCrudView;
 
 import java.util.List;
@@ -62,7 +62,6 @@ public class LineEditView extends VerticalLayout {
     }
 
     private VerticalLayout visibleRoutesLayout;
-
     private VerticalLayout invisibleRoutesLayout;
 
     public void setVisibleRoutesLayoutVisible(boolean visible) {
@@ -73,8 +72,8 @@ public class LineEditView extends VerticalLayout {
     }
 
     private HorizontalLayout visibleRoutesBoard;
-
     private HorizontalLayout invisibleRoutesBoard;
+
     private Component buildRouteBoards() {
         visibleRoutesLayout = new VerticalLayout();
         H2 visibleRoutesHeadline = new H2("Aktivní trasy");
@@ -144,6 +143,32 @@ public class LineEditView extends VerticalLayout {
         Div div = new Div(crud);
         div.addClassName("display-none");
         add(div);
+    }
+
+    public void showUnknownLineDialog() {
+        Dialog dialog = new Dialog();
+        H3 headline = new H3("Neznámá linka \uD83D\uDE22");
+        //
+        Paragraph paragraph = new Paragraph();
+        paragraph.setText("Lituji, linka s tímto označením buď neexistuje, nebo k ní nemáte přístup. Je přihlášený správný uživatel?");
+        paragraph.setMaxWidth("400px");
+        //
+        Button button = new Button("Všechny linky", LineAwesomeIcon.LINKA.getSpan());
+        button.addClickListener(event -> closeAndRedirect(dialog));
+        //
+        HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.add(button);
+        buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
+        //
+        dialog.add(headline, paragraph, buttonLayout);
+        dialog.setModal(true);
+        dialog.addDialogCloseActionListener(event -> closeAndRedirect(dialog));
+        dialog.open();
+    }
+
+    private void closeAndRedirect(Dialog dialog) {
+        UI.getCurrent().navigate(LinkyCrudPresenter.class);
+        dialog.close();
     }
 
     private class RouteProfile extends VerticalLayout {
