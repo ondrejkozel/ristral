@@ -12,6 +12,7 @@ import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,8 +28,13 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
     @NotNull
     private List<LineRouteLinkCarrier> linkCarriers;
 
+    @Size(max = 50)
     @NotBlank
     private String name;
+
+    @Size(max = 250)
+    @NotNull
+    private String description;
 
     @NotNull
     private boolean visible;
@@ -46,22 +52,11 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
         name = routeView.getName();
         visible = routeView.isVisible();
         this.associatedLine = associatedLine;
+        description = "";
     }
 
     public NamedView<Route<Zastavka, LineRouteLinkData>> buildLineRoute() {
         return new NamedView<>(buildRoute(), name, visible);
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     private Route<Zastavka, LineRouteLinkData> buildRoute() {
@@ -78,5 +73,29 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
             timeOfDeparture = arrivalToNext;
         }
         return joiner.finishOptionally().orElseThrow();
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
