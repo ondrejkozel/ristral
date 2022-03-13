@@ -63,13 +63,13 @@ public class LinkyCrudPresenter extends GenericCrudPresenter<Line, LinkyCrudView
 
     @SuppressWarnings("FieldCanBeLocal")
     private TextField label;
-
     @SuppressWarnings("FieldCanBeLocal")
     private TextArea description;
     private ComboBox<TypVozidla> prefVehicleType;
     private Button editRoutesButton;
 
     private Registration editRoutesButtonActionRegistration;
+
     @Override
     protected CrudEditor<Line> createEditor() {
         label = new TextField("Číslo");

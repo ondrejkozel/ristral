@@ -6,19 +6,14 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.ContextMenu;
 import com.vaadin.flow.component.contextmenu.MenuItem;
-import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.crud.Crud;
-import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.Binder;
 import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
 import cz.okozel.ristral.backend.entity.routes.Route;
@@ -137,11 +132,8 @@ public class LineEditView extends VerticalLayout {
     }
 
     private void buildCrud() {
-        FormLayout formLayout = new FormLayout(new Label("Test"));
-        Binder<LineRouteCarrier> binder = new BeanValidationBinder<>(LineRouteCarrier.class);
-        CrudEditor<LineRouteCarrier> editRouteEditor = new BinderCrudEditor<>(binder, formLayout);
-        //
-        crud = new Crud<>(LineRouteCarrier.class, editRouteEditor);
+        crud = new Crud<>();
+        crud.setBeanType(LineRouteCarrier.class);
         crud.setI18n(GenericCrudView.buildCrudI18n("Nová trasa", "Upravit trasu", "Odstranit trasu"));
         //
         Div div = new Div(crud);

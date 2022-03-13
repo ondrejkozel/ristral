@@ -1,5 +1,12 @@
 package cz.okozel.ristral.frontend.presenters.lineEdit;
 
+import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.CrudEditor;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
@@ -35,6 +42,17 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         this.lineService = lineService;
         this.lineRouteService = lineRouteService;
         //
+        buildEditor();
+        //
+        getContent().getCrud().addSaveListener(event -> {
+            lineRouteService.save(event.getItem());
+            refresh();
+        });
+        getContent().getCrud().addDeleteListener(event -> {
+            lineRouteService.delete(event.getItem());
+            refresh();
+        });
+        //
         getContent().setSetRouteVisibleMenuItemAction(routeCarrier -> {
             routeCarrier.setVisible(true);
             lineRouteService.save(routeCarrier);
@@ -43,10 +61,6 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         getContent().setSetRouteInvisibleMenuItemAction(routeCarrier -> {
             routeCarrier.setVisible(false);
             lineRouteService.save(routeCarrier);
-            refresh();
-        });
-        getContent().getCrud().addDeleteListener(event -> {
-            lineRouteService.delete(event.getItem());
             refresh();
         });
     }
@@ -88,5 +102,24 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
         getContent().populateInvisibleRoutes(invisibleLineRoutes);
         //
         getContent().setNoRoutesLabelVisible(visibleLineRoutes.isEmpty() && invisibleLineRoutes.isEmpty());
+    }
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private TextField name;
+    @SuppressWarnings("FieldCanBeLocal")
+    private TextArea description;
+
+    private void buildEditor() {
+        name = new TextField("Název");
+        name.setRequired(true);
+        //
+        description = new TextArea("Popis");
+        //
+        FormLayout formLayout = new FormLayout(name, description);
+        Binder<LineRouteCarrier> binder = new BeanValidationBinder<>(LineRouteCarrier.class);
+        CrudEditor<LineRouteCarrier> routeEditor = new BinderCrudEditor<>(binder, formLayout);
+        binder.bindInstanceFields(this);
+        //
+        getContent().getCrud().setEditor(routeEditor);
     }
 }
