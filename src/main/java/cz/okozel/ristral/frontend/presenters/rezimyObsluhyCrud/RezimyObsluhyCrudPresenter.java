@@ -43,7 +43,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @PageTitle("Režimy obsluhy")
-@Route(value = "rezimy-obsluhy", layout = MainLayout.class)
+@Route(value = "service-mode", layout = MainLayout.class)
 @PermitAll
 public class RezimyObsluhyCrudPresenter extends GenericCrudPresenter<RezimObsluhy, RezimyObsluhyCrudView> {
 

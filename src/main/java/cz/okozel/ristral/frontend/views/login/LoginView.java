@@ -9,7 +9,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import cz.okozel.ristral.backend.security.PrihlasenyUzivatel;
-import cz.okozel.ristral.frontend.presenters.register.RegisterPresenter;
+import cz.okozel.ristral.frontend.presenters.signIn.SignInPresenter;
 import cz.okozel.ristral.frontend.presenters.vitejte.VitejtePresenter;
 
 @PageTitle("Přihlášení")
@@ -28,7 +28,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         i18n.setErrorMessage(buildErrorMessage());
         loginForm.setI18n(i18n);
         loginForm.setForgotPasswordButtonVisible(true);
-        loginForm.addForgotPasswordListener(event -> UI.getCurrent().navigate(RegisterPresenter.class));
+        loginForm.addForgotPasswordListener(event -> UI.getCurrent().navigate(SignInPresenter.class));
         //
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
