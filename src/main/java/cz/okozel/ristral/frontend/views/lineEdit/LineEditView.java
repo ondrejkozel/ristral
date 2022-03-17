@@ -1,6 +1,8 @@
 package cz.okozel.ristral.frontend.views.lineEdit;
 
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -14,6 +16,7 @@ import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import cz.okozel.ristral.backend.entity.lines.EmptyRouteException;
 import cz.okozel.ristral.backend.entity.lines.LineRouteCarrier;
 import cz.okozel.ristral.backend.entity.lines.LineRouteLinkData;
 import cz.okozel.ristral.backend.entity.routes.Route;
@@ -41,6 +44,10 @@ public class LineEditView extends VerticalLayout {
 
     public void setNewRouteMenuItemVisible(boolean visible) {
         newRoute.setVisible(visible);
+    }
+
+    public void addNewRouteMenuItemAction(ComponentEventListener<ClickEvent<MenuItem>> listener) {
+        newRoute.addClickListener(listener);
     }
 
     private MenuBar buildMenuBar() {
@@ -177,7 +184,11 @@ public class LineEditView extends VerticalLayout {
             //
             buildHeader(routeCarrier);
             //
-            buildInfo(routeCarrier.buildLineRoute().getData());
+            try {
+                buildInfo(routeCarrier.buildLineRoute().getData());
+            } catch (EmptyRouteException e) {
+                buildNoStopsInfo();
+            }
         }
 
         private void buildHeader(LineRouteCarrier routeView) {
@@ -200,6 +211,11 @@ public class LineEditView extends VerticalLayout {
             header.setWidthFull();
             header.setAlignItems(Alignment.CENTER);
             add(header);
+        }
+
+        private void buildNoStopsInfo() {
+            add(new Label("Trasa nemá žádné zastávky."));
+            addClassName("no-stops");
         }
 
         private void buildContextMenu(Button headerButton, LineRouteCarrier routeView) {

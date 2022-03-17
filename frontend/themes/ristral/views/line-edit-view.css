@@ -1,9 +1,10 @@
 .route-profile {
-    width: fit-content !important;
+    width: unset !important;
     max-width: 400px;
     height: fit-content;
     border-radius: 5px;
     margin: 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 20px 0 rgba(0, 0, 0, 0.12);
 }
 
 .route-profile-visible {
@@ -40,4 +41,18 @@
 
 .display-none {
     display: none;
+}
+
+.no-stops {
+    background-color: var(--lumo-error-color-10pct);
+}
+
+@media all and (max-width: 400px) {
+    .routes-board {
+        justify-content: center;
+    }
+    .route-profile {
+        width: 100% !important;
+        margin-right: 16px;
+    }
 }

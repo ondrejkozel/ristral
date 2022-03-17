@@ -1,6 +1,7 @@
 package cz.okozel.ristral.frontend.presenters.lineEdit;
 
 import com.vaadin.flow.component.crud.BinderCrudEditor;
+import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.crud.CrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -63,6 +64,8 @@ public class LineEditPresenter extends Presenter<LineEditView> implements HasUrl
             lineRouteService.save(routeCarrier);
             refresh();
         });
+        //
+        getContent().addNewRouteMenuItemAction(event -> getContent().getCrud().edit(new LineRouteCarrier(currentLine), Crud.EditMode.NEW_ITEM));
     }
 
     @Override

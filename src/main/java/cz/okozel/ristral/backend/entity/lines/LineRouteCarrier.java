@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,6 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
     @JoinColumn(name="line_route_id")
     @OrderColumn(name="order_")
     @Cascade(CascadeType.ALL)
-    @NotNull
     private List<LineRouteLinkCarrier> linkCarriers;
 
     @Size(max = 50)
@@ -44,7 +44,16 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
     @NotNull
     private Line associatedLine;
 
-    public LineRouteCarrier() {}
+    public LineRouteCarrier() {
+        description = "";
+        visible = false;
+        linkCarriers = new ArrayList<>();
+    }
+
+    public LineRouteCarrier(Line associatedLine) {
+        super(associatedLine.getSchema());
+        this.associatedLine = associatedLine;
+    }
 
     public LineRouteCarrier(NamedView<Route<Zastavka, LineRouteLinkData>> routeView, Line associatedLine) {
         super(associatedLine.getSchema());
@@ -55,14 +64,16 @@ public class LineRouteCarrier extends AbstractSchemaEntity {
         description = "";
     }
 
-    public NamedView<Route<Zastavka, LineRouteLinkData>> buildLineRoute() {
+    public NamedView<Route<Zastavka, LineRouteLinkData>> buildLineRoute() throws EmptyRouteException {
         return new NamedView<>(buildRoute(), name, visible);
     }
 
-    private Route<Zastavka, LineRouteLinkData> buildRoute() {
+    private Route<Zastavka, LineRouteLinkData> buildRoute() throws EmptyRouteException {
         Route.Joiner<Zastavka, LineRouteLinkData> joiner = Route.empty();
         linkCarriers.forEach(linkCarrier -> joiner.join(linkCarrier.getLink()));
-        return joiner.finishOptionally().orElseThrow();
+        var finished = joiner.finishOptionally();
+        if (finished.isEmpty()) throw new EmptyRouteException("Route has no links.");
+        return finished.get();
     }
 
     public static Route<String, TripRouteLinkData> buildTripRoute(Route<Zastavka, LineRouteLinkData> lineRoute, LocalDateTime timeOfDeparture) {
