@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "typy_vozidel")
+@Table(name = "vehicle_types")
 public class TypVozidla extends AbstractSchemaEntity {
 
     @Size(max = 50)

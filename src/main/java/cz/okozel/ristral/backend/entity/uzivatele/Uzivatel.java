@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
  * Třída reprezentující jakéhokoliv registrovaného uživatele.
  */
 @Entity
-@Table(name = "uzivatele")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "typ_uzivatele", discriminatorType = DiscriminatorType.STRING)
 public abstract class Uzivatel extends AbstractSchemaEntity {

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * Třída reprezentující určitý úkon uživatele.
  */
 @Entity
-@Table(name = "aktivity")
+@Table(name = "activities")
 public class Aktivita extends AbstractSchemaEntity {
 
     @Enumerated(value = EnumType.STRING)
