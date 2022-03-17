@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "rezimy_obsluhy")
+@Table(name = "service_modes")
 public class RezimObsluhy extends AbstractSchemaEntity {
 
     public static RezimObsluhy vytvorVychoziRezimBezZnameni(Schema schema) {
@@ -65,8 +65,8 @@ public class RezimObsluhy extends AbstractSchemaEntity {
         return nazev;
     }
 
-    @Entity(name = "PeriodaNaZnameni")
-    @Table(name = "periody_na_znameni")
+    @Entity(name = "OnRequestPeriod")
+    @Table(name = "on_request_periods")
     public static class PeriodaNaZnameni extends AbstractSchemaEntity {
 
         public static PeriodaNaZnameni vytvorVychoziPerioduNaZnameni(Schema schema, RezimObsluhy rezimObsluhy) {
@@ -83,9 +83,9 @@ public class RezimObsluhy extends AbstractSchemaEntity {
 
         @ElementCollection(fetch = FetchType.EAGER)
         @Enumerated(EnumType.STRING)
-        @CollectionTable(name = "dny_na_znameni",
-                joinColumns = @JoinColumn(name = "perioda_na_znameni_id"))
-        @Column(name = "dny_na_znameni")
+        @CollectionTable(name = "days_on_request",
+                joinColumns = @JoinColumn(name = "on_request_period_id"))
+        @Column(name = "day_on_request")
         private Set<DayOfWeek> dnyNaZnameni;
 
         public PeriodaNaZnameni() {}

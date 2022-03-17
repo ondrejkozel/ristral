@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * generický typ.
  */
 @PageTitle("Uživatelé")
-@Route(value = "uzivatele", layout = MainLayout.class)
+@Route(value = "users", layout = MainLayout.class)
 @RolesAllowed("superadminOrg")
 public class UzivateleCrudPresenter extends GenericCrudPresenter<UzivatelOrg, UzivateleCrudView> {
 

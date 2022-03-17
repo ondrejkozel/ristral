@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "zastavky")
+@Table(name = "stops")
 public class Zastavka extends AbstractSchemaEntity {
 
     @Size(max = 50)

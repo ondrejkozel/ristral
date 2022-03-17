@@ -31,7 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Zastávky")
-@Route(value = "zastavky", layout = MainLayout.class)
+@Route(value = "stops", layout = MainLayout.class)
 @PermitAll
 public class ZastavkyCrudPresenter extends GenericCrudPresenter<Zastavka, ZastavkyCrudView> {
 

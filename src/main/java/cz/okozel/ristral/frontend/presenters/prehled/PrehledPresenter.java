@@ -15,7 +15,7 @@ import cz.okozel.ristral.frontend.views.prehled.PrehledView;
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Přehled")
-@Route(value = "prehled", layout = MainLayout.class)
+@Route(value = "dashboard", layout = MainLayout.class)
 @PermitAll
 public class PrehledPresenter extends Presenter<PrehledView> implements BeforeEnterObserver {
 

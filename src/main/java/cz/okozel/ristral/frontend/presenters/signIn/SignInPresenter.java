@@ -1,4 +1,4 @@
-package cz.okozel.ristral.frontend.presenters.register;
+package cz.okozel.ristral.frontend.presenters.signIn;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.PageTitle;
@@ -11,13 +11,13 @@ import cz.okozel.ristral.frontend.views.login.LoginView;
 import cz.okozel.ristral.frontend.views.register.RegisterView;
 
 @PageTitle("Registrace")
-@Route("register")
+@Route("sign-in")
 @AnonymousAllowed
-public class RegisterPresenter extends Presenter<RegisterView> {
+public class SignInPresenter extends Presenter<RegisterView> {
 
     private final RegistratorService registratorService;
 
-    public RegisterPresenter(RegistratorService registratorService) {
+    public SignInPresenter(RegistratorService registratorService) {
         this.registratorService = registratorService;
         getContent().addListener(RegisterView.RegisterEvent.UlozEvent.class, this::ulozUzivatele);
     }

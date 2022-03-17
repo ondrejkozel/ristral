@@ -28,7 +28,7 @@ import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @PageTitle("Vozidla")
-@Route(value = "vozidla", layout = MainLayout.class)
+@Route(value = "vehicles", layout = MainLayout.class)
 @PermitAll
 public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaCrudView> {
 
