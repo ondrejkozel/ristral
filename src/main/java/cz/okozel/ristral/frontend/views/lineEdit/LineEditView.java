@@ -174,6 +174,10 @@ public class LineEditView extends VerticalLayout {
         dialog.close();
     }
 
+    private void handleEditStopsAction(LineRouteCarrier lineRouteCarrier) {
+        //
+    }
+
     private class RouteProfile extends VerticalLayout {
 
         public RouteProfile(LineRouteCarrier routeCarrier) {
@@ -187,7 +191,7 @@ public class LineEditView extends VerticalLayout {
             try {
                 buildInfo(routeCarrier.buildLineRoute().getData());
             } catch (EmptyRouteException e) {
-                buildNoStopsInfo();
+                buildNoStopsInfo(routeCarrier);
             }
         }
 
@@ -213,16 +217,23 @@ public class LineEditView extends VerticalLayout {
             add(header);
         }
 
-        private void buildNoStopsInfo() {
+        private void buildNoStopsInfo(LineRouteCarrier routeCarrier) {
             add(new Label("Trasa nemá žádné zastávky."));
+            add(buildAddStopsButton(routeCarrier));
             addClassName("no-stops");
+        }
+
+        private Button buildAddStopsButton(LineRouteCarrier routeCarrier) {
+            return new Button("Přidat zastávky", VaadinIcon.PLUS.create(), event -> handleEditStopsAction(routeCarrier));
         }
 
         private void buildContextMenu(Button headerButton, LineRouteCarrier routeView) {
             ContextMenu contextMenu = new ContextMenu(headerButton);
             contextMenu.setOpenOnClick(true);
             //
-            contextMenu.addItem("Upravit...", event -> crud.edit(routeView, Crud.EditMode.EXISTING_ITEM));
+            contextMenu.addItem("Upravit podrobnosti...", event -> crud.edit(routeView, Crud.EditMode.EXISTING_ITEM));
+            contextMenu.addItem("Upravit zastávky...", event -> handleEditStopsAction(routeView));
+            contextMenu.add(new Hr());
             if (routeView.isVisible()) contextMenu.addItem("Přepnou na neaktivní", event -> setRouteInvisible.accept(routeView));
             else contextMenu.addItem("Přepnout na aktivní", event -> setRouteVisible.accept(routeView));
         }
