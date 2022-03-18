@@ -29,4 +29,12 @@ public class TypVozidlaService extends GenericSchemaService<TypVozidla, TypVozid
         if (!unusedVehicleTypes.isEmpty()) deleteAll(unusedVehicleTypes);
         return unusedVehicleTypes;
     }
+
+    public static String buildUnusedVehicleTypesMessage(List<TypVozidla> unused) {
+        StringBuilder message = new StringBuilder();
+        message.append("Typ vozidla ").append(unused.get(0).getNazev());
+        if (unused.size() > 1) message.append(" a ").append(unused.size() - 1).append(" dalších");
+        message.append(" byl vymazán, protože nebyl nastaven žádnému vozidlu.");
+        return message.toString();
+    }
 }

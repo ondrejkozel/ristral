@@ -18,11 +18,11 @@ import java.util.Optional;
 
 public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
 
-    private String newString, edit, delete;
+    private String newItem, edit, delete;
     protected Crud<T> crud;
 
     public GenericCrudView() {
-        newString = "Nový";
+        newItem = "Nový";
         edit = "Upravit";
         delete = "Odstranit";
         crud = new Crud<>();
@@ -37,17 +37,21 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
      * tato metoda se volá až po inicializaci gridu
      */
     public void prepareI18n() {
+        crud.setI18n(buildCrudI18n(newItem, edit, delete));
+    }
+
+    public static CrudI18n buildCrudI18n(String newItem, String edit, String delete) {
         CrudI18n crudI18n = new CrudI18n();
         crudI18n.setCancel("Zrušit");
         crudI18n.setDeleteItem("Odstranit...");
         crudI18n.setEditItem(edit);
-        crudI18n.setNewItem(newString);
+        crudI18n.setNewItem(newItem);
         crudI18n.setSaveItem("Uložit");
-        crudI18n.setConfirm(buildConfirmations());
-        crud.setI18n(crudI18n);
+        crudI18n.setConfirm(buildConfirmations(delete));
+        return crudI18n;
     }
 
-    private CrudI18n.Confirmations buildConfirmations() {
+    private static CrudI18n.Confirmations buildConfirmations(String deleteString) {
         CrudI18n.Confirmations.Confirmation cancel = new CrudI18n.Confirmations.Confirmation();
         cancel.setTitle("Zahodit změny");
         cancel.setContent("Máte neuložené změny. Opravdu si je přejete zahodit?");
@@ -57,7 +61,7 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
         cancel.setButton(tlacidlaZahodit);
         //
         CrudI18n.Confirmations.Confirmation delete = new CrudI18n.Confirmations.Confirmation();
-        delete.setTitle(this.delete);
+        delete.setTitle(deleteString);
         delete.setContent("Opravdu si přejete smazat tento objekt? Tato akce je nevratná.");
         CrudI18n.Confirmations.Confirmation.Button tlacidlaSmazat = new CrudI18n.Confirmations.Confirmation.Button();
         tlacidlaSmazat.setConfirm("Smazat");
@@ -71,7 +75,7 @@ public class GenericCrudView<T extends AbstractEntity> extends VerticalLayout {
     }
 
     public void setCrudTexts(String novyObjekt, String titulekEditoru, String odstranitObjekt) {
-        newString = novyObjekt;
+        newItem = novyObjekt;
         edit = titulekEditoru;
         delete = odstranitObjekt;
     }

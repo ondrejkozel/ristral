@@ -1,6 +1,10 @@
 package cz.okozel.ristral.backend.entity.routes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * The default implementation of {@link Route}.
@@ -144,11 +148,11 @@ final class DefaultRoute<V, E> implements Route<V, E> {
      * @see Route#reverse()
      */
     @Override
-    public Route<V, E> reverse() {
+    public Route<V, E> reverse(Function<? super Link<? extends V, ? extends E>, ? extends E> edgeFunction) {
         final var length = links.size();
         final List<Link<V, E>> reversed = new ArrayList<>(length);
         for (var iterator = links.listIterator(length); iterator.hasPrevious();) {
-            reversed.add(iterator.previous().reverse());
+            reversed.add(iterator.previous().reverse(edgeFunction));
         }
         assert (length == reversed.size());
         return new DefaultRoute<>(reversed);

@@ -56,14 +56,8 @@ public class VozidlaCrudPresenter extends GenericCrudPresenter<Vozidlo, VozidlaC
     private void smazNepouzivaneTypyVozidel() {
         List<TypVozidla> unusedVehicleTypes = typVozidlaService.deleteUnusedVehicleTypes(aktSchema);
         if (!unusedVehicleTypes.isEmpty()) {
-            StringBuilder zprava = new StringBuilder();
-            zprava.append("Typ vozidla ").append(unusedVehicleTypes.get(0).getNazev());
-            if (unusedVehicleTypes.size() > 1) zprava.append(" a ").append(unusedVehicleTypes.size() - 1).append(" dalších");
-            zprava.append(" byl vymazán, protože nebyl nastaven žádnému vozidlu.");
-            //
             naplnComboBox();
-            //
-            Notification.show(zprava.toString());
+            Notification.show(TypVozidlaService.buildUnusedVehicleTypesMessage(unusedVehicleTypes));
         }
     }
 

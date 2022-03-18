@@ -1,0 +1,58 @@
+.route-profile {
+    width: unset !important;
+    max-width: 400px;
+    height: fit-content;
+    border-radius: 5px;
+    margin: 0;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 20px 0 rgba(0, 0, 0, 0.12);
+}
+
+.route-profile-visible {
+    background-color: var(--lumo-primary-color-10pct);
+}
+
+.route-profile-invisible {
+    background-color: var(--lumo-contrast-20pct);
+}
+
+.route-profile .tucne {
+    font-weight: bold;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.route-profile label {
+    margin-top: 2px;
+}
+
+.routes-board {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 10px;
+}
+
+.edit-route-button {
+    margin: 0;
+    padding: 0;
+}
+
+.display-none {
+    display: none;
+}
+
+.no-stops {
+    background-color: var(--lumo-error-color-10pct);
+}
+
+@media all and (max-width: 400px) {
+    .routes-board {
+        justify-content: center;
+    }
+    .route-profile {
+        width: 100% !important;
+        margin-right: 16px;
+    }
+}

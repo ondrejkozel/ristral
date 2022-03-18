@@ -2,6 +2,7 @@ package cz.okozel.ristral.backend.entity.routes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Represents a route in a graph.
@@ -132,11 +133,29 @@ public interface Route<V, E> extends Direction<V> {
     }
 
     /**
-     * Returns a new route with vertices in the opposite direction.
+     * Returns a route with reversed {@link #from()} and {@link #to()} and with
+     * the same edges between links.
      *
-     * @return the reverse of this route
+     * <p>
+     * The default implementation returns {@code reverse(Link::edge)}.
+     *
+     * @return the reversed route
      */
-    Route<V, E> reverse();
+    default Route<V, E> reverse() {
+        return reverse(Link::edge);
+    }
+
+    /**
+     * Returns a route with reversed {@link #from()} and {@link #to()} and with
+     * the edge between links computed by the provided function.
+     *
+     * @param edgeFunction
+     *            the function to compute the edge for a route link. It must not
+     *            be {@code null} and it must return a valid edge.
+     *
+     * @return the reversed route
+     */
+    Route<V, E> reverse(Function<? super Link<? extends V, ? extends E>, ? extends E> edgeFunction);
 
     /**
      * Returns a list of links that form this route. The list contains at least
