@@ -101,10 +101,28 @@ public class DataGenerator {
                     .through(new LineRouteLinkData(Duration.ofMinutes(4)))
                     .to(stops.get(4))
                     .finish();
-            NamedView<Route<Zastavka, LineRouteLinkData>> routeNamedView = new NamedView<>(lineRoute, "výchozí", true);
+            var routeNamedView = new NamedView<>(lineRoute, "výchozí", true);
             Line line = new Line("52", "první linka", autobus, superAdmin.getSchema());
             lineService.save(line);
             lineRouteService.save(new LineRouteCarrier(routeNamedView, line));
+            //
+            var routeNamedView2 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration())), "zpáteční", false);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView2, line));
+            //
+            var routeNamedView4 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration())), "čtyři", false);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView4, line));
+            //
+            var routeNamedView5 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration())), "pět", false);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView5, line));
+            //
+            var routeNamedView6 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration())), "šest", false);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView6, line));
+            //
+            var routeNamedView7 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration())), "sedm", false);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView7, line));
+            //
+            var routeNamedView3 = new NamedView<>(lineRoute.reverse(link -> new LineRouteLinkData(link.edge().getDuration().plusSeconds(3))), "výluková zpáteční", true);
+            lineRouteService.save(new LineRouteCarrier(routeNamedView3, line));
             //
             Route<String, TripRouteLinkData> tripRoute = LineRouteCarrier.buildTripRoute(lineRoute, LocalDateTime.now());
             Trip trip = new Trip(line, vozidloService.findAll().get(0), uzivatelService.findByUzivatelskeJmeno("ondrejkozel"), "popis");
