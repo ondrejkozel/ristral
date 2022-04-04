@@ -45,7 +45,7 @@ public class RegisterView extends VerticalLayout {
         //
         Button zapomenuteHeslo = new Button("Zapomenuté heslo");
         zapomenuteHeslo.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-        zapomenuteHeslo.addClickListener(event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude!"));
+        zapomenuteHeslo.addClickListener(event -> Notification.show("Zatím nic neumím, ale už brzo to tak nebude! \uD83D\uDE0A"));
         //
         uzivatelskeJmeno.setRequired(true);
         heslo.setRequired(true);
@@ -85,7 +85,7 @@ public class RegisterView extends VerticalLayout {
             binder.writeBean(uzivatel);
             fireEvent(new RegisterEvent.UlozEvent(this, uzivatel));
         } catch (ValidationException e) {
-            Notification.show("Byly zadány neplatné údaje.");
+            Notification.show("Byly zadány neplatné údaje. ❌");
         }
     }
 
@@ -94,7 +94,7 @@ public class RegisterView extends VerticalLayout {
     }
 
     public void ukazUspesneZaregistrovano() {
-        Notification.show("Registrace proběhla úspěšně, nyní se prosím přihlašte.");
+        Notification.show("Registrace proběhla úspěšně, nyní se prosím přihlaste. \uD83D\uDC4B");
     }
 
     public static abstract class RegisterEvent extends ComponentEvent<RegisterView> {

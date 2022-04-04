@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 public class Line extends AbstractSchemaEntity {
 
     @NotBlank
+    @Size(max = 5)
     private String label;
 
     @Size(max = 250)
@@ -44,5 +45,17 @@ public class Line extends AbstractSchemaEntity {
 
     public TypVozidla getPrefVehicleType() {
         return prefVehicleType;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrefVehicleType(TypVozidla prefVehicleType) {
+        this.prefVehicleType = prefVehicleType;
     }
 }

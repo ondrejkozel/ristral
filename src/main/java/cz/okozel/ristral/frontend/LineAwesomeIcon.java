@@ -6,6 +6,7 @@ public enum LineAwesomeIcon {
     BUS("la la-bus"),
     GRAF("la la-chart-area"),
     ZASTAVKA("las la-map-pin"),
+    LINKA("las la-exchange-alt"),
     INFO("la la-info"),
     UZIVATELE("las la-users"),
     UZIVATEL("las la-user"),
